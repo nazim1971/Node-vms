@@ -29,7 +29,11 @@ export class AuthGuard implements CanActivate {
     ]);
     if (isPublic) return true;
 
-    const request = context.switchToHttp().getRequest<Record<string, unknown> & { headers: Record<string, string> }>();
+    const request = context
+      .switchToHttp()
+      .getRequest<
+        Record<string, unknown> & { headers: Record<string, string> }
+      >();
     const token = this.extractToken(request);
     if (!token) throw new UnauthorizedException('Missing authentication token');
 
@@ -45,17 +49,19 @@ export class AuthGuard implements CanActivate {
     const isBlacklisted = await this.redis
       .get(`blacklist:${token}`)
       .catch(() => null);
-    if (isBlacklisted) throw new UnauthorizedException('Token has been revoked');
+    if (isBlacklisted)
+      throw new UnauthorizedException('Token has been revoked');
 
     request['user'] = payload;
     request['token'] = token;
     return true;
   }
 
-  private extractToken(request: { headers: Record<string, string> }): string | undefined {
+  private extractToken(request: {
+    headers: Record<string, string>;
+  }): string | undefined {
     const auth = request.headers['authorization'];
     if (!auth?.startsWith('Bearer ')) return undefined;
     return auth.slice(7);
   }
 }
-

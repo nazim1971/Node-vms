@@ -24,7 +24,9 @@ export class TenantGuard implements CanActivate {
     ]);
     if (isPublic) return true;
 
-    const request = context.switchToHttp().getRequest<Record<string, unknown>>();
+    const request = context
+      .switchToHttp()
+      .getRequest<Record<string, unknown>>();
     const user = request['user'] as JwtPayload | undefined;
     if (!user) return false;
 
@@ -34,10 +36,11 @@ export class TenantGuard implements CanActivate {
     });
 
     if (!dbUser) throw new UnauthorizedException('User not found');
-    if (!dbUser.isActive) throw new UnauthorizedException('Account is inactive');
-    if (!dbUser.tenant.isActive) throw new ForbiddenException('Tenant is suspended');
+    if (!dbUser.isActive)
+      throw new UnauthorizedException('Account is inactive');
+    if (!dbUser.tenant.isActive)
+      throw new ForbiddenException('Tenant is suspended');
 
     return true;
   }
 }
-

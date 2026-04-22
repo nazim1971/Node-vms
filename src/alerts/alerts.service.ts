@@ -13,7 +13,7 @@ export class AlertsService {
       where: {
         tenantId,
         deletedAt: null,
-        ...(status && { status: status as AlertStatus }),
+        ...(status && { status: status }),
       },
       select: alertSelect,
       orderBy: { createdAt: 'desc' },

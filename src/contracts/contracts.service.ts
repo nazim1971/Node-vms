@@ -40,7 +40,7 @@ export class ContractsService {
     return this.prisma.contract.create({
       data: {
         tenantId,
-        type: dto.type as ContractType,
+        type: dto.type,
         startDate: start,
         endDate: end,
         amount: dto.amount,
@@ -54,9 +54,7 @@ export class ContractsService {
   // ─── List All ────────────────────────────────────────────────────────────
   async findAll(tenantId: string, type?: string) {
     const validType =
-      type === 'VEHICLE_SOURCE' || type === 'CLIENT'
-        ? (type as ContractType)
-        : undefined;
+      type === 'VEHICLE_SOURCE' || type === 'CLIENT' ? type : undefined;
 
     return this.prisma.contract.findMany({
       where: {
@@ -108,7 +106,7 @@ export class ContractsService {
     return this.prisma.contract.update({
       where: { id },
       data: {
-        ...(dto.type !== undefined && { type: dto.type as ContractType }),
+        ...(dto.type !== undefined && { type: dto.type }),
         startDate: newStart,
         endDate: newEnd,
         ...(dto.amount !== undefined && { amount: dto.amount }),

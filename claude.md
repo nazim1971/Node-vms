@@ -5,6 +5,91 @@ Production-grade NestJS multi-tenant SaaS backend for fleet, rental, and worksho
 
 ---
 
+## PHASE 11 — AUDIT + FINAL SECURITY HARDENING
+
+### PROMPT 16 — Audit + Security Final ✅
+
+**Module:** `AuditModule`
+
+**Endpoints:**
+| Method | Path | Roles | Description |
+|---|---|---|---|
+| GET | `/audit` | ADMIN, SUPER_ADMIN | Query audit log (entity, userId, date range) |
+
+**Key Logic — `AuditService.log(tenantId, userId, action, entity, entityId)`:**
+- Creates immutable `AuditLog` record
+- Called from `AuditInterceptor` (fire-and-forget) — errors caught and logged, never thrown to caller
+- Entity extracted from URL path (`/vehicles/abc` → entity=`vehicles`, entityId=`abc`)
+- EntityId: prefers response body `.id`; falls back to second URL segment if not a keyword
+
+**Key Logic — `AuditService.findAll(tenantId, query)`:**
+- Filters by: `entity`, `entityId`, `userId`, `startDate`, `endDate`
+- Returns last 500 entries, newest first
+- Includes `user: { id, name, email, role }` — no password leak
+
+**Key Logic — `AuditInterceptor` (global):**
+- Runs on all POST, PATCH, PUT, DELETE requests for authenticated users
+- Uses `tap()` (not `catchError`) — never interferes with error flow
+- PATH_KEYWORDS set excludes `start`, `end`, `items`, `status`, etc. from being treated as IDs
+
+**Key Logic — `SensitiveFieldsInterceptor` (global):**
+- Recursively strips `password` from all response objects and arrays
+- Defense-in-depth: ensures no service accidentally returns a password hash
+
+**Security Additions:**
+- `LoggingInterceptor` registered globally (`APP_INTERCEPTOR`) — logs every request with timing
+- `AuditInterceptor` registered globally — immutable audit trail for all state changes
+- `SensitiveFieldsInterceptor` registered globally — strips sensitive fields from all responses
+
+**Package.json Scripts Added:**
+```bash
+npm run prisma:generate      # Regenerate client after schema changes
+npm run prisma:migrate       # Create + apply migration (dev)
+npm run prisma:migrate:prod  # Apply migrations (production)
+npm run prisma:studio        # Open GUI at localhost:5555
+npm run prisma:reset         # Drop + re-migrate (dev only)
+npm run prisma:push          # Push schema without migration (prototyping)
+```
+
+**Important Decisions:**
+- Audit interceptor is `fire-and-forget` — audit failures NEVER block the main operation
+- `AuditLog` has no `deletedAt` — audit records are immutable by design
+- Entity/entityId extraction is best-effort (not exact) — URL-based heuristic is sufficient for audit trails
+- `SensitiveFieldsInterceptor` works on plain objects (Prisma returns) without `@Exclude()` decorators
+- Global interceptors ordered: `LoggingInterceptor` → `AuditInterceptor` → `SensitiveFieldsInterceptor`
+
+**Files Created / Modified:**
+- `src/audit/dto/audit-query.dto.ts`
+- `src/audit/audit.service.ts` — `log()` + `findAll()`
+- `src/audit/audit.controller.ts` — `GET /audit`
+- `src/common/interceptors/audit.interceptor.ts` — global audit interceptor
+- `src/common/interceptors/sensitive-fields.interceptor.ts` — strips password from responses
+- `src/app.module.ts` — registered 3 global `APP_INTERCEPTOR` providers
+- `package.json` — 5 Prisma convenience scripts added
+- `README.md` — full project documentation rewrite
+
+---
+
+### Status
+| Checkpoint | Status |
+|---|---|
+| Audit log — track all mutating actions (POST/PATCH/PUT/DELETE) | ✅ |
+| Audit log — query with filters (entity, userId, date range) | ✅ |
+| Audit log — immutable (no soft delete, no update) | ✅ |
+| Rate limiting — global (100 req/15 min per IP, already in main.ts) | ✅ |
+| Input sanitization — ValidationPipe whitelist + Prisma parameterized queries | ✅ |
+| SQL injection prevention — Prisma ORM (no raw string interpolation) | ✅ |
+| Sensitive field hiding — SensitiveFieldsInterceptor strips `password` globally | ✅ |
+| API logging — LoggingInterceptor registered as global APP_INTERCEPTOR | ✅ |
+| Soft delete filtering — `deletedAt: null` in all Prisma queries | ✅ |
+| Cross-tenant prevention — TenantGuard + tenantId scoping in every query | ✅ |
+| DRIVER blocked from audit endpoint | ✅ |
+| Prisma scripts in package.json | ✅ |
+| README rewritten with full API reference + Postman sample data | ✅ |
+| Build passes | ✅ |
+
+---
+
 ## PHASE 10 — REPORTS
 
 ### PROMPT 15 — Reports ✅

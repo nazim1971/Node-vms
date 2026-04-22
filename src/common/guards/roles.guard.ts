@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '../../../generated/prisma';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
@@ -22,7 +27,9 @@ export class RolesGuard implements CanActivate {
     ]);
     if (!requiredRoles || requiredRoles.length === 0) return true;
 
-    const request = context.switchToHttp().getRequest<Record<string, unknown>>();
+    const request = context
+      .switchToHttp()
+      .getRequest<Record<string, unknown>>();
     const user = request['user'] as JwtPayload | undefined;
     if (!user) return false;
 
@@ -31,4 +38,3 @@ export class RolesGuard implements CanActivate {
     return true;
   }
 }
-

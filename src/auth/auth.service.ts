@@ -38,7 +38,8 @@ export class AuthService {
     if (!passwordValid) throw new UnauthorizedException('Invalid credentials');
 
     if (!user.isActive) throw new UnauthorizedException('Account is inactive');
-    if (!user.tenant.isActive) throw new ForbiddenException('Tenant is suspended');
+    if (!user.tenant.isActive)
+      throw new ForbiddenException('Tenant is suspended');
 
     return this.generateTokenPair(user);
   }
@@ -123,7 +124,7 @@ export class AuthService {
     };
     return this.jwtService.sign(payload, {
       secret: this.config.getOrThrow<string>('JWT_SECRET'),
-      expiresIn: this.config.get('JWT_EXPIRES_IN', '15m') as unknown as number,
+      expiresIn: this.config.get('JWT_EXPIRES_IN', '15m') as number,
     });
   }
 
@@ -141,7 +142,7 @@ export class AuthService {
     };
     return this.jwtService.sign(payload, {
       secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
-      expiresIn: this.config.get('JWT_REFRESH_EXPIRES_IN', '7d') as unknown as number,
+      expiresIn: this.config.get('JWT_REFRESH_EXPIRES_IN', '7d') as number,
     });
   }
 
@@ -157,4 +158,3 @@ export class AuthService {
     };
   }
 }
-

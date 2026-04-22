@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PrismaService } from '../../database/prisma.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
@@ -19,13 +24,15 @@ export class FeatureGuard implements CanActivate {
     ]);
     if (isPublic) return true;
 
-    const requiredFeature = this.reflector.getAllAndOverride<string>(FEATURE_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredFeature = this.reflector.getAllAndOverride<string>(
+      FEATURE_KEY,
+      [context.getHandler(), context.getClass()],
+    );
     if (!requiredFeature) return true;
 
-    const request = context.switchToHttp().getRequest<Record<string, unknown>>();
+    const request = context
+      .switchToHttp()
+      .getRequest<Record<string, unknown>>();
     const user = request['user'] as JwtPayload | undefined;
     if (!user) return false;
 
@@ -39,9 +46,10 @@ export class FeatureGuard implements CanActivate {
     });
 
     if (!access) {
-      throw new ForbiddenException(`Feature '${requiredFeature}' is not enabled for this tenant`);
+      throw new ForbiddenException(
+        `Feature '${requiredFeature}' is not enabled for this tenant`,
+      );
     }
     return true;
   }
 }
-
