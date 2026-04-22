@@ -124,7 +124,8 @@ export class AuthService {
     };
     return this.jwtService.sign(payload, {
       secret: this.config.getOrThrow<string>('JWT_SECRET'),
-      expiresIn: this.config.get('JWT_EXPIRES_IN', '15m') as number,
+      expiresIn: (this.config.get<string>('JWT_EXPIRES_IN') ??
+        '15m') as unknown as number,
     });
   }
 
@@ -142,7 +143,8 @@ export class AuthService {
     };
     return this.jwtService.sign(payload, {
       secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
-      expiresIn: this.config.get('JWT_REFRESH_EXPIRES_IN', '7d') as number,
+      expiresIn: (this.config.get<string>('JWT_REFRESH_EXPIRES_IN') ??
+        '7d') as unknown as number,
     });
   }
 

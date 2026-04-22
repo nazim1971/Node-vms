@@ -49,4 +49,4 @@ async function bootstrap() {
   await app.listen(port);
   logger.log(`Application running on port ${port}`, 'Bootstrap');
 }
-bootstrap();
+bootstrap().catch(console.error);

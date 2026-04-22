@@ -22,7 +22,7 @@ export class ContractsService {
     }
 
     // VEHICLE_SOURCE contracts should reference a vehicle
-    if (dto.type === 'VEHICLE_SOURCE' && !dto.vehicleId) {
+    if (dto.type === ContractType.VEHICLE_SOURCE && !dto.vehicleId) {
       throw new BadRequestException(
         'vehicleId is required for VEHICLE_SOURCE contracts',
       );
@@ -54,7 +54,9 @@ export class ContractsService {
   // ─── List All ────────────────────────────────────────────────────────────
   async findAll(tenantId: string, type?: string) {
     const validType =
-      type === 'VEHICLE_SOURCE' || type === 'CLIENT' ? type : undefined;
+      type === ContractType.VEHICLE_SOURCE || type === ContractType.CLIENT
+        ? type
+        : undefined;
 
     return this.prisma.contract.findMany({
       where: {
