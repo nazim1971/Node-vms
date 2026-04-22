@@ -1,0 +1,11 @@
+
+logs/
+.env
+
+/generated/prisma
+.vscode
+node_modules
+dist
+coverage
+
+note.txt 

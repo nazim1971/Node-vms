@@ -1,0 +1,493 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EMPLOYEE
+  DRIVER
+}
+
+enum VehicleStatus {
+  AVAILABLE
+  ON_TRIP
+  MAINTENANCE
+  INACTIVE
+}
+
+enum VehicleSourceType {
+  OWNED
+  CONTRACT
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum ContractType {
+  VEHICLE_SOURCE
+  CLIENT
+}
+
+enum WorkshopJobStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum AlertStatus {
+  UNREAD
+  READ
+  DISMISSED
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+model Tenant {
+  id        String    @id @default(cuid())
+  name      String
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  subscriptions   Subscription[]
+  featureAccesses FeatureAccess[]
+  users           User[]
+  vehicles        Vehicle[]
+  drivers         Driver[]
+  bookings        Booking[]
+  contracts       Contract[]
+  trips           Trip[]
+  fuelLogs        FuelLog[]
+  maintenanceLogs MaintenanceLog[]
+  documents       Document[]
+  expenses        Expense[]
+  incomes         Income[]
+  gpsLocations    GpsLocation[]
+  workshopJobs    WorkshopJob[]
+  alerts          Alert[]
+  auditLogs       AuditLog[]
+}
+
+model Subscription {
+  id        String    @id @default(cuid())
+  tenantId  String
+  planName  String
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+}
+
+model FeatureAccess {
+  id         String    @id @default(cuid())
+  tenantId   String
+  moduleName String
+  isEnabled  Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+}
+
+model User {
+  id        String    @id @default(cuid())
+  tenantId  String
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(EMPLOYEE)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  auditLogs AuditLog[]
+  driver    Driver?
+
+  @@index([tenantId])
+  @@index([email])
+}
+
+// ─── Vehicle ─────────────────────────────────────────────────────────────────
+
+model Vehicle {
+  id             String            @id @default(cuid())
+  tenantId       String
+  registrationNo String            @unique
+  model          String
+  seatCount      Int
+  status         VehicleStatus     @default(AVAILABLE)
+  sourceType     VehicleSourceType @default(OWNED)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  deletedAt      DateTime?
+
+  tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  assignments     Assignment[]
+  bookings        Booking[]
+  contracts       Contract[]
+  trips           Trip[]
+  fuelLogs        FuelLog[]
+  maintenanceLogs MaintenanceLog[]
+  documents       Document[]
+  gpsLocations    GpsLocation[]
+  workshopJobs    WorkshopJob[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@index([registrationNo])
+}
+
+// ─── Driver ──────────────────────────────────────────────────────────────────
+
+model Driver {
+  id          String    @id @default(cuid())
+  tenantId    String
+  userId      String?   @unique   // optional link to a User account (the driver's login)
+  name        String
+  phone       String    @unique
+  licenseNo   String    @unique
+  isAvailable Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  user        User?        @relation(fields: [userId], references: [id])
+  assignments Assignment[]
+  bookings    Booking[]
+  trips       Trip[]
+
+  @@index([tenantId])
+}
+
+// ─── Assignment ───────────────────────────────────────────────────────────────
+
+model Assignment {
+  id        String    @id @default(cuid())
+  vehicleId String
+  driverId  String
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+  driver  Driver  @relation(fields: [driverId], references: [id])
+
+  @@index([vehicleId])
+  @@index([driverId])
+  @@index([vehicleId, endDate])
+}
+
+// ─── Booking ──────────────────────────────────────────────────────────────────
+
+model Booking {
+  id           String        @id @default(cuid())
+  tenantId     String
+  vehicleId    String
+  driverId     String?
+  startDate    DateTime
+  endDate      DateTime
+  status       BookingStatus @default(PENDING)
+  advancePaid  Float         @default(0)
+  customerName String
+  contact      String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+  driver  Driver? @relation(fields: [driverId], references: [id])
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([status])
+  @@index([startDate, endDate])
+}
+
+// ─── Contract ─────────────────────────────────────────────────────────────────
+
+model Contract {
+  id         String       @id @default(cuid())
+  tenantId   String
+  type       ContractType
+  startDate  DateTime
+  endDate    DateTime
+  amount     Float
+  commission Float        @default(0)
+  vehicleId  String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+
+  tenant  Tenant   @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle? @relation(fields: [vehicleId], references: [id])
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([endDate])
+}
+
+// ─── Trip ─────────────────────────────────────────────────────────────────────
+
+model Trip {
+  id          String    @id @default(cuid())
+  tenantId    String
+  vehicleId   String
+  driverId    String
+  startTime   DateTime
+  endTime     DateTime?
+  distance    Float     @default(0)
+  income      Float     @default(0)
+  tollCost    Float     @default(0)
+  policeCost  Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+  driver  Driver  @relation(fields: [driverId], references: [id])
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([driverId])
+  @@index([vehicleId, startTime])
+}
+
+// ─── FuelLog ─────────────────────────────────────────────────────────────────
+
+model FuelLog {
+  id        String    @id @default(cuid())
+  tenantId  String
+  vehicleId String
+  liters    Float
+  cost      Float
+  odometer  Float
+  date      DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([vehicleId, date])
+}
+
+// ─── MaintenanceLog ───────────────────────────────────────────────────────────
+
+model MaintenanceLog {
+  id        String    @id @default(cuid())
+  tenantId  String
+  vehicleId String
+  totalCost Float     @default(0)
+  note      String?
+  date      DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant  Tenant            @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle           @relation(fields: [vehicleId], references: [id])
+  items   MaintenanceItem[]
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([vehicleId, date])
+}
+
+// ─── MaintenanceItem ─────────────────────────────────────────────────────────
+
+model MaintenanceItem {
+  id            String   @id @default(cuid())
+  maintenanceId String
+  name          String
+  cost          Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  maintenance MaintenanceLog @relation(fields: [maintenanceId], references: [id])
+
+  @@index([maintenanceId])
+}
+
+// ─── Document ─────────────────────────────────────────────────────────────────
+
+model Document {
+  id         String    @id @default(cuid())
+  tenantId   String
+  vehicleId  String
+  type       String
+  expiryDate DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([expiryDate])
+}
+
+// ─── Expense ─────────────────────────────────────────────────────────────────
+
+model Expense {
+  id        String    @id @default(cuid())
+  tenantId  String
+  type      String
+  amount    Float
+  note      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([type])
+}
+
+// ─── Income ──────────────────────────────────────────────────────────────────
+
+model Income {
+  id        String    @id @default(cuid())
+  tenantId  String
+  source    String
+  amount    Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+}
+
+// ─── GpsLocation ─────────────────────────────────────────────────────────────
+
+model GpsLocation {
+  id        String   @id @default(cuid())
+  tenantId  String
+  vehicleId String
+  lat       Float
+  lng       Float
+  speed     Float    @default(0)
+  timestamp DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([vehicleId, timestamp])
+}
+
+// ─── WorkshopJob ─────────────────────────────────────────────────────────────
+
+model WorkshopJob {
+  id        String            @id @default(cuid())
+  tenantId  String
+  vehicleId String
+  issue     String
+  status    WorkshopJobStatus @default(OPEN)
+  totalCost Float             @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  deletedAt DateTime?
+
+  tenant  Tenant         @relation(fields: [tenantId], references: [id])
+  vehicle Vehicle        @relation(fields: [vehicleId], references: [id])
+  items   WorkshopItem[]
+
+  @@index([tenantId])
+  @@index([vehicleId])
+  @@index([status])
+}
+
+// ─── WorkshopItem ────────────────────────────────────────────────────────────
+
+model WorkshopItem {
+  id        String   @id @default(cuid())
+  jobId     String
+  name      String
+  cost      Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  job WorkshopJob @relation(fields: [jobId], references: [id])
+
+  @@index([jobId])
+}
+
+// ─── Alert ───────────────────────────────────────────────────────────────────
+
+model Alert {
+  id        String      @id @default(cuid())
+  tenantId  String
+  type      String
+  message   String
+  status    AlertStatus @default(UNREAD)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([status])
+}
+
+// ─── AuditLog ────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  tenantId  String
+  userId    String
+  action    String
+  entity    String
+  entityId  String
+  createdAt DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
