@@ -1,18 +1,23 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
+import { EntityValidator } from '../common/helpers/entity-validator.helper';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-import { VehicleSourceType, VehicleStatus } from '../../generated/prisma';
+import { Prisma, VehicleSourceType, VehicleStatus } from '../../generated/prisma';
 
 @Injectable()
 export class VehiclesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly validator: EntityValidator,
+  ) {}
 
   async create(tenantId: string, dto: CreateVehicleDto) {
-    const existing = await this.prisma.vehicle.findFirst({
-      where: { registrationNo: dto.registrationNo, deletedAt: null },
-    });
-    if (existing) throw new ConflictException('Registration number already in use');
+    // Registration numbers are globally unique (government plates)
+    await this.validator.assertRegistrationUnique(dto.registrationNo);
+
+    // Branch must belong to this tenant
+    await this.validator.assertBranchExists(tenantId, dto.branchId);
 
     return this.prisma.vehicle.create({
       data: {
@@ -24,6 +29,7 @@ export class VehiclesService {
         sourceType: dto.sourceType ?? VehicleSourceType.OWNED,
         branchId: dto.branchId ?? null,
       },
+      include: { branch: { select: { id: true, name: true } } },
     });
   }
 
@@ -45,6 +51,7 @@ export class VehiclesService {
   async findOne(tenantId: string, id: string) {
     const vehicle = await this.prisma.vehicle.findFirst({
       where: { id, tenantId, deletedAt: null },
+      include: { branch: { select: { id: true, name: true } } },
     });
     if (!vehicle) throw new NotFoundException('Vehicle not found');
     return vehicle;
@@ -57,15 +64,34 @@ export class VehiclesService {
     if (!vehicle) throw new NotFoundException('Vehicle not found');
 
     if (dto.registrationNo && dto.registrationNo !== vehicle.registrationNo) {
-      const dup = await this.prisma.vehicle.findFirst({
-        where: { registrationNo: dto.registrationNo, deletedAt: null, id: { not: id } },
-      });
-      if (dup) throw new ConflictException('Registration number already in use');
+      await this.validator.assertRegistrationUnique(dto.registrationNo, id);
+    }
+
+    if (dto.branchId !== undefined) {
+      await this.validator.assertBranchExists(tenantId, dto.branchId);
+    }
+
+    // Whitelist only safe updatable fields — never spread raw DTO
+    const data: Prisma.VehicleUpdateInput = {};
+    if (dto.registrationNo !== undefined) data.registrationNo = dto.registrationNo;
+    if (dto.model !== undefined) data.model = dto.model;
+    if (dto.seatCount !== undefined) data.seatCount = dto.seatCount;
+    if (dto.status !== undefined) data.status = dto.status;
+    if (dto.sourceType !== undefined) data.sourceType = dto.sourceType;
+    if (dto.branchId !== undefined) {
+      data.branch = dto.branchId
+        ? { connect: { id: dto.branchId } }
+        : { disconnect: true };
+    }
+
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException('No updatable fields provided');
     }
 
     return this.prisma.vehicle.update({
       where: { id },
-      data: dto,
+      data,
+      include: { branch: { select: { id: true, name: true } } },
     });
   }
 

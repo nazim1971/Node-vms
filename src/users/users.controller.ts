@@ -54,15 +54,19 @@ export class UsersController {
     @Body() dto: UpdateUserDto,
     @CurrentUser() user: JwtPayload,
   ) {
-    return this.usersService.update(user.tenantId, id, dto);
+    return this.usersService.update(user.tenantId, id, dto, {
+      id: user.sub,
+      role: user.role as Role,
+    });
   }
 
-  /** DELETE /users/:id — soft-delete (SUPER_ADMIN only) */
+  /** DELETE /users/:id — soft-delete a DRIVER or EMPLOYEE (ADMIN cannot delete other ADMINs) */
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Roles(Role.SUPER_ADMIN)
   remove(@Param('id') id: string, @CurrentUser() user: JwtPayload) {
-    return this.usersService.remove(user.tenantId, id);
+    return this.usersService.remove(user.tenantId, id, {
+      id: user.sub,
+      role: user.role as Role,
+    });
   }
 }
-

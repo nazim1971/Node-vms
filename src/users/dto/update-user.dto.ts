@@ -1,4 +1,10 @@
-import { IsBoolean, IsEnum, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsIn,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { Role } from '../../../generated/prisma';
 
 export class UpdateUserDto {
@@ -13,7 +19,7 @@ export class UpdateUserDto {
   password?: string;
 
   @IsOptional()
-  @IsEnum(Role)
+  @IsIn([Role.DRIVER, Role.EMPLOYEE])
   role?: Role;
 
   @IsOptional()

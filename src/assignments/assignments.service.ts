@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
@@ -26,7 +30,7 @@ export class AssignmentsService {
     if (!driver) throw new NotFoundException('Driver not found');
 
     // Check for overlapping active assignment for this vehicle
-    const overlap = await this.prisma.assignment.findFirst({
+    const vehicleOverlap = await this.prisma.assignment.findFirst({
       where: {
         vehicleId: dto.vehicleId,
         deletedAt: null,
@@ -34,8 +38,25 @@ export class AssignmentsService {
         OR: [{ endDate: null }, { endDate: { gte: start } }],
       },
     });
-    if (overlap) {
-      throw new BadRequestException('Vehicle already has an overlapping assignment in this period');
+    if (vehicleOverlap) {
+      throw new BadRequestException(
+        'Vehicle already has an overlapping assignment in this period',
+      );
+    }
+
+    // Check for overlapping active assignment for this driver
+    const driverOverlap = await this.prisma.assignment.findFirst({
+      where: {
+        driverId: dto.driverId,
+        deletedAt: null,
+        startDate: end ? { lte: end } : undefined,
+        OR: [{ endDate: null }, { endDate: { gte: start } }],
+      },
+    });
+    if (driverOverlap) {
+      throw new BadRequestException(
+        'Driver already has an overlapping assignment in this period',
+      );
     }
 
     return this.prisma.assignment.create({
@@ -82,13 +103,32 @@ export class AssignmentsService {
     });
     if (!assignment) throw new NotFoundException('Assignment not found');
 
-    const start = dto.startDate ? new Date(dto.startDate) : assignment.startDate;
-    const end = dto.endDate !== undefined
-      ? (dto.endDate ? new Date(dto.endDate) : null)
-      : assignment.endDate;
+    const start = dto.startDate
+      ? new Date(dto.startDate)
+      : assignment.startDate;
+    const end =
+      dto.endDate !== undefined
+        ? dto.endDate
+          ? new Date(dto.endDate)
+          : null
+        : assignment.endDate;
 
     if (end && end <= start) {
       throw new BadRequestException('endDate must be after startDate');
+    }
+
+    // If vehicleId or driverId changes, re-validate tenant ownership
+    if (dto.vehicleId && dto.vehicleId !== assignment.vehicleId) {
+      const newVehicle = await this.prisma.vehicle.findFirst({
+        where: { id: dto.vehicleId, tenantId, deletedAt: null },
+      });
+      if (!newVehicle) throw new NotFoundException('Vehicle not found');
+    }
+    if (dto.driverId && dto.driverId !== assignment.driverId) {
+      const newDriver = await this.prisma.driver.findFirst({
+        where: { id: dto.driverId, tenantId, deletedAt: null },
+      });
+      if (!newDriver) throw new NotFoundException('Driver not found');
     }
 
     return this.prisma.assignment.update({
