@@ -19,4 +19,9 @@ export class UpdateUserDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean;
+
+  /** Reassign user to a different branch (null to unassign) */
+  @IsOptional()
+  @IsString()
+  branchId?: string | null;
 }

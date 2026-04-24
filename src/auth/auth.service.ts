@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import type Redis from 'ioredis';
-import { Role } from '../../generated/prisma';
+import { ApprovalStatus, Role } from '../../generated/prisma';
 import { PrismaService } from '../database/prisma.service';
 import { REDIS_CLIENT } from '../common/redis/redis.module';
 import { LoginDto } from './dto/login.dto';
@@ -37,6 +37,23 @@ export class AuthService {
     const passwordValid = await bcrypt.compare(dto.password, user.password);
     if (!passwordValid) throw new UnauthorizedException('Invalid credentials');
 
+    // Check approval status before isActive (gives a better error message)
+    if (user.role === Role.ADMIN) {
+      if (user.approvalStatus === ApprovalStatus.PENDING) {
+        throw new ForbiddenException(
+          'Your account is pending approval by the platform administrator',
+        );
+      }
+      if (user.approvalStatus === ApprovalStatus.REJECTED) {
+        throw new ForbiddenException(
+          'Your account application has been rejected',
+        );
+      }
+      if (user.approvalStatus === ApprovalStatus.SUSPENDED) {
+        throw new ForbiddenException('Your account has been suspended');
+      }
+    }
+
     if (!user.isActive) throw new UnauthorizedException('Account is inactive');
     if (!user.tenant.isActive)
       throw new ForbiddenException('Tenant is suspended');
@@ -44,6 +61,10 @@ export class AuthService {
     return this.generateTokenPair(user);
   }
 
+  /**
+   * Public registration — creates a new TENANT + ADMIN user with PENDING status.
+   * The admin cannot log in until a SUPER_ADMIN approves the application.
+   */
   async registerTenant(dto: RegisterTenantDto) {
     const existing = await this.prisma.user.findFirst({
       where: { email: dto.email, deletedAt: null },
@@ -52,15 +73,71 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 12);
 
-    const tenant = await this.prisma.tenant.create({
+    await this.prisma.tenant.create({
       data: {
         name: dto.tenantName,
+        // Tenant starts inactive until admin is approved
+        isActive: false,
         users: {
           create: {
             name: dto.adminName,
             email: dto.email,
             password: hashedPassword,
+            role: Role.ADMIN,
+            approvalStatus: ApprovalStatus.PENDING,
+            isActive: false,
+          },
+        },
+      },
+    });
+
+    return {
+      message:
+        'Registration submitted successfully. Your account is pending approval by the platform administrator. You will be notified once approved.',
+    };
+  }
+
+  /**
+   * One-time seed: creates the platform SUPER_ADMIN + system tenant.
+   * Protected by SEED_SECRET env var — must only be called once.
+   */
+  async seedSuperAdmin(dto: {
+    name: string;
+    email: string;
+    password: string;
+    seedSecret: string;
+  }) {
+    const expectedSecret = this.config.getOrThrow<string>('SEED_SECRET');
+    if (dto.seedSecret !== expectedSecret) {
+      throw new ForbiddenException('Invalid seed secret');
+    }
+
+    const existing = await this.prisma.user.findFirst({
+      where: { role: Role.SUPER_ADMIN, deletedAt: null },
+    });
+    if (existing) {
+      throw new ConflictException('Super admin already exists');
+    }
+
+    const existingEmail = await this.prisma.user.findFirst({
+      where: { email: dto.email, deletedAt: null },
+    });
+    if (existingEmail) throw new ConflictException('Email already in use');
+
+    const hashedPassword = await bcrypt.hash(dto.password, 12);
+
+    const tenant = await this.prisma.tenant.create({
+      data: {
+        name: 'Platform (System)',
+        isActive: true,
+        users: {
+          create: {
+            name: dto.name,
+            email: dto.email,
+            password: hashedPassword,
             role: Role.SUPER_ADMIN,
+            approvalStatus: ApprovalStatus.APPROVED,
+            isActive: true,
           },
         },
       },
@@ -68,7 +145,7 @@ export class AuthService {
     });
 
     const user = tenant.users[0];
-    if (!user) throw new Error('Failed to create admin user');
+    if (!user) throw new Error('Failed to create super admin');
     return this.generateTokenPair(user);
   }
 

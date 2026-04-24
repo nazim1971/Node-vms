@@ -11,10 +11,12 @@ import { SharedModule } from './shared/shared.module';
 import { GatewaysModule } from './gateways/gateways.module';
 import { JobsModule } from './jobs/jobs.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminApplicationsModule } from './admin-applications/admin-applications.module';
 import { UsersModule } from './users/users.module';
 import { TenantsModule } from './tenants/tenants.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { FeatureAccessModule } from './feature-access/feature-access.module';
+import { BranchesModule } from './branches/branches.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { DriversModule } from './drivers/drivers.module';
 import { AssignmentsModule } from './assignments/assignments.module';
@@ -48,10 +50,12 @@ import { FeatureGuard } from './common/guards/feature.guard';
     GatewaysModule,
     JobsModule,
     AuthModule,
+    AdminApplicationsModule,
     UsersModule,
     TenantsModule,
     SubscriptionsModule,
     FeatureAccessModule,
+    BranchesModule,
     VehiclesModule,
     DriversModule,
     AssignmentsModule,

@@ -14,4 +14,9 @@ export class CreateDriverDto {
   @IsOptional()
   @IsString()
   userId?: string;
+
+  /** Assign driver to a specific branch */
+  @IsOptional()
+  @IsString()
+  branchId?: string;
 }

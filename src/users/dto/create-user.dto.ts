@@ -16,4 +16,9 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(Role)
   role?: Role;
+
+  /** Assign user to a specific branch */
+  @IsOptional()
+  @IsString()
+  branchId?: string;
 }

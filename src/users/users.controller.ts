@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -21,7 +22,7 @@ import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('users')
 @UseGuards(RolesGuard)
-@Roles(Role.SUPER_ADMIN, Role.ADMIN)
+@Roles(Role.ADMIN)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -31,10 +32,13 @@ export class UsersController {
     return this.usersService.create(user.tenantId, dto);
   }
 
-  /** GET /users — list all users in the tenant */
+  /** GET /users?branchId= — list all users in the tenant (optional branch filter) */
   @Get()
-  findAll(@CurrentUser() user: JwtPayload) {
-    return this.usersService.findAll(user.tenantId);
+  findAll(
+    @Query('branchId') branchId: string | undefined,
+    @CurrentUser() user: JwtPayload,
+  ) {
+    return this.usersService.findAll(user.tenantId, branchId);
   }
 
   /** GET /users/:id — get a single user */
@@ -43,7 +47,7 @@ export class UsersController {
     return this.usersService.findOne(user.tenantId, id);
   }
 
-  /** PATCH /users/:id — update user (name, role, isActive, password) */
+  /** PATCH /users/:id — update user (name, role, isActive, password, branchId) */
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -61,3 +65,4 @@ export class UsersController {
     return this.usersService.remove(user.tenantId, id);
   }
 }
+

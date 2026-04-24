@@ -17,4 +17,9 @@ export class CreateVehicleDto {
   @IsOptional()
   @IsEnum(VehicleSourceType)
   sourceType?: VehicleSourceType;
+
+  /** Assign vehicle to a specific branch */
+  @IsOptional()
+  @IsString()
+  branchId?: string;
 }

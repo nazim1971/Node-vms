@@ -5,6 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Role } from '../../../generated/prisma';
 import { PrismaService } from '../../database/prisma.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { FEATURE_KEY } from '../decorators/feature.decorator';
@@ -36,20 +37,28 @@ export class FeatureGuard implements CanActivate {
     const user = request['user'] as JwtPayload | undefined;
     if (!user) return false;
 
-    const access = await this.prisma.featureAccess.findFirst({
+    // SUPER_ADMIN bypasses all feature flag checks
+    if (user.role === Role.SUPER_ADMIN) return true;
+
+    // Opt-out model: if no record exists, the feature is ENABLED by default.
+    // A record with isEnabled=false explicitly disables the feature.
+    const record = await this.prisma.featureAccess.findFirst({
       where: {
         tenantId: user.tenantId,
         moduleName: requiredFeature,
-        isEnabled: true,
         deletedAt: null,
       },
     });
 
-    if (!access) {
+    // No record = feature enabled (opt-out default)
+    if (!record) return true;
+
+    if (!record.isEnabled) {
       throw new ForbiddenException(
-        `Feature '${requiredFeature}' is not enabled for this tenant`,
+        `Module '${requiredFeature}' is disabled for your account. Contact your administrator.`,
       );
     }
+
     return true;
   }
 }

@@ -17,4 +17,9 @@ export class UpdateDriverDto {
   @IsOptional()
   @IsBoolean()
   isAvailable?: boolean;
+
+  /** Reassign driver to a different branch (null to unassign) */
+  @IsOptional()
+  @IsString()
+  branchId?: string | null;
 }

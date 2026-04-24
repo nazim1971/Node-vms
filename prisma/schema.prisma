@@ -19,6 +19,13 @@ enum Role {
   DRIVER
 }
 
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
 enum VehicleStatus {
   AVAILABLE
   ON_TRIP
@@ -66,6 +73,7 @@ model Tenant {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
+  branches        Branch[]
   subscriptions   Subscription[]
   featureAccesses FeatureAccess[]
   users           User[]
@@ -83,6 +91,29 @@ model Tenant {
   workshopJobs    WorkshopJob[]
   alerts          Alert[]
   auditLogs       AuditLog[]
+}
+
+// ─── Branch ──────────────────────────────────────────────────────────────────
+
+model Branch {
+  id        String    @id @default(cuid())
+  tenantId  String
+  name      String
+  address   String?
+  phone     String?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  tenant       Tenant        @relation(fields: [tenantId], references: [id])
+  users        User[]
+  vehicles     Vehicle[]
+  drivers      Driver[]
+  bookings     Booking[]
+  workshopJobs WorkshopJob[]
+
+  @@index([tenantId])
 }
 
 model Subscription {
@@ -114,24 +145,28 @@ model FeatureAccess {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  tenantId  String
-  name      String
-  email     String    @unique
-  password  String
-  role      Role      @default(EMPLOYEE)
-  isActive  Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  id             String         @id @default(cuid())
+  tenantId       String
+  branchId       String?
+  name           String
+  email          String         @unique
+  password       String
+  role           Role           @default(EMPLOYEE)
+  approvalStatus ApprovalStatus @default(APPROVED)
+  isActive       Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
 
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
+  branch Branch? @relation(fields: [branchId], references: [id])
 
   auditLogs AuditLog[]
   driver    Driver?
 
   @@index([tenantId])
   @@index([email])
+  @@index([branchId])
 }
 
 // ─── Vehicle ─────────────────────────────────────────────────────────────────
@@ -139,6 +174,7 @@ model User {
 model Vehicle {
   id             String            @id @default(cuid())
   tenantId       String
+  branchId       String?
   registrationNo String            @unique
   model          String
   seatCount      Int
@@ -149,6 +185,7 @@ model Vehicle {
   deletedAt      DateTime?
 
   tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  branch          Branch?          @relation(fields: [branchId], references: [id])
   assignments     Assignment[]
   bookings        Booking[]
   contracts       Contract[]
@@ -162,6 +199,7 @@ model Vehicle {
   @@index([tenantId])
   @@index([status])
   @@index([registrationNo])
+  @@index([branchId])
 }
 
 // ─── Driver ──────────────────────────────────────────────────────────────────
@@ -169,6 +207,7 @@ model Vehicle {
 model Driver {
   id          String    @id @default(cuid())
   tenantId    String
+  branchId    String?
   userId      String?   @unique   // optional link to a User account (the driver's login)
   name        String
   phone       String    @unique
@@ -179,12 +218,14 @@ model Driver {
   deletedAt   DateTime?
 
   tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  branch      Branch?      @relation(fields: [branchId], references: [id])
   user        User?        @relation(fields: [userId], references: [id])
   assignments Assignment[]
   bookings    Booking[]
   trips       Trip[]
 
   @@index([tenantId])
+  @@index([branchId])
 }
 
 // ─── Assignment ───────────────────────────────────────────────────────────────
@@ -212,6 +253,7 @@ model Assignment {
 model Booking {
   id           String        @id @default(cuid())
   tenantId     String
+  branchId     String?
   vehicleId    String
   driverId     String?
   startDate    DateTime
@@ -225,10 +267,12 @@ model Booking {
   deletedAt    DateTime?
 
   tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  branch  Branch? @relation(fields: [branchId], references: [id])
   vehicle Vehicle @relation(fields: [vehicleId], references: [id])
   driver  Driver? @relation(fields: [driverId], references: [id])
 
   @@index([tenantId])
+  @@index([branchId])
   @@index([vehicleId])
   @@index([status])
   @@index([startDate, endDate])
@@ -422,6 +466,7 @@ model GpsLocation {
 model WorkshopJob {
   id        String            @id @default(cuid())
   tenantId  String
+  branchId  String?
   vehicleId String
   issue     String
   status    WorkshopJobStatus @default(OPEN)
@@ -431,10 +476,12 @@ model WorkshopJob {
   deletedAt DateTime?
 
   tenant  Tenant         @relation(fields: [tenantId], references: [id])
+  branch  Branch?        @relation(fields: [branchId], references: [id])
   vehicle Vehicle        @relation(fields: [vehicleId], references: [id])
   items   WorkshopItem[]
 
   @@index([tenantId])
+  @@index([branchId])
   @@index([vehicleId])
   @@index([status])
 }

@@ -22,16 +22,21 @@ export class VehiclesService {
         seatCount: dto.seatCount,
         status: VehicleStatus.AVAILABLE,
         sourceType: dto.sourceType ?? VehicleSourceType.OWNED,
+        branchId: dto.branchId ?? null,
       },
     });
   }
 
-  async findAll(tenantId: string, status?: string) {
+  async findAll(tenantId: string, status?: string, branchId?: string) {
     return this.prisma.vehicle.findMany({
       where: {
         tenantId,
         deletedAt: null,
         ...(status && { status: status as VehicleStatus }),
+        ...(branchId && { branchId }),
+      },
+      include: {
+        branch: { select: { id: true, name: true } },
       },
       orderBy: { createdAt: 'desc' },
     });

@@ -8,9 +8,11 @@ import { Role } from '../../generated/prisma';
 const userSelect = {
   id: true,
   tenantId: true,
+  branchId: true,
   name: true,
   email: true,
   role: true,
+  approvalStatus: true,
   isActive: true,
   createdAt: true,
   updatedAt: true,
@@ -35,14 +37,21 @@ export class UsersService {
         email: dto.email,
         password: hashed,
         role: dto.role ?? Role.EMPLOYEE,
+        branchId: dto.branchId ?? null,
+        approvalStatus: 'APPROVED' as const,
+        isActive: true,
       },
       select: userSelect,
     });
   }
 
-  async findAll(tenantId: string) {
+  async findAll(tenantId: string, branchId?: string) {
     return this.prisma.user.findMany({
-      where: { tenantId, deletedAt: null },
+      where: {
+        tenantId,
+        deletedAt: null,
+        ...(branchId && { branchId }),
+      },
       select: userSelect,
       orderBy: { name: 'asc' },
     });

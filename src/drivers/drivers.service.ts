@@ -25,13 +25,21 @@ export class DriversService {
         phone: dto.phone,
         licenseNo: dto.licenseNo,
         userId: dto.userId ?? null,
+        branchId: dto.branchId ?? null,
       },
     });
   }
 
-  async findAll(tenantId: string) {
+  async findAll(tenantId: string, branchId?: string) {
     return this.prisma.driver.findMany({
-      where: { tenantId, deletedAt: null },
+      where: {
+        tenantId,
+        deletedAt: null,
+        ...(branchId && { branchId }),
+      },
+      include: {
+        branch: { select: { id: true, name: true } },
+      },
       orderBy: { name: 'asc' },
     });
   }

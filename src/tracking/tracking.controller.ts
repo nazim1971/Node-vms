@@ -12,11 +12,13 @@ import { SaveLocationDto } from './dto/save-location.dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { Feature } from '../common/decorators/feature.decorator';
 import { Role } from '../../generated/prisma';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('tracking')
 @UseGuards(RolesGuard)
+@Feature('tracking')
 export class TrackingController {
   constructor(private readonly trackingService: TrackingService) {}
 

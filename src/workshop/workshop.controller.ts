@@ -12,6 +12,7 @@ import { WorkshopJobStatus } from '../../generated/prisma';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { Feature } from '../common/decorators/feature.decorator';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { Role } from '../../generated/prisma';
 import { WorkshopService } from './workshop.service';
@@ -21,7 +22,8 @@ import { UpdateJobStatusDto } from './dto/update-job-status.dto';
 
 @Controller('workshop')
 @UseGuards(RolesGuard)
-@Roles(Role.ADMIN, Role.EMPLOYEE, Role.SUPER_ADMIN)
+@Roles(Role.ADMIN, Role.EMPLOYEE)
+@Feature('workshop')
 export class WorkshopController {
   constructor(private readonly workshopService: WorkshopService) {}
 
