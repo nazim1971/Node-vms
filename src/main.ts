@@ -13,6 +13,13 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, { logger });
 
+  // CORS configuration 
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://yourdomain.com'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    credentials: true,
+  });
+
   // Security: Helmet sets secure HTTP headers
   app.use(helmet());
 
