@@ -1,5 +1,10 @@
 import * as bcrypt from 'bcrypt';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,6 +32,12 @@ export class UsersService {
       where: { email: dto.email, deletedAt: null },
     });
     if (existing) throw new ConflictException('Email already in use');
+
+    const allowedRoles: Role[] = [Role.DRIVER, Role.EMPLOYEE];
+
+    if (dto.role && !allowedRoles.includes(dto.role)) {
+      throw new BadRequestException('Role must be DRIVER or EMPLOYEE');
+    }
 
     const hashed = await bcrypt.hash(dto.password, 12);
 
@@ -76,7 +87,8 @@ export class UsersService {
     if (dto.name !== undefined) data['name'] = dto.name;
     if (dto.role !== undefined) data['role'] = dto.role;
     if (dto.isActive !== undefined) data['isActive'] = dto.isActive;
-    if (dto.password !== undefined) data['password'] = await bcrypt.hash(dto.password, 12);
+    if (dto.password !== undefined)
+      data['password'] = await bcrypt.hash(dto.password, 12);
 
     return this.prisma.user.update({
       where: { id },

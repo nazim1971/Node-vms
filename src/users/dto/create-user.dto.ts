@@ -1,4 +1,11 @@
-import { IsEmail, IsEnum, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsIn,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { Role } from '../../../generated/prisma';
 
 export class CreateUserDto {
@@ -14,7 +21,7 @@ export class CreateUserDto {
   password!: string;
 
   @IsOptional()
-  @IsEnum(Role)
+  @IsIn([Role.DRIVER, Role.EMPLOYEE])
   role?: Role;
 
   /** Assign user to a specific branch */
