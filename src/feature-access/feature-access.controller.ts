@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
 import { FeatureAccessService } from './feature-access.service';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -8,27 +8,48 @@ import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('feature-access')
 @UseGuards(RolesGuard)
-@Roles(Role.SUPER_ADMIN, Role.ADMIN)
 export class FeatureAccessController {
   constructor(private readonly featureAccessService: FeatureAccessService) {}
 
-  /** GET /feature-access — list all feature flags for the current tenant */
+  /**
+   * GET /feature-access
+   * ADMIN — view own tenant feature flags
+   * SUPER_ADMIN — view any tenant via ?tenantId=
+   */
   @Get()
-  findAll(@CurrentUser() user: JwtPayload) {
-    return this.featureAccessService.findAll(user.tenantId);
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  findAll(
+    @CurrentUser() user: JwtPayload,
+    @Query('tenantId') tenantId?: string,
+  ) {
+    const target =
+      user.role === Role.SUPER_ADMIN && tenantId ? tenantId : user.tenantId;
+    return this.featureAccessService.findAll(target);
   }
 
-  /** PATCH /feature-access/:moduleName/enable — enable a feature module */
-  @Patch(':moduleName/enable')
+  /**
+   * PATCH /feature-access/:tenantId/:moduleName/enable
+   * SUPER_ADMIN only — enable a feature for a specific tenant
+   */
+  @Patch(':tenantId/:moduleName/enable')
   @Roles(Role.SUPER_ADMIN)
-  enable(@Param('moduleName') moduleName: string, @CurrentUser() user: JwtPayload) {
-    return this.featureAccessService.enable(user.tenantId, moduleName);
+  enable(
+    @Param('tenantId') tenantId: string,
+    @Param('moduleName') moduleName: string,
+  ) {
+    return this.featureAccessService.enable(tenantId, moduleName);
   }
 
-  /** PATCH /feature-access/:moduleName/disable — disable a feature module */
-  @Patch(':moduleName/disable')
+  /**
+   * PATCH /feature-access/:tenantId/:moduleName/disable
+   * SUPER_ADMIN only — disable a feature for a specific tenant
+   */
+  @Patch(':tenantId/:moduleName/disable')
   @Roles(Role.SUPER_ADMIN)
-  disable(@Param('moduleName') moduleName: string, @CurrentUser() user: JwtPayload) {
-    return this.featureAccessService.disable(user.tenantId, moduleName);
+  disable(
+    @Param('tenantId') tenantId: string,
+    @Param('moduleName') moduleName: string,
+  ) {
+    return this.featureAccessService.disable(tenantId, moduleName);
   }
 }

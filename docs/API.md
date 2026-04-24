@@ -352,36 +352,18 @@ SUPER_ADMIN sees all tenants. ADMIN sees own tenant.
 
 ## 5. Feature Access
 
-Manage which modules are enabled for a tenant (opt-out model — all enabled by default).
+**Only SUPER_ADMIN can enable or disable features.** The SUPER_ADMIN decides which modules each tenant (Admin's company) has access to. Features are enabled by default — the SUPER_ADMIN only needs to act when they want to restrict or restore a module.
 
-### POST /feature-access
-
-**Roles:** SUPER_ADMIN, ADMIN (own tenant)
-
-**Request:**
-```json
-{
-  "moduleName": "workshop",
-  "isEnabled": false
-}
-```
-
-**Response `201`:**
-```json
-{
-  "id": "clx1fea001",
-  "tenantId": "clx1def456",
-  "moduleName": "workshop",
-  "isEnabled": false,
-  "createdAt": "2026-04-25T10:00:00.000Z"
-}
-```
-
----
+ADMIN can **read** their own tenant's feature flags to see what they have access to.
 
 ### GET /feature-access
+View feature flags for a tenant.
 
-**Roles:** SUPER_ADMIN (all), ADMIN (own tenant)
+- **ADMIN** — sees their own tenant's flags
+- **SUPER_ADMIN** — can view any tenant via `?tenantId=`
+
+**Query Params (SUPER_ADMIN only):**
+- `tenantId` — optional: view a specific tenant's flags
 
 **Response `200`:**
 ```json
@@ -394,6 +376,71 @@ Manage which modules are enabled for a tenant (opt-out model — all enabled by 
   }
 ]
 ```
+
+> If a module has no record, it is **enabled by default**. A record only appears when a feature has been explicitly disabled.
+
+---
+
+### PATCH /feature-access/:tenantId/:moduleName/enable
+
+**Roles:** SUPER_ADMIN only
+
+Enable a specific feature module for a tenant.
+
+**Example:** Grant Alpha Fleet access to the workshop module.
+```
+PATCH /feature-access/clx1def456/workshop/enable
+```
+
+**Response `200`:**
+```json
+{
+  "id": "clx1fea001",
+  "tenantId": "clx1def456",
+  "moduleName": "workshop",
+  "isEnabled": true,
+  "updatedAt": "2026-04-25T10:00:00.000Z"
+}
+```
+
+---
+
+### PATCH /feature-access/:tenantId/:moduleName/disable
+
+**Roles:** SUPER_ADMIN only
+
+Disable a specific feature module for a tenant.
+
+**Example:** Remove workshop access from Alpha Fleet.
+```
+PATCH /feature-access/clx1def456/workshop/disable
+```
+
+**Response `200`:**
+```json
+{
+  "id": "clx1fea001",
+  "tenantId": "clx1def456",
+  "moduleName": "workshop",
+  "isEnabled": false,
+  "updatedAt": "2026-04-25T10:00:00.000Z"
+}
+```
+
+---
+
+**Available Feature Keys:**
+
+| Feature Key | Modules Covered |
+|---|---|
+| `vehicles` | Vehicles, Drivers |
+| `workshop` | Workshop |
+| `maintenance` | Maintenance, Documents |
+| `tracking` | GPS Tracking |
+| `bookings` | Bookings |
+| `fuel` | Fuel |
+| `accounting` | Accounting, Expenses, Income |
+| `reports` | Reports |
 
 ---
 

@@ -73,14 +73,22 @@ DRIVER
 
 ---
 
-## Feature Flags (Opt-Out Model)
+## Feature Flags (Opt-Out, SUPER_ADMIN Controlled)
 
-All features are **enabled by default**. An ADMIN can disable specific features:
+All features are **enabled by default**. Only the **SUPER_ADMIN** can enable or disable specific modules for a tenant.
+
+**Example:** SUPER_ADMIN gives tenant `clx1def456` access to only `vehicles` and `bookings` by disabling everything else:
 
 ```http
-POST /feature-access
-{ "moduleName": "workshop", "isEnabled": false }
+PATCH /feature-access/clx1def456/workshop/disable
+PATCH /feature-access/clx1def456/maintenance/disable
+PATCH /feature-access/clx1def456/tracking/disable
+PATCH /feature-access/clx1def456/fuel/disable
+PATCH /feature-access/clx1def456/accounting/disable
+PATCH /feature-access/clx1def456/reports/disable
 ```
+
+ADMIN can **view** their own tenant's active feature flags via `GET /feature-access` but cannot change them.
 
 | Feature Key | Covers |
 |---|---|
