@@ -45,14 +45,14 @@ export class ReportsService {
 
     if (tripGroups.length === 0) return [];
 
-    const vehicleIds = tripGroups.map((g) => g.vehicleId);
+    const vehicleIds = tripGroups.map((g: typeof tripGroups[number]) => g.vehicleId);
     const vehicles = await this.prisma.vehicle.findMany({
       where: { id: { in: vehicleIds }, tenantId, deletedAt: null },
       select: { id: true, registrationNo: true, model: true },
     });
-    const vehicleMap = new Map(vehicles.map((v) => [v.id, v]));
+    const vehicleMap = new Map(vehicles.map((v: typeof vehicles[number]) => [v.id, v]));
 
-    return tripGroups.map((g) => ({
+    return tripGroups.map((g: typeof tripGroups[number]) => ({
       vehicleId: g.vehicleId,
       registrationNo: vehicleMap.get(g.vehicleId)?.registrationNo ?? 'Unknown',
       model: vehicleMap.get(g.vehicleId)?.model ?? 'Unknown',
@@ -86,14 +86,14 @@ export class ReportsService {
 
     if (fuelGroups.length === 0) return [];
 
-    const vehicleIds = fuelGroups.map((g) => g.vehicleId);
+    const vehicleIds = fuelGroups.map((g: typeof fuelGroups[number]) => g.vehicleId);
     const vehicles = await this.prisma.vehicle.findMany({
       where: { id: { in: vehicleIds }, tenantId, deletedAt: null },
       select: { id: true, registrationNo: true, model: true },
     });
-    const vehicleMap = new Map(vehicles.map((v) => [v.id, v]));
+    const vehicleMap = new Map(vehicles.map((v: typeof vehicles[number]) => [v.id, v]));
 
-    return fuelGroups.map((g) => ({
+    return fuelGroups.map((g: typeof fuelGroups[number]) => ({
       vehicleId: g.vehicleId,
       registrationNo: vehicleMap.get(g.vehicleId)?.registrationNo ?? 'Unknown',
       model: vehicleMap.get(g.vehicleId)?.model ?? 'Unknown',

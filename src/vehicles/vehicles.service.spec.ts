@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
@@ -46,7 +47,9 @@ describe('VehiclesService', () => {
 
     const validatorMock = {
       assertRegistrationUnique: jest.fn().mockResolvedValue(undefined),
-      assertBranchExists: jest.fn().mockResolvedValue({ id: BRANCH_ID, name: 'Main' }),
+      assertBranchExists: jest
+        .fn()
+        .mockResolvedValue({ id: BRANCH_ID, name: 'Main' }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -58,8 +61,8 @@ describe('VehiclesService', () => {
     }).compile();
 
     service = module.get(VehiclesService);
-    prisma = module.get(PrismaService) as jest.Mocked<PrismaService>;
-    validator = module.get(EntityValidator) as jest.Mocked<EntityValidator>;
+    prisma = module.get(PrismaService);
+    validator = module.get(EntityValidator);
   });
 
   // ─── create ─────────────────────────────────────────────────────────────────
@@ -78,8 +81,13 @@ describe('VehiclesService', () => {
 
       const result = await service.create(TENANT_ID, dto);
 
-      expect(validator.assertRegistrationUnique).toHaveBeenCalledWith(dto.registrationNo);
-      expect(validator.assertBranchExists).toHaveBeenCalledWith(TENANT_ID, BRANCH_ID);
+      expect(validator.assertRegistrationUnique).toHaveBeenCalledWith(
+        dto.registrationNo,
+      );
+      expect(validator.assertBranchExists).toHaveBeenCalledWith(
+        TENANT_ID,
+        BRANCH_ID,
+      );
       expect(prisma.vehicle.create).toHaveBeenCalled();
       expect(result).toEqual(created);
     });
@@ -88,7 +96,8 @@ describe('VehiclesService', () => {
       (prisma.vehicle.create as jest.Mock).mockResolvedValue(makeVehicle());
       await service.create(TENANT_ID, dto);
 
-      const callArgs = (prisma.vehicle.create as jest.Mock).mock.calls[0][0] as {
+      const callArgs = (prisma.vehicle.create as jest.Mock).mock
+        .calls[0][0] as {
         data: { sourceType: VehicleSourceType };
       };
       expect(callArgs.data.sourceType).toBe(VehicleSourceType.OWNED);
@@ -98,20 +107,27 @@ describe('VehiclesService', () => {
       (prisma.vehicle.create as jest.Mock).mockResolvedValue(makeVehicle());
       await service.create(TENANT_ID, dto);
 
-      const callArgs = (prisma.vehicle.create as jest.Mock).mock.calls[0][0] as {
+      const callArgs = (prisma.vehicle.create as jest.Mock).mock
+        .calls[0][0] as {
         data: { status: VehicleStatus };
       };
       expect(callArgs.data.status).toBe(VehicleStatus.AVAILABLE);
     });
 
     it('propagates ConflictException when registration number is taken', async () => {
-      validator.assertRegistrationUnique.mockRejectedValue(new Error('Reg taken'));
+      validator.assertRegistrationUnique.mockRejectedValue(
+        new Error('Reg taken'),
+      );
       await expect(service.create(TENANT_ID, dto)).rejects.toThrow('Reg taken');
     });
 
     it('propagates NotFoundException when branch not found', async () => {
-      validator.assertBranchExists.mockRejectedValue(new NotFoundException('Branch not found'));
-      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(NotFoundException);
+      validator.assertBranchExists.mockRejectedValue(
+        new NotFoundException('Branch not found'),
+      );
+      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -160,7 +176,9 @@ describe('VehiclesService', () => {
 
     it('throws NotFoundException when vehicle does not exist', async () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.findOne(TENANT_ID, 'missing')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne(TENANT_ID, 'missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -173,21 +191,32 @@ describe('VehiclesService', () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(existing);
       (prisma.vehicle.update as jest.Mock).mockResolvedValue(updated);
 
-      const result = await service.update(TENANT_ID, VEHICLE_ID, { model: 'LandCruiser' });
+      const result = await service.update(TENANT_ID, VEHICLE_ID, {
+        model: 'LandCruiser',
+      });
       expect(result).toEqual(updated);
     });
 
     it('throws NotFoundException when vehicle not found', async () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.update(TENANT_ID, 'missing', { model: 'X' })).rejects.toThrow(NotFoundException);
+      await expect(
+        service.update(TENANT_ID, 'missing', { model: 'X' }),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('validates new registration uniqueness when registrationNo changes', async () => {
-      (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(makeVehicle({ registrationNo: 'OLD-001' }));
+      (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(
+        makeVehicle({ registrationNo: 'OLD-001' }),
+      );
       (prisma.vehicle.update as jest.Mock).mockResolvedValue(makeVehicle());
 
-      await service.update(TENANT_ID, VEHICLE_ID, { registrationNo: 'NEW-001' });
-      expect(validator.assertRegistrationUnique).toHaveBeenCalledWith('NEW-001', VEHICLE_ID);
+      await service.update(TENANT_ID, VEHICLE_ID, {
+        registrationNo: 'NEW-001',
+      });
+      expect(validator.assertRegistrationUnique).toHaveBeenCalledWith(
+        'NEW-001',
+        VEHICLE_ID,
+      );
     });
 
     it('skips registration validation when registrationNo is unchanged', async () => {
@@ -195,7 +224,9 @@ describe('VehiclesService', () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(existing);
       (prisma.vehicle.update as jest.Mock).mockResolvedValue(existing);
 
-      await service.update(TENANT_ID, VEHICLE_ID, { registrationNo: 'ABC-1234' });
+      await service.update(TENANT_ID, VEHICLE_ID, {
+        registrationNo: 'ABC-1234',
+      });
       expect(validator.assertRegistrationUnique).not.toHaveBeenCalled();
     });
 
@@ -204,12 +235,17 @@ describe('VehiclesService', () => {
       (prisma.vehicle.update as jest.Mock).mockResolvedValue(makeVehicle());
 
       await service.update(TENANT_ID, VEHICLE_ID, { branchId: 'branch-002' });
-      expect(validator.assertBranchExists).toHaveBeenCalledWith(TENANT_ID, 'branch-002');
+      expect(validator.assertBranchExists).toHaveBeenCalledWith(
+        TENANT_ID,
+        'branch-002',
+      );
     });
 
     it('throws BadRequestException when no updatable fields provided', async () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(makeVehicle());
-      await expect(service.update(TENANT_ID, VEHICLE_ID, {})).rejects.toThrow(BadRequestException);
+      await expect(service.update(TENANT_ID, VEHICLE_ID, {})).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
@@ -222,13 +258,17 @@ describe('VehiclesService', () => {
 
       await service.remove(TENANT_ID, VEHICLE_ID);
       expect(prisma.vehicle.update).toHaveBeenCalledWith(
-        expect.objectContaining({ data: expect.objectContaining({ deletedAt: expect.any(Date) }) }),
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: expect.any(Date) }),
+        }),
       );
     });
 
     it('throws NotFoundException when vehicle not found', async () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.remove(TENANT_ID, 'missing')).rejects.toThrow(NotFoundException);
+      await expect(service.remove(TENANT_ID, 'missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

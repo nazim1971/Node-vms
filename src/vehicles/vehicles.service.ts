@@ -1,9 +1,17 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { EntityValidator } from '../common/helpers/entity-validator.helper';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-import { Prisma, VehicleSourceType, VehicleStatus } from '../../generated/prisma';
+import {
+  Prisma,
+  VehicleSourceType,
+  VehicleStatus,
+} from '../../generated/prisma';
 
 @Injectable()
 export class VehiclesService {
@@ -73,7 +81,8 @@ export class VehiclesService {
 
     // Whitelist only safe updatable fields — never spread raw DTO
     const data: Prisma.VehicleUpdateInput = {};
-    if (dto.registrationNo !== undefined) data.registrationNo = dto.registrationNo;
+    if (dto.registrationNo !== undefined)
+      data.registrationNo = dto.registrationNo;
     if (dto.model !== undefined) data.model = dto.model;
     if (dto.seatCount !== undefined) data.seatCount = dto.seatCount;
     if (dto.status !== undefined) data.status = dto.status;

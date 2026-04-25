@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method, @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { AssignmentsService } from './assignments.service';
@@ -48,7 +49,7 @@ describe('AssignmentsService', () => {
     }).compile();
 
     service = module.get(AssignmentsService);
-    prisma = module.get(PrismaService) as jest.Mocked<PrismaService>;
+    prisma = module.get(PrismaService);
   });
 
   // ─── create ─────────────────────────────────────────────────────────────────
@@ -63,10 +64,16 @@ describe('AssignmentsService', () => {
 
     beforeEach(() => {
       // Default happy path mocks
-      (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue({ id: VEHICLE_ID });
-      (prisma.driver.findFirst as jest.Mock).mockResolvedValue({ id: DRIVER_ID });
+      (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue({
+        id: VEHICLE_ID,
+      });
+      (prisma.driver.findFirst as jest.Mock).mockResolvedValue({
+        id: DRIVER_ID,
+      });
       (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(null); // no overlaps
-      (prisma.assignment.create as jest.Mock).mockResolvedValue(makeAssignment());
+      (prisma.assignment.create as jest.Mock).mockResolvedValue(
+        makeAssignment(),
+      );
     });
 
     it('creates an assignment for a valid vehicle and driver', async () => {
@@ -77,24 +84,36 @@ describe('AssignmentsService', () => {
 
     it('throws BadRequestException when endDate is before startDate', async () => {
       await expect(
-        service.create(TENANT_ID, { ...dto, startDate: '2026-05-31', endDate: '2026-05-01' }),
+        service.create(TENANT_ID, {
+          ...dto,
+          startDate: '2026-05-31',
+          endDate: '2026-05-01',
+        }),
       ).rejects.toThrow(BadRequestException);
     });
 
     it('throws BadRequestException when endDate equals startDate', async () => {
       await expect(
-        service.create(TENANT_ID, { ...dto, startDate: '2026-05-01', endDate: '2026-05-01' }),
+        service.create(TENANT_ID, {
+          ...dto,
+          startDate: '2026-05-01',
+          endDate: '2026-05-01',
+        }),
       ).rejects.toThrow(BadRequestException);
     });
 
     it('throws NotFoundException when vehicle does not belong to tenant', async () => {
       (prisma.vehicle.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(NotFoundException);
+      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws NotFoundException when driver does not belong to tenant', async () => {
       (prisma.driver.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(NotFoundException);
+      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws BadRequestException when vehicle has overlapping assignment', async () => {
@@ -102,7 +121,9 @@ describe('AssignmentsService', () => {
         .mockResolvedValueOnce(makeAssignment()) // vehicle overlap check returns a hit
         .mockResolvedValue(null);
 
-      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(BadRequestException);
+      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(
+        BadRequestException,
+      );
       await expect(service.create(TENANT_ID, dto)).resolves.toBeDefined(); // only vehicle check throws
     });
 
@@ -111,13 +132,20 @@ describe('AssignmentsService', () => {
         .mockResolvedValueOnce(null) // vehicle overlap — no conflict
         .mockResolvedValue(makeAssignment()); // driver overlap — conflict
 
-      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(BadRequestException);
+      await expect(service.create(TENANT_ID, dto)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('creates assignment without endDate (open-ended)', async () => {
-      (prisma.assignment.create as jest.Mock).mockResolvedValue(makeAssignment({ endDate: null }));
+      (prisma.assignment.create as jest.Mock).mockResolvedValue(
+        makeAssignment({ endDate: null }),
+      );
 
-      const result = await service.create(TENANT_ID, { ...dto, endDate: undefined });
+      const result = await service.create(TENANT_ID, {
+        ...dto,
+        endDate: undefined,
+      });
       expect(prisma.assignment.create).toHaveBeenCalled();
       expect(result).toBeDefined();
     });
@@ -161,14 +189,18 @@ describe('AssignmentsService', () => {
 
   describe('findOne()', () => {
     it('returns an assignment when found', async () => {
-      (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(makeAssignment());
+      (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(
+        makeAssignment(),
+      );
       const result = await service.findOne(TENANT_ID, ASSIGNMENT_ID);
       expect(result.id).toBe(ASSIGNMENT_ID);
     });
 
     it('throws NotFoundException when assignment does not exist', async () => {
       (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.findOne(TENANT_ID, 'missing')).rejects.toThrow(NotFoundException);
+      await expect(service.findOne(TENANT_ID, 'missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -181,38 +213,49 @@ describe('AssignmentsService', () => {
       (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(existing);
       (prisma.assignment.update as jest.Mock).mockResolvedValue(updated);
 
-      const result = await service.update(TENANT_ID, ASSIGNMENT_ID, { endDate: '2026-06-30' });
+      const result = await service.update(TENANT_ID, ASSIGNMENT_ID, {
+        endDate: '2026-06-30',
+      });
       expect(result).toEqual(updated);
     });
 
     it('throws NotFoundException when assignment not found', async () => {
       (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.update(TENANT_ID, 'missing', {})).rejects.toThrow(NotFoundException);
+      await expect(service.update(TENANT_ID, 'missing', {})).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws BadRequestException when updated dates are invalid', async () => {
-      (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(makeAssignment());
+      (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(
+        makeAssignment(),
+      );
       await expect(
-        service.update(TENANT_ID, ASSIGNMENT_ID, { startDate: '2026-06-01', endDate: '2026-05-01' }),
+        service.update(TENANT_ID, ASSIGNMENT_ID, {
+          startDate: '2026-06-01',
+          endDate: '2026-05-01',
+        }),
       ).rejects.toThrow(BadRequestException);
     });
 
     it('re-validates vehicle tenant ownership when vehicleId changes', async () => {
       const existing = makeAssignment({ vehicleId: VEHICLE_ID });
       (prisma.assignment.findFirst as jest.Mock)
-        .mockResolvedValueOnce(existing)   // find assignment
-        .mockResolvedValue(null);           // new vehicle not found
+        .mockResolvedValueOnce(existing) // find assignment
+        .mockResolvedValue(null); // new vehicle not found
 
       await expect(
-        service.update(TENANT_ID, ASSIGNMENT_ID, { vehicleId: 'other-vehicle' }),
+        service.update(TENANT_ID, ASSIGNMENT_ID, {
+          vehicleId: 'other-vehicle',
+        }),
       ).rejects.toThrow(NotFoundException);
     });
 
     it('re-validates driver tenant ownership when driverId changes', async () => {
       const existing = makeAssignment({ driverId: DRIVER_ID });
       (prisma.assignment.findFirst as jest.Mock)
-        .mockResolvedValueOnce(existing)   // find assignment
-        .mockResolvedValue(null);           // new driver not found
+        .mockResolvedValueOnce(existing) // find assignment
+        .mockResolvedValue(null); // new driver not found
 
       await expect(
         service.update(TENANT_ID, ASSIGNMENT_ID, { driverId: 'other-driver' }),
@@ -224,18 +267,26 @@ describe('AssignmentsService', () => {
 
   describe('remove()', () => {
     it('soft-deletes an assignment successfully', async () => {
-      (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(makeAssignment());
-      (prisma.assignment.update as jest.Mock).mockResolvedValue(makeAssignment());
+      (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(
+        makeAssignment(),
+      );
+      (prisma.assignment.update as jest.Mock).mockResolvedValue(
+        makeAssignment(),
+      );
 
       await service.remove(TENANT_ID, ASSIGNMENT_ID);
       expect(prisma.assignment.update).toHaveBeenCalledWith(
-        expect.objectContaining({ data: expect.objectContaining({ deletedAt: expect.any(Date) }) }),
+        expect.objectContaining({
+          data: expect.objectContaining({ deletedAt: expect.any(Date) }),
+        }),
       );
     });
 
     it('throws NotFoundException when assignment not found', async () => {
       (prisma.assignment.findFirst as jest.Mock).mockResolvedValue(null);
-      await expect(service.remove(TENANT_ID, 'missing')).rejects.toThrow(NotFoundException);
+      await expect(service.remove(TENANT_ID, 'missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

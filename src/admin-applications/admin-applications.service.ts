@@ -77,6 +77,9 @@ export class AdminApplicationsService {
    * - Keeps isActive = false
    */
   async reject(userId: string, reason?: string) {
+    // Placeholder for future audit/comment storage.
+    void reason;
+
     const user = await this.prisma.user.findFirst({
       where: { id: userId, role: Role.ADMIN, deletedAt: null },
     });

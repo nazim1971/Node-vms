@@ -69,4 +69,3 @@ export class DriversController {
     return this.driversService.remove(user.tenantId, id);
   }
 }
-

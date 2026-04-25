@@ -1,0 +1,33 @@
+22:27:11.025 
+                                                      ~~~~~~~~~~~~~~
+22:27:11.025 
+src/reports/reports.service.ts:99:43 - error TS2339: Property 'model' does not exist on type '{}'.
+22:27:11.025 
+22:27:11.025 
+99       model: vehicleMap.get(g.vehicleId)?.model ?? 'Unknown',
+22:27:11.025 
+                                             ~~~~~
+22:27:11.025 
+src/reports/reports.service.ts:132:19 - error TS2339: Property 'vehicle' does not exist on type 'PrismaService'.
+22:27:11.025 
+22:27:11.025 
+132       this.prisma.vehicle.findMany({
+22:27:11.025 
+                      ~~~~~~~
+22:27:11.025 
+src/reports/reports.service.ts:148:19 - error TS2339: Property 'trip' does not exist on type 'PrismaService'.
+22:27:11.025 
+22:27:11.025 
+148       this.prisma.trip.groupBy({
+22:27:11.025 
+                      ~~~~
+22:27:11.025 
+src/reports/reports.service.ts:160:19 - error TS2339: Property 'fuelLog' does not exist on type 'PrismaService'.
+22:27:11.025 
+22:27:11.025 
+160       this.prisma.fuelLog.groupBy({
+22:27:11.025 
+                      ~~~~~~~
+22:27:11.026 
+src/reports/reports.service.ts:172:19 - error TS2339: Property 'maintenanceLog' does not exist on type 'PrismaService'.
+22:27:11.026 

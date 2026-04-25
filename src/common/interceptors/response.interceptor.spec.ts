@@ -37,9 +37,9 @@ describe('ResponseInterceptor', () => {
         expect((result as Record<string, unknown>).meta).toHaveProperty(
           'timestamp',
         );
-        expect(
-          (result as Record<string, unknown>).meta,
-        ).not.toHaveProperty('count');
+        expect((result as Record<string, unknown>).meta).not.toHaveProperty(
+          'count',
+        );
         done();
       });
   });

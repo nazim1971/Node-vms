@@ -1,4 +1,11 @@
-import { IsEnum, IsInt, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { VehicleSourceType, VehicleStatus } from '../../../generated/prisma';
 
 export class UpdateVehicleDto {
