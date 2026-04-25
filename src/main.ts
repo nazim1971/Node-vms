@@ -49,8 +49,10 @@ async function bootstrap() {
   // Error handling: hide internal error details from clients
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  // WebSocket: use Socket.IO adapter
-  app.useWebSocketAdapter(new IoAdapter(app));
+  // WebSocket: use Socket.IO adapter (skip on serverless — no persistent connections)
+  if (!process.env['VERCEL'] && !process.env['AWS_LAMBDA_FUNCTION_NAME']) {
+    app.useWebSocketAdapter(new IoAdapter(app));
+  }
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);

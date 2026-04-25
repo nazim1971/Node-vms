@@ -28,26 +28,41 @@ export class JobsService implements OnModuleInit, OnModuleDestroy {
   // ─── Lifecycle ────────────────────────────────────────────────────────────
 
   async onModuleInit() {
+    // BullMQ workers require a persistent process and Redis.
+    // Skip initialisation on serverless runtimes (Vercel, Lambda).
+    if (process.env['VERCEL'] === '1' || process.env['AWS_LAMBDA_FUNCTION_NAME']) {
+      this.logger.warn(
+        'JobsService: serverless environment detected — BullMQ queue/worker skipped.',
+      );
+      return;
+    }
+
     const connection = {
       host: this.config.get<string>('REDIS_HOST', 'localhost'),
       port: this.config.get<number>('REDIS_PORT', 6379),
     };
 
-    this.queue = new Queue(QUEUE_NAME, { connection });
+    try {
+      this.queue = new Queue(QUEUE_NAME, { connection });
 
-    this.worker = new Worker(QUEUE_NAME, async (job) => this.processJob(job), {
-      connection,
-    });
+      this.worker = new Worker(QUEUE_NAME, async (job) => this.processJob(job), {
+        connection,
+      });
 
-    this.worker.on('completed', (job) => {
-      this.logger.log(`Completed: ${job.name} [${job.id ?? ''}]`);
-    });
+      this.worker.on('completed', (job) => {
+        this.logger.log(`Completed: ${job.name} [${job.id ?? ''}]`);
+      });
 
-    this.worker.on('failed', (job, err) => {
-      this.logger.error(`Failed: ${job?.name ?? 'unknown'} — ${err.message}`);
-    });
+      this.worker.on('failed', (job, err) => {
+        this.logger.error(`Failed: ${job?.name ?? 'unknown'} — ${err.message}`);
+      });
 
-    await this.scheduleJobs();
+      await this.scheduleJobs();
+    } catch (err) {
+      this.logger.error(
+        `JobsService: failed to connect to Redis — background jobs disabled. ${String(err)}`,
+      );
+    }
   }
 
   async onModuleDestroy() {
