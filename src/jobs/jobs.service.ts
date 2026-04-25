@@ -30,7 +30,10 @@ export class JobsService implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     // BullMQ workers require a persistent process and Redis.
     // Skip initialisation on serverless runtimes (Vercel, Lambda).
-    if (process.env['VERCEL'] === '1' || process.env['AWS_LAMBDA_FUNCTION_NAME']) {
+    if (
+      process.env['VERCEL'] === '1' ||
+      process.env['AWS_LAMBDA_FUNCTION_NAME']
+    ) {
       this.logger.warn(
         'JobsService: serverless environment detected — BullMQ queue/worker skipped.',
       );
@@ -45,9 +48,13 @@ export class JobsService implements OnModuleInit, OnModuleDestroy {
     try {
       this.queue = new Queue(QUEUE_NAME, { connection });
 
-      this.worker = new Worker(QUEUE_NAME, async (job) => this.processJob(job), {
-        connection,
-      });
+      this.worker = new Worker(
+        QUEUE_NAME,
+        async (job) => this.processJob(job),
+        {
+          connection,
+        },
+      );
 
       this.worker.on('completed', (job) => {
         this.logger.log(`Completed: ${job.name} [${job.id ?? ''}]`);
