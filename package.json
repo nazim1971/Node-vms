@@ -11,7 +11,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "prebuild": "prisma generate",
-    "build": "rimraf tsconfig.build.tsbuildinfo && nest build",
+    "build": "rimraf tsconfig.build.tsbuildinfo && prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "rimraf tsconfig.build.tsbuildinfo && nest start --watch",

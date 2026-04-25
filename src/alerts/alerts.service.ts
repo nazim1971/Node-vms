@@ -86,24 +86,26 @@ export class AlertsService {
       ]);
 
     const alertData = [
-       ...expiringDocs.map((doc: typeof expiringDocs[number]) => ({
+      ...expiringDocs.map((doc: (typeof expiringDocs)[number]) => ({
         tenantId,
         type: 'DOCUMENT_EXPIRY',
         message: `${doc.type} document for vehicle ${doc.vehicle.registrationNo} expires on ${doc.expiryDate.toISOString().split('T')[0]}`,
         status: AlertStatus.UNREAD,
       })),
-       ...expiringContracts.map((c: typeof expiringContracts[number]) => ({
+      ...expiringContracts.map((c: (typeof expiringContracts)[number]) => ({
         tenantId,
         type: 'CONTRACT_EXPIRY',
         message: `${c.type} contract expires on ${c.endDate.toISOString().split('T')[0]}`,
         status: AlertStatus.UNREAD,
       })),
-       ...vehiclesNeedingMaintenance.map((v: typeof vehiclesNeedingMaintenance[number]) => ({
-        tenantId,
-        type: 'MAINTENANCE_DUE',
-        message: `Vehicle ${v.registrationNo} has had no maintenance in the last 90 days`,
-        status: AlertStatus.UNREAD,
-      })),
+      ...vehiclesNeedingMaintenance.map(
+        (v: (typeof vehiclesNeedingMaintenance)[number]) => ({
+          tenantId,
+          type: 'MAINTENANCE_DUE',
+          message: `Vehicle ${v.registrationNo} has had no maintenance in the last 90 days`,
+          status: AlertStatus.UNREAD,
+        }),
+      ),
     ];
 
     if (alertData.length > 0) {

@@ -45,12 +45,16 @@ export class ReportsService {
 
     if (tripGroups.length === 0) return [];
 
-    const vehicleIds = tripGroups.map((g: (typeof tripGroups)[number]) => g.vehicleId);
+    const vehicleIds = tripGroups.map(
+      (g: (typeof tripGroups)[number]) => g.vehicleId,
+    );
     const vehicles = await this.prisma.vehicle.findMany({
       where: { id: { in: vehicleIds }, tenantId, deletedAt: null },
       select: { id: true, registrationNo: true, model: true },
     });
-    const vehicleMap = new Map(vehicles.map((v: (typeof vehicles)[number]) => [v.id, v]));
+    const vehicleMap = new Map(
+      vehicles.map((v: (typeof vehicles)[number]) => [v.id, v]),
+    );
 
     return tripGroups.map((g: (typeof tripGroups)[number]) => ({
       vehicleId: g.vehicleId,
@@ -86,12 +90,16 @@ export class ReportsService {
 
     if (fuelGroups.length === 0) return [];
 
-    const vehicleIds = fuelGroups.map((g: (typeof fuelGroups)[number]) => g.vehicleId);
+    const vehicleIds = fuelGroups.map(
+      (g: (typeof fuelGroups)[number]) => g.vehicleId,
+    );
     const vehicles = await this.prisma.vehicle.findMany({
       where: { id: { in: vehicleIds }, tenantId, deletedAt: null },
       select: { id: true, registrationNo: true, model: true },
     });
-    const vehicleMap = new Map(vehicles.map((v: (typeof vehicles)[number]) => [v.id, v]));
+    const vehicleMap = new Map(
+      vehicles.map((v: (typeof vehicles)[number]) => [v.id, v]),
+    );
 
     return fuelGroups.map((g: (typeof fuelGroups)[number]) => ({
       vehicleId: g.vehicleId,
@@ -183,9 +191,15 @@ export class ReportsService {
     ]);
 
     return vehicles.map((vehicle: (typeof vehicles)[number]) => {
-      const trips = tripGroups.find((g: (typeof tripGroups)[number]) => g.vehicleId === vehicle.id);
-      const fuel = fuelGroups.find((g: (typeof fuelGroups)[number]) => g.vehicleId === vehicle.id);
-      const maint = maintGroups.find((g: (typeof maintGroups)[number]) => g.vehicleId === vehicle.id);
+      const trips = tripGroups.find(
+        (g: (typeof tripGroups)[number]) => g.vehicleId === vehicle.id,
+      );
+      const fuel = fuelGroups.find(
+        (g: (typeof fuelGroups)[number]) => g.vehicleId === vehicle.id,
+      );
+      const maint = maintGroups.find(
+        (g: (typeof maintGroups)[number]) => g.vehicleId === vehicle.id,
+      );
 
       return {
         vehicleId: vehicle.id,
