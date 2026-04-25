@@ -35,6 +35,13 @@ A production-grade **multi-tenant SaaS backend** for fleet management, rental op
 
 ---
 
+## Runtime Requirements
+
+- Node.js `>= 22.12.0`
+- Prisma CLI and client are aligned on `7.8.x`
+
+---
+
 ## Role Hierarchy
 
 ```
@@ -106,7 +113,8 @@ ADMIN can **view** their own tenant's active feature flags via `GET /feature-acc
 ## Environment Variables
 
 ```env
-DATABASE_URL=postgresql://user:pass@localhost:5432/vms_db
+DATABASE_URL=postgresql://user:pass@aws-1-REGION.pooler.supabase.com:6543/postgres?sslmode=require
+DIRECT_URL=postgresql://user:pass@db.PROJECT-REF.supabase.co:5432/postgres?sslmode=require
 JWT_SECRET=<64-char-hex>
 JWT_REFRESH_SECRET=<64-char-hex>
 JWT_EXPIRES_IN=1d
@@ -116,6 +124,9 @@ REDIS_PORT=6379
 PORT=5000
 SEED_SECRET=<change-this-in-production>
 ```
+
+- `DATABASE_URL`: runtime app connection; for Supabase this can use the pooled connection (`:6543`)
+- `DIRECT_URL`: Prisma schema operations (`migrate`, `db push`, `db pull`); for Supabase this should use the direct database host (`db.<project-ref>.supabase.co:5432`)
 
 ---
 

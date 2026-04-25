@@ -9,6 +9,9 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Use DIRECT_URL for Prisma CLI schema operations when available.
+    // This is important for Supabase, where the pooled URL is fine for the app
+    // but migrations/db push should use the direct connection.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });
