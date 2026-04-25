@@ -19,7 +19,7 @@ export class SensitiveFieldsInterceptor implements NestInterceptor {
   private strip(data: unknown): unknown {
     if (data === null || data === undefined) return data;
     if (typeof data !== 'object') return data;
-    if (Array.isArray(data)) return data.map((item) => this.strip(item));
+     if (Array.isArray(data)) return data.map((item: unknown) => this.strip(item));
 
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(

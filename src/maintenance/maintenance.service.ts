@@ -47,7 +47,7 @@ export class MaintenanceService {
         note: dto.note ?? null,
         date: new Date(dto.date),
         ...(items.length > 0 && {
-          items: { create: items.map((i) => ({ name: i.name, cost: i.cost })) },
+           items: { create: items.map((i: typeof items[number]) => ({ name: i.name, cost: i.cost })) },
         }),
       },
       select: maintenanceLogSelect,

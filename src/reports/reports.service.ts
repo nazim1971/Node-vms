@@ -182,10 +182,10 @@ export class ReportsService {
       }),
     ]);
 
-    return vehicles.map((vehicle) => {
-      const trips = tripGroups.find((g) => g.vehicleId === vehicle.id);
-      const fuel = fuelGroups.find((g) => g.vehicleId === vehicle.id);
-      const maint = maintGroups.find((g) => g.vehicleId === vehicle.id);
+     return vehicles.map((vehicle: typeof vehicles[number]) => {
+       const trips = tripGroups.find((g: typeof tripGroups[number]) => g.vehicleId === vehicle.id);
+       const fuel = fuelGroups.find((g: typeof fuelGroups[number]) => g.vehicleId === vehicle.id);
+       const maint = maintGroups.find((g: typeof maintGroups[number]) => g.vehicleId === vehicle.id);
 
       return {
         vehicleId: vehicle.id,
