@@ -1,33 +1,1015 @@
-22:27:11.025 
-                                                      ~~~~~~~~~~~~~~
-22:27:11.025 
-src/reports/reports.service.ts:99:43 - error TS2339: Property 'model' does not exist on type '{}'.
-22:27:11.025 
-22:27:11.025 
-99       model: vehicleMap.get(g.vehicleId)?.model ?? 'Unknown',
-22:27:11.025 
-                                             ~~~~~
-22:27:11.025 
-src/reports/reports.service.ts:132:19 - error TS2339: Property 'vehicle' does not exist on type 'PrismaService'.
-22:27:11.025 
-22:27:11.025 
-132       this.prisma.vehicle.findMany({
-22:27:11.025 
-                      ~~~~~~~
-22:27:11.025 
-src/reports/reports.service.ts:148:19 - error TS2339: Property 'trip' does not exist on type 'PrismaService'.
-22:27:11.025 
-22:27:11.025 
-148       this.prisma.trip.groupBy({
-22:27:11.025 
-                      ~~~~
-22:27:11.025 
-src/reports/reports.service.ts:160:19 - error TS2339: Property 'fuelLog' does not exist on type 'PrismaService'.
-22:27:11.025 
-22:27:11.025 
-160       this.prisma.fuelLog.groupBy({
-22:27:11.025 
-                      ~~~~~~~
-22:27:11.026 
-src/reports/reports.service.ts:172:19 - error TS2339: Property 'maintenanceLog' does not exist on type 'PrismaService'.
-22:27:11.026 
+23:25:30.629 Running build in Washington, D.C., USA (East) – iad1
+23:25:30.629 Build machine configuration: 2 cores, 8 GB
+23:25:30.639 Cloning github.com/nazim1971/Node-vms (Branch: main, Commit: ddadb75)
+23:25:30.640 Skipping build cache, deployment was triggered without cache.
+23:25:30.930 Cloning completed: 291.000ms
+23:25:31.271 Running "vercel build"
+23:25:32.002 Vercel CLI 51.6.1
+23:25:32.600 Warning: Detected "engines": { "node": ">=22.12.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+23:25:32.612 Installing dependencies...
+23:25:36.417 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+23:25:38.545 npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+23:25:40.114 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+23:25:40.118 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+23:25:40.138 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+23:25:46.624 
+23:25:46.624 added 893 packages in 14s
+23:25:46.625 
+23:25:46.625 161 packages are looking for funding
+23:25:46.626   run `npm fund` for details
+23:25:46.698 Running "npm run build"
+23:25:46.802 
+23:25:46.802 > Node-vms@0.0.1 build
+23:25:46.802 > rimraf tsconfig.build.tsbuildinfo && nest build
+23:25:46.802 
+23:25:51.173 [96msrc/accounting/accounting.controller.ts[0m:[93m7[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.173 
+23:25:51.174 [7m7[0m import { Role } from '../../generated/prisma';
+23:25:51.174 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.174 [96msrc/accounting/accounting.service.ts[0m:[93m34[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.174 
+23:25:51.174 [7m34[0m       this.prisma.income.aggregate({
+23:25:51.174 [7m  [0m [91m                  ~~~~~~[0m
+23:25:51.174 [96msrc/accounting/accounting.service.ts[0m:[93m44[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.174 
+23:25:51.174 [7m44[0m       this.prisma.trip.aggregate({
+23:25:51.174 [7m  [0m [91m                  ~~~~[0m
+23:25:51.175 [96msrc/accounting/accounting.service.ts[0m:[93m58[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'expense' does not exist on type 'PrismaService'.
+23:25:51.175 
+23:25:51.175 [7m58[0m       this.prisma.expense.aggregate({
+23:25:51.175 [7m  [0m [91m                  ~~~~~~~[0m
+23:25:51.175 [96msrc/accounting/accounting.service.ts[0m:[93m68[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'fuelLog' does not exist on type 'PrismaService'.
+23:25:51.175 
+23:25:51.175 [7m68[0m       this.prisma.fuelLog.aggregate({
+23:25:51.177 [7m  [0m [91m                  ~~~~~~~[0m
+23:25:51.177 [96msrc/accounting/accounting.service.ts[0m:[93m78[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'maintenanceLog' does not exist on type 'PrismaService'.
+23:25:51.177 
+23:25:51.177 [7m78[0m       this.prisma.maintenanceLog.aggregate({
+23:25:51.177 [7m  [0m [91m                  ~~~~~~~~~~~~~~[0m
+23:25:51.177 [96msrc/admin-applications/admin-applications.controller.ts[0m:[93m15[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.177 
+23:25:51.178 [7m15[0m import { Role } from '../../generated/prisma';
+23:25:51.178 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.178 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m6[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.178 
+23:25:51.178 [7m6[0m import { ApprovalStatus, Role } from '../../generated/prisma';
+23:25:51.178 [7m [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.178 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m29[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.178 
+23:25:51.178 [7m29[0m     return this.prisma.user.findMany({
+23:25:51.178 [7m  [0m [91m                       ~~~~[0m
+23:25:51.178 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m47[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.178 
+23:25:51.178 [7m47[0m     const user = await this.prisma.user.findFirst({
+23:25:51.178 [7m  [0m [91m                                   ~~~~[0m
+23:25:51.178 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m56[0m:[93m45[0m - [91merror[0m[90m TS2339: [0mProperty '$transaction' does not exist on type 'PrismaService'.
+23:25:51.178 
+23:25:51.179 [7m56[0m     const [updatedUser] = await this.prisma.$transaction([
+23:25:51.179 [7m  [0m [91m                                            ~~~~~~~~~~~~[0m
+23:25:51.179 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m57[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.179 
+23:25:51.179 [7m57[0m       this.prisma.user.update({
+23:25:51.179 [7m  [0m [91m                  ~~~~[0m
+23:25:51.179 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m65[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.179 
+23:25:51.179 [7m65[0m       this.prisma.tenant.update({
+23:25:51.179 [7m  [0m [91m                  ~~~~~~[0m
+23:25:51.179 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m80[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.179 
+23:25:51.179 [7m80[0m     const user = await this.prisma.user.findFirst({
+23:25:51.179 [7m  [0m [91m                                   ~~~~[0m
+23:25:51.179 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m91[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.179 
+23:25:51.179 [7m91[0m     return this.prisma.user.update({
+23:25:51.180 [7m  [0m [91m                       ~~~~[0m
+23:25:51.180 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m107[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.180 
+23:25:51.180 [7m107[0m     const user = await this.prisma.user.findFirst({
+23:25:51.180 [7m   [0m [91m                                   ~~~~[0m
+23:25:51.180 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m116[0m:[93m45[0m - [91merror[0m[90m TS2339: [0mProperty '$transaction' does not exist on type 'PrismaService'.
+23:25:51.180 
+23:25:51.180 [7m116[0m     const [updatedUser] = await this.prisma.$transaction([
+23:25:51.180 [7m   [0m [91m                                            ~~~~~~~~~~~~[0m
+23:25:51.180 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m117[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.180 
+23:25:51.180 [7m117[0m       this.prisma.user.update({
+23:25:51.180 [7m   [0m [91m                  ~~~~[0m
+23:25:51.180 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m125[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.180 
+23:25:51.180 [7m125[0m       this.prisma.tenant.update({
+23:25:51.180 [7m   [0m [91m                  ~~~~~~[0m
+23:25:51.180 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m138[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.180 
+23:25:51.180 [7m138[0m     const user = await this.prisma.user.findFirst({
+23:25:51.180 [7m   [0m [91m                                   ~~~~[0m
+23:25:51.180 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m147[0m:[93m45[0m - [91merror[0m[90m TS2339: [0mProperty '$transaction' does not exist on type 'PrismaService'.
+23:25:51.181 
+23:25:51.181 [7m147[0m     const [updatedUser] = await this.prisma.$transaction([
+23:25:51.181 [7m   [0m [91m                                            ~~~~~~~~~~~~[0m
+23:25:51.181 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m148[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.181 
+23:25:51.181 [7m148[0m       this.prisma.user.update({
+23:25:51.181 [7m   [0m [91m                  ~~~~[0m
+23:25:51.181 [96msrc/admin-applications/admin-applications.service.ts[0m:[93m156[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.181 
+23:25:51.181 [7m156[0m       this.prisma.tenant.update({
+23:25:51.191 [7m   [0m [91m                  ~~~~~~[0m
+23:25:51.196 [96msrc/alerts/alerts.controller.ts[0m:[93m15[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.196 
+23:25:51.196 [7m15[0m import { Role } from '../../generated/prisma';
+23:25:51.196 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.196 [96msrc/alerts/alerts.service.ts[0m:[93m2[0m:[93m44[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.196 
+23:25:51.196 [7m2[0m import { AlertStatus, VehicleStatus } from '../../generated/prisma';
+23:25:51.196 [7m [0m [91m                                           ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.196 [96msrc/alerts/alerts.service.ts[0m:[93m12[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'alert' does not exist on type 'PrismaService'.
+23:25:51.197 
+23:25:51.197 [7m12[0m     return this.prisma.alert.findMany({
+23:25:51.197 [7m  [0m [91m                       ~~~~~[0m
+23:25:51.197 [96msrc/alerts/alerts.service.ts[0m:[93m52[0m:[93m21[0m - [91merror[0m[90m TS2339: [0mProperty 'document' does not exist on type 'PrismaService'.
+23:25:51.197 
+23:25:51.197 [7m52[0m         this.prisma.document.findMany({
+23:25:51.197 [7m  [0m [91m                    ~~~~~~~~[0m
+23:25:51.197 [96msrc/alerts/alerts.service.ts[0m:[93m66[0m:[93m21[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.197 
+23:25:51.197 [7m66[0m         this.prisma.contract.findMany({
+23:25:51.197 [7m  [0m [91m                    ~~~~~~~~[0m
+23:25:51.198 [96msrc/alerts/alerts.service.ts[0m:[93m75[0m:[93m21[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.198 
+23:25:51.198 [7m75[0m         this.prisma.vehicle.findMany({
+23:25:51.198 [7m  [0m [91m                    ~~~~~~~[0m
+23:25:51.198 [96msrc/alerts/alerts.service.ts[0m:[93m89[0m:[93m28[0m - [91merror[0m[90m TS7006: [0mParameter 'doc' implicitly has an 'any' type.
+23:25:51.198 
+23:25:51.199 [7m89[0m       ...expiringDocs.map((doc) => ({
+23:25:51.199 [7m  [0m [91m                           ~~~[0m
+23:25:51.199 [96msrc/alerts/alerts.service.ts[0m:[93m95[0m:[93m33[0m - [91merror[0m[90m TS7006: [0mParameter 'c' implicitly has an 'any' type.
+23:25:51.199 
+23:25:51.199 [7m95[0m       ...expiringContracts.map((c) => ({
+23:25:51.199 [7m  [0m [91m                                ~[0m
+23:25:51.199 [96msrc/alerts/alerts.service.ts[0m:[93m101[0m:[93m42[0m - [91merror[0m[90m TS7006: [0mParameter 'v' implicitly has an 'any' type.
+23:25:51.199 
+23:25:51.199 [7m101[0m       ...vehiclesNeedingMaintenance.map((v) => ({
+23:25:51.199 [7m   [0m [91m                                         ~[0m
+23:25:51.199 [96msrc/alerts/alerts.service.ts[0m:[93m110[0m:[93m25[0m - [91merror[0m[90m TS2339: [0mProperty 'alert' does not exist on type 'PrismaService'.
+23:25:51.199 
+23:25:51.200 [7m110[0m       await this.prisma.alert.createMany({ data: alertData });
+23:25:51.200 [7m   [0m [91m                        ~~~~~[0m
+23:25:51.200 [96msrc/alerts/alerts.service.ts[0m:[93m129[0m:[93m37[0m - [91merror[0m[90m TS2339: [0mProperty 'alert' does not exist on type 'PrismaService'.
+23:25:51.200 
+23:25:51.200 [7m129[0m     const alert = await this.prisma.alert.findFirst({
+23:25:51.200 [7m   [0m [91m                                    ~~~~~[0m
+23:25:51.200 [96msrc/alerts/alerts.service.ts[0m:[93m135[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'alert' does not exist on type 'PrismaService'.
+23:25:51.200 
+23:25:51.200 [7m135[0m     return this.prisma.alert.update({
+23:25:51.200 [7m   [0m [91m                       ~~~~~[0m
+23:25:51.200 [96msrc/assignments/assignments.controller.ts[0m:[93m18[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.200 
+23:25:51.200 [7m18[0m import { Role } from '../../generated/prisma';
+23:25:51.200 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.200 [96msrc/assignments/assignments.service.ts[0m:[93m22[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.200 
+23:25:51.200 [7m22[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.200 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.200 [96msrc/assignments/assignments.service.ts[0m:[93m27[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.200 
+23:25:51.200 [7m27[0m     const driver = await this.prisma.driver.findFirst({
+23:25:51.200 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.200 [96msrc/assignments/assignments.service.ts[0m:[93m33[0m:[93m46[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.200 
+23:25:51.201 [7m33[0m     const vehicleOverlap = await this.prisma.assignment.findFirst({
+23:25:51.201 [7m  [0m [91m                                             ~~~~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m48[0m:[93m45[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m48[0m     const driverOverlap = await this.prisma.assignment.findFirst({
+23:25:51.201 [7m  [0m [91m                                            ~~~~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m62[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m62[0m     return this.prisma.assignment.create({
+23:25:51.201 [7m  [0m [91m                       ~~~~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m73[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m73[0m     return this.prisma.assignment.findMany({
+23:25:51.201 [7m  [0m [91m                       ~~~~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m89[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m89[0m     const assignment = await this.prisma.assignment.findFirst({
+23:25:51.201 [7m  [0m [91m                                         ~~~~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m101[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m101[0m     const assignment = await this.prisma.assignment.findFirst({
+23:25:51.201 [7m   [0m [91m                                         ~~~~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m122[0m:[93m44[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m122[0m       const newVehicle = await this.prisma.vehicle.findFirst({
+23:25:51.201 [7m   [0m [91m                                           ~~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m128[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m128[0m       const newDriver = await this.prisma.driver.findFirst({
+23:25:51.201 [7m   [0m [91m                                          ~~~~~~[0m
+23:25:51.201 [96msrc/assignments/assignments.service.ts[0m:[93m134[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.201 
+23:25:51.201 [7m134[0m     return this.prisma.assignment.update({
+23:25:51.201 [7m   [0m [91m                       ~~~~~~~~~~[0m
+23:25:51.202 [96msrc/assignments/assignments.service.ts[0m:[93m146[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.202 
+23:25:51.202 [7m146[0m     const assignment = await this.prisma.assignment.findFirst({
+23:25:51.202 [7m   [0m [91m                                         ~~~~~~~~~~[0m
+23:25:51.202 [96msrc/assignments/assignments.service.ts[0m:[93m151[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.202 
+23:25:51.203 [7m151[0m     await this.prisma.assignment.update({
+23:25:51.203 [7m   [0m [91m                      ~~~~~~~~~~[0m
+23:25:51.203 [96msrc/audit/audit.controller.ts[0m:[93m2[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.203 
+23:25:51.203 [7m2[0m import { Role } from '../../generated/prisma';
+23:25:51.203 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.203 [96msrc/audit/audit.service.ts[0m:[93m20[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'auditLog' does not exist on type 'PrismaService'.
+23:25:51.203 
+23:25:51.203 [7m20[0m     await this.prisma.auditLog.create({
+23:25:51.203 [7m  [0m [91m                      ~~~~~~~~[0m
+23:25:51.203 [96msrc/audit/audit.service.ts[0m:[93m29[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'auditLog' does not exist on type 'PrismaService'.
+23:25:51.203 
+23:25:51.203 [7m29[0m     return this.prisma.auditLog.findMany({
+23:25:51.203 [7m  [0m [91m                       ~~~~~~~~[0m
+23:25:51.203 [96msrc/auth/auth.service.ts[0m:[93m12[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.203 
+23:25:51.203 [7m12[0m import { ApprovalStatus, Role } from '../../generated/prisma';
+23:25:51.203 [7m  [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.203 [96msrc/auth/auth.service.ts[0m:[93m30[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.203 
+23:25:51.203 [7m30[0m     const user = await this.prisma.user.findFirst({
+23:25:51.203 [7m  [0m [91m                                   ~~~~[0m
+23:25:51.203 [96msrc/auth/auth.service.ts[0m:[93m69[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.203 
+23:25:51.203 [7m69[0m     const existing = await this.prisma.user.findFirst({
+23:25:51.203 [7m  [0m [91m                                       ~~~~[0m
+23:25:51.203 [96msrc/auth/auth.service.ts[0m:[93m76[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.204 
+23:25:51.205 [7m76[0m     await this.prisma.tenant.create({
+23:25:51.205 [7m  [0m [91m                      ~~~~~~[0m
+23:25:51.205 [96msrc/auth/auth.service.ts[0m:[93m115[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.205 
+23:25:51.205 [7m115[0m     const existing = await this.prisma.user.findFirst({
+23:25:51.205 [7m   [0m [91m                                       ~~~~[0m
+23:25:51.206 [96msrc/auth/auth.service.ts[0m:[93m122[0m:[93m45[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.206 
+23:25:51.206 [7m122[0m     const existingEmail = await this.prisma.user.findFirst({
+23:25:51.206 [7m   [0m [91m                                            ~~~~[0m
+23:25:51.206 [96msrc/auth/auth.service.ts[0m:[93m129[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.206 
+23:25:51.206 [7m129[0m     const tenant = await this.prisma.tenant.create({
+23:25:51.206 [7m   [0m [91m                                     ~~~~~~[0m
+23:25:51.206 [96msrc/auth/auth.service.ts[0m:[93m162[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.206 
+23:25:51.206 [7m162[0m     const user = await this.prisma.user.findFirst({
+23:25:51.206 [7m   [0m [91m                                   ~~~~[0m
+23:25:51.206 [96msrc/bookings/bookings.controller.ts[0m:[93m14[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.206 
+23:25:51.206 [7m14[0m import { Role } from '../../generated/prisma';
+23:25:51.206 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.206 [96msrc/bookings/bookings.service.ts[0m:[93m9[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.206 
+23:25:51.206 [7m9[0m import { BookingStatus } from '../../generated/prisma';
+23:25:51.206 [7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.206 [96msrc/bookings/bookings.service.ts[0m:[93m60[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.206 
+23:25:51.206 [7m60[0m     return this.prisma.booking.create({
+23:25:51.207 [7m  [0m [91m                       ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m79[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m79[0m     return this.prisma.booking.findMany({
+23:25:51.207 [7m  [0m [91m                       ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m89[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m89[0m     const booking = await this.prisma.booking.findFirst({
+23:25:51.207 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m100[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m100[0m     const booking = await this.prisma.booking.findFirst({
+23:25:51.207 [7m   [0m [91m                                      ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m110[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m110[0m     return this.prisma.booking.update({
+23:25:51.207 [7m   [0m [91m                       ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m120[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m120[0m     const booking = await this.prisma.booking.findFirst({
+23:25:51.207 [7m   [0m [91m                                      ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m133[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m133[0m     return this.prisma.booking.update({
+23:25:51.207 [7m   [0m [91m                       ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m143[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m143[0m     const booking = await this.prisma.booking.findFirst({
+23:25:51.207 [7m   [0m [91m                                      ~~~~~~~[0m
+23:25:51.207 [96msrc/bookings/bookings.service.ts[0m:[93m191[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.207 
+23:25:51.207 [7m191[0m     return this.prisma.booking.update({
+23:25:51.207 [7m   [0m [91m                       ~~~~~~~[0m
+23:25:51.207 [96msrc/branches/branches.controller.ts[0m:[93m17[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.207 
+23:25:51.207 [7m17[0m import { Role } from '../../generated/prisma';
+23:25:51.207 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.208 [96msrc/branches/branches.service.ts[0m:[93m16[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.208 
+23:25:51.208 [7m16[0m     const existing = await this.prisma.branch.findFirst({
+23:25:51.209 [7m  [0m [91m                                       ~~~~~~[0m
+23:25:51.209 [96msrc/branches/branches.service.ts[0m:[93m25[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.209 
+23:25:51.209 [7m25[0m     return this.prisma.branch.create({
+23:25:51.209 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.209 [96msrc/branches/branches.service.ts[0m:[93m42[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.209 
+23:25:51.209 [7m42[0m     const branches = await this.prisma.branch.findMany({
+23:25:51.209 [7m  [0m [91m                                       ~~~~~~[0m
+23:25:51.209 [96msrc/branches/branches.service.ts[0m:[93m58[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.209 
+23:25:51.209 [7m58[0m     const branch = await this.prisma.branch.findFirst({
+23:25:51.209 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.209 [96msrc/branches/branches.service.ts[0m:[93m99[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.209 
+23:25:51.209 [7m99[0m     const branches = await this.prisma.branch.findMany({
+23:25:51.209 [7m  [0m [91m                                       ~~~~~~[0m
+23:25:51.209 [96msrc/branches/branches.service.ts[0m:[93m118[0m:[93m31[0m - [91merror[0m[90m TS7006: [0mParameter 's' implicitly has an 'any' type.
+23:25:51.209 
+23:25:51.209 [7m118[0m       users: branches.reduce((s, b) => s + b._count.users, 0),
+23:25:51.209 [7m   [0m [91m                              ~[0m
+23:25:51.209 [96msrc/branches/branches.service.ts[0m:[93m118[0m:[93m34[0m - [91merror[0m[90m TS7006: [0mParameter 'b' implicitly has an 'any' type.
+23:25:51.209 
+23:25:51.209 [7m118[0m       users: branches.reduce((s, b) => s + b._count.users, 0),
+23:25:51.209 [7m   [0m [91m                                 ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m119[0m:[93m34[0m - [91merror[0m[90m TS7006: [0mParameter 's' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m119[0m       vehicles: branches.reduce((s, b) => s + b._count.vehicles, 0),
+23:25:51.210 [7m   [0m [91m                                 ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m119[0m:[93m37[0m - [91merror[0m[90m TS7006: [0mParameter 'b' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m119[0m       vehicles: branches.reduce((s, b) => s + b._count.vehicles, 0),
+23:25:51.210 [7m   [0m [91m                                    ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m120[0m:[93m33[0m - [91merror[0m[90m TS7006: [0mParameter 's' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m120[0m       drivers: branches.reduce((s, b) => s + b._count.drivers, 0),
+23:25:51.210 [7m   [0m [91m                                ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m120[0m:[93m36[0m - [91merror[0m[90m TS7006: [0mParameter 'b' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m120[0m       drivers: branches.reduce((s, b) => s + b._count.drivers, 0),
+23:25:51.210 [7m   [0m [91m                                   ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m121[0m:[93m34[0m - [91merror[0m[90m TS7006: [0mParameter 's' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m121[0m       bookings: branches.reduce((s, b) => s + b._count.bookings, 0),
+23:25:51.210 [7m   [0m [91m                                 ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m121[0m:[93m37[0m - [91merror[0m[90m TS7006: [0mParameter 'b' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m121[0m       bookings: branches.reduce((s, b) => s + b._count.bookings, 0),
+23:25:51.210 [7m   [0m [91m                                    ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m122[0m:[93m38[0m - [91merror[0m[90m TS7006: [0mParameter 's' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m122[0m       workshopJobs: branches.reduce((s, b) => s + b._count.workshopJobs, 0),
+23:25:51.210 [7m   [0m [91m                                     ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m122[0m:[93m41[0m - [91merror[0m[90m TS7006: [0mParameter 'b' implicitly has an 'any' type.
+23:25:51.210 
+23:25:51.210 [7m122[0m       workshopJobs: branches.reduce((s, b) => s + b._count.workshopJobs, 0),
+23:25:51.210 [7m   [0m [91m                                        ~[0m
+23:25:51.210 [96msrc/branches/branches.service.ts[0m:[93m129[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.210 
+23:25:51.210 [7m129[0m     const branch = await this.prisma.branch.findFirst({
+23:25:51.210 [7m   [0m [91m                                     ~~~~~~[0m
+23:25:51.211 [96msrc/branches/branches.service.ts[0m:[93m135[0m:[93m37[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.211 
+23:25:51.211 [7m135[0m       const dup = await this.prisma.branch.findFirst({
+23:25:51.211 [7m   [0m [91m                                    ~~~~~~[0m
+23:25:51.212 [96msrc/branches/branches.service.ts[0m:[93m145[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.212 
+23:25:51.212 [7m145[0m     return this.prisma.branch.update({ where: { id }, data: dto });
+23:25:51.212 [7m   [0m [91m                       ~~~~~~[0m
+23:25:51.212 [96msrc/branches/branches.service.ts[0m:[93m149[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.212 
+23:25:51.212 [7m149[0m     const branch = await this.prisma.branch.findFirst({
+23:25:51.212 [7m   [0m [91m                                     ~~~~~~[0m
+23:25:51.212 [96msrc/branches/branches.service.ts[0m:[93m155[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty '$transaction' does not exist on type 'PrismaService'.
+23:25:51.212 
+23:25:51.212 [7m155[0m     await this.prisma.$transaction([
+23:25:51.212 [7m   [0m [91m                      ~~~~~~~~~~~~[0m
+23:25:51.212 [96msrc/branches/branches.service.ts[0m:[93m156[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.213 
+23:25:51.213 [7m156[0m       this.prisma.user.updateMany({
+23:25:51.214 [7m   [0m [91m                  ~~~~[0m
+23:25:51.214 [96msrc/branches/branches.service.ts[0m:[93m160[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.214 
+23:25:51.214 [7m160[0m       this.prisma.vehicle.updateMany({
+23:25:51.214 [7m   [0m [91m                  ~~~~~~~[0m
+23:25:51.214 [96msrc/branches/branches.service.ts[0m:[93m164[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.214 
+23:25:51.214 [7m164[0m       this.prisma.driver.updateMany({
+23:25:51.215 [7m   [0m [91m                  ~~~~~~[0m
+23:25:51.215 [96msrc/branches/branches.service.ts[0m:[93m168[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.215 
+23:25:51.215 [7m168[0m       this.prisma.branch.update({
+23:25:51.215 [7m   [0m [91m                  ~~~~~~[0m
+23:25:51.215 [96msrc/common/decorators/roles.decorator.ts[0m:[93m2[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../generated/prisma' or its corresponding type declarations.
+23:25:51.215 
+23:25:51.215 [7m2[0m import { Role } from '../../../generated/prisma';
+23:25:51.215 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.215 [96msrc/common/guards/feature.guard.ts[0m:[93m8[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../generated/prisma' or its corresponding type declarations.
+23:25:51.215 
+23:25:51.215 [7m8[0m import { Role } from '../../../generated/prisma';
+23:25:51.215 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.215 [96msrc/common/guards/feature.guard.ts[0m:[93m45[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.215 
+23:25:51.215 [7m45[0m     const record = await this.prisma.featureAccess.findFirst({
+23:25:51.215 [7m  [0m [91m                                     ~~~~~~~~~~~~~[0m
+23:25:51.215 [96msrc/common/guards/roles.guard.ts[0m:[93m8[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../generated/prisma' or its corresponding type declarations.
+23:25:51.215 
+23:25:51.215 [7m8[0m import { Role } from '../../../generated/prisma';
+23:25:51.215 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.215 [96msrc/common/guards/tenant.guard.ts[0m:[93m9[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../generated/prisma' or its corresponding type declarations.
+23:25:51.216 
+23:25:51.216 [7m9[0m import { ApprovalStatus, Role } from '../../../generated/prisma';
+23:25:51.216 [7m [0m [91m                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.216 [96msrc/common/guards/tenant.guard.ts[0m:[93m37[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m37[0m     const dbUser = await this.prisma.user.findFirst({
+23:25:51.216 [7m  [0m [91m                                     ~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m47[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m47[0m     const existing = await this.prisma.user.findFirst({
+23:25:51.216 [7m  [0m [91m                                       ~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m62[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'user' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m62[0m     const user = await this.prisma.user.findFirst({
+23:25:51.216 [7m  [0m [91m                                   ~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m73[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m73[0m     const tenant = await this.prisma.tenant.findFirst({
+23:25:51.216 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m93[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'branch' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m93[0m     const branch = await this.prisma.branch.findFirst({
+23:25:51.216 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m110[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m110[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.216 [7m   [0m [91m                                      ~~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m129[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m129[0m     const existing = await this.prisma.vehicle.findFirst({
+23:25:51.216 [7m   [0m [91m                                       ~~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m147[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m147[0m     const driver = await this.prisma.driver.findFirst({
+23:25:51.216 [7m   [0m [91m                                     ~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m162[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m162[0m     const existing = await this.prisma.driver.findFirst({
+23:25:51.216 [7m   [0m [91m                                       ~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m180[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m180[0m     const existing = await this.prisma.driver.findFirst({
+23:25:51.216 [7m   [0m [91m                                       ~~~~~~[0m
+23:25:51.216 [96msrc/common/helpers/entity-validator.helper.ts[0m:[93m199[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.216 
+23:25:51.216 [7m199[0m     const existing = await this.prisma.driver.findFirst({
+23:25:51.216 [7m   [0m [91m                                       ~~~~~~[0m
+23:25:51.216 [96msrc/contracts/contracts.controller.ts[0m:[93m20[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.217 
+23:25:51.217 [7m20[0m import { Role } from '../../generated/prisma';
+23:25:51.217 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.217 [96msrc/contracts/contracts.service.ts[0m:[93m6[0m:[93m30[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.217 
+23:25:51.218 [7m6[0m import { ContractType } from '../../generated/prisma';
+23:25:51.218 [7m [0m [91m                             ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.218 [96msrc/contracts/contracts.service.ts[0m:[93m33[0m:[93m41[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.218 
+23:25:51.218 [7m33[0m       const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.218 [7m  [0m [91m                                        ~~~~~~~[0m
+23:25:51.218 [96msrc/contracts/contracts.service.ts[0m:[93m40[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.219 
+23:25:51.219 [7m40[0m     return this.prisma.contract.create({
+23:25:51.219 [7m  [0m [91m                       ~~~~~~~~[0m
+23:25:51.219 [96msrc/contracts/contracts.service.ts[0m:[93m61[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.219 
+23:25:51.219 [7m61[0m     return this.prisma.contract.findMany({
+23:25:51.219 [7m  [0m [91m                       ~~~~~~~~[0m
+23:25:51.219 [96msrc/contracts/contracts.service.ts[0m:[93m74[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.219 
+23:25:51.219 [7m74[0m     const contract = await this.prisma.contract.findFirst({
+23:25:51.220 [7m  [0m [91m                                       ~~~~~~~~[0m
+23:25:51.220 [96msrc/contracts/contracts.service.ts[0m:[93m84[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.220 
+23:25:51.220 [7m84[0m     const contract = await this.prisma.contract.findFirst({
+23:25:51.220 [7m  [0m [91m                                       ~~~~~~~~[0m
+23:25:51.220 [96msrc/contracts/contracts.service.ts[0m:[93m101[0m:[93m41[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.220 
+23:25:51.220 [7m101[0m       const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.220 [7m   [0m [91m                                        ~~~~~~~[0m
+23:25:51.220 [96msrc/contracts/contracts.service.ts[0m:[93m108[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.220 
+23:25:51.220 [7m108[0m     return this.prisma.contract.update({
+23:25:51.220 [7m   [0m [91m                       ~~~~~~~~[0m
+23:25:51.220 [96msrc/contracts/contracts.service.ts[0m:[93m124[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.220 
+23:25:51.220 [7m124[0m     const contract = await this.prisma.contract.findFirst({
+23:25:51.220 [7m   [0m [91m                                       ~~~~~~~~[0m
+23:25:51.220 [96msrc/contracts/contracts.service.ts[0m:[93m130[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.220 
+23:25:51.220 [7m130[0m     await this.prisma.contract.update({
+23:25:51.220 [7m   [0m [91m                      ~~~~~~~~[0m
+23:25:51.220 [96msrc/contracts/contracts.service.ts[0m:[93m146[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'contract' does not exist on type 'PrismaService'.
+23:25:51.220 
+23:25:51.220 [7m146[0m     return this.prisma.contract.findMany({
+23:25:51.220 [7m   [0m [91m                       ~~~~~~~~[0m
+23:25:51.220 [96msrc/database/prisma.service.ts[0m:[93m4[0m:[93m30[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.220 
+23:25:51.221 [7m4[0m import { PrismaClient } from '../../generated/prisma';
+23:25:51.221 [7m [0m [91m                             ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.221 [96msrc/database/prisma.service.ts[0m:[93m19[0m:[93m16[0m - [91merror[0m[90m TS2339: [0mProperty '$connect' does not exist on type 'PrismaService'.
+23:25:51.221 
+23:25:51.221 [7m19[0m     await this.$connect();
+23:25:51.221 [7m  [0m [91m               ~~~~~~~~[0m
+23:25:51.221 [96msrc/database/prisma.service.ts[0m:[93m23[0m:[93m16[0m - [91merror[0m[90m TS2339: [0mProperty '$disconnect' does not exist on type 'PrismaService'.
+23:25:51.221 
+23:25:51.221 [7m23[0m     await this.$disconnect();
+23:25:51.221 [7m  [0m [91m               ~~~~~~~~~~~[0m
+23:25:51.221 [96msrc/documents/documents.controller.ts[0m:[93m7[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.221 
+23:25:51.221 [7m7[0m import { Role } from '../../generated/prisma';
+23:25:51.221 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.221 [96msrc/documents/documents.service.ts[0m:[93m11[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.221 
+23:25:51.221 [7m11[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.221 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.221 [96msrc/documents/documents.service.ts[0m:[93m17[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'document' does not exist on type 'PrismaService'.
+23:25:51.222 
+23:25:51.222 [7m17[0m     return this.prisma.document.create({
+23:25:51.223 [7m  [0m [91m                       ~~~~~~~~[0m
+23:25:51.223 [96msrc/documents/documents.service.ts[0m:[93m30[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'document' does not exist on type 'PrismaService'.
+23:25:51.223 
+23:25:51.223 [7m30[0m     return this.prisma.document.findMany({
+23:25:51.223 [7m  [0m [91m                       ~~~~~~~~[0m
+23:25:51.223 [96msrc/documents/documents.service.ts[0m:[93m48[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'document' does not exist on type 'PrismaService'.
+23:25:51.223 
+23:25:51.223 [7m48[0m     return this.prisma.document.findMany({
+23:25:51.223 [7m  [0m [91m                       ~~~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.controller.ts[0m:[93m19[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.224 
+23:25:51.224 [7m19[0m import { Role } from '../../generated/prisma';
+23:25:51.224 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m10[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.224 
+23:25:51.224 [7m10[0m import { Prisma } from '../../generated/prisma';
+23:25:51.224 [7m  [0m [91m                       ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m33[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m33[0m     return this.prisma.driver.create({
+23:25:51.224 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m47[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m47[0m     return this.prisma.driver.findMany({
+23:25:51.224 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m59[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m59[0m     const driver = await this.prisma.driver.findFirst({
+23:25:51.224 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m68[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m68[0m     const driver = await this.prisma.driver.findFirst({
+23:25:51.224 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m101[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m101[0m     return this.prisma.driver.update({
+23:25:51.224 [7m   [0m [91m                       ~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m109[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m109[0m     const driver = await this.prisma.driver.findFirst({
+23:25:51.224 [7m   [0m [91m                                     ~~~~~~[0m
+23:25:51.224 [96msrc/drivers/drivers.service.ts[0m:[93m114[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.224 
+23:25:51.224 [7m114[0m     await this.prisma.driver.update({
+23:25:51.224 [7m   [0m [91m                      ~~~~~~[0m
+23:25:51.224 [96msrc/expenses/expenses.controller.ts[0m:[93m7[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.224 
+23:25:51.224 [7m7[0m import { Role } from '../../generated/prisma';
+23:25:51.224 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.225 [96msrc/expenses/expenses.service.ts[0m:[93m11[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'expense' does not exist on type 'PrismaService'.
+23:25:51.225 
+23:25:51.225 [7m11[0m     return this.prisma.expense.create({
+23:25:51.225 [7m  [0m [91m                       ~~~~~~~[0m
+23:25:51.225 [96msrc/expenses/expenses.service.ts[0m:[93m24[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'expense' does not exist on type 'PrismaService'.
+23:25:51.225 
+23:25:51.225 [7m24[0m     return this.prisma.expense.findMany({
+23:25:51.225 [7m  [0m [91m                       ~~~~~~~[0m
+23:25:51.225 [96msrc/feature-access/feature-access.controller.ts[0m:[93m6[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.225 
+23:25:51.225 [7m6[0m import { Role } from '../../generated/prisma';
+23:25:51.225 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.225 [96msrc/feature-access/feature-access.service.ts[0m:[93m9[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.225 
+23:25:51.225 [7m9[0m     return this.prisma.featureAccess.findMany({
+23:25:51.225 [7m [0m [91m                       ~~~~~~~~~~~~~[0m
+23:25:51.225 [96msrc/feature-access/feature-access.service.ts[0m:[93m16[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.225 
+23:25:51.225 [7m16[0m     const existing = await this.prisma.featureAccess.findFirst({
+23:25:51.225 [7m  [0m [91m                                       ~~~~~~~~~~~~~[0m
+23:25:51.225 [96msrc/feature-access/feature-access.service.ts[0m:[93m21[0m:[93m26[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.226 
+23:25:51.226 [7m21[0m       return this.prisma.featureAccess.update({
+23:25:51.226 [7m  [0m [91m                         ~~~~~~~~~~~~~[0m
+23:25:51.226 [96msrc/feature-access/feature-access.service.ts[0m:[93m27[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.226 
+23:25:51.226 [7m27[0m     return this.prisma.featureAccess.create({
+23:25:51.226 [7m  [0m [91m                       ~~~~~~~~~~~~~[0m
+23:25:51.226 [96msrc/feature-access/feature-access.service.ts[0m:[93m33[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m33[0m     const existing = await this.prisma.featureAccess.findFirst({
+23:25:51.227 [7m  [0m [91m                                       ~~~~~~~~~~~~~[0m
+23:25:51.227 [96msrc/feature-access/feature-access.service.ts[0m:[93m38[0m:[93m26[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m38[0m       return this.prisma.featureAccess.update({
+23:25:51.227 [7m  [0m [91m                         ~~~~~~~~~~~~~[0m
+23:25:51.227 [96msrc/feature-access/feature-access.service.ts[0m:[93m44[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'featureAccess' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m44[0m     return this.prisma.featureAccess.create({
+23:25:51.227 [7m  [0m [91m                       ~~~~~~~~~~~~~[0m
+23:25:51.227 [96msrc/fuel/fuel.controller.ts[0m:[93m7[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.227 
+23:25:51.227 [7m7[0m import { Role } from '../../generated/prisma';
+23:25:51.227 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.227 [96msrc/fuel/fuel.service.ts[0m:[93m16[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m16[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.227 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.227 [96msrc/fuel/fuel.service.ts[0m:[93m23[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'fuelLog' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m23[0m     const lastLog = await this.prisma.fuelLog.findFirst({
+23:25:51.227 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.227 [96msrc/fuel/fuel.service.ts[0m:[93m34[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'fuelLog' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m34[0m     return this.prisma.fuelLog.create({
+23:25:51.227 [7m  [0m [91m                       ~~~~~~~[0m
+23:25:51.227 [96msrc/fuel/fuel.service.ts[0m:[93m49[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'fuelLog' does not exist on type 'PrismaService'.
+23:25:51.227 
+23:25:51.227 [7m49[0m     return this.prisma.fuelLog.findMany({
+23:25:51.227 [7m  [0m [91m                       ~~~~~~~[0m
+23:25:51.227 [96msrc/income/income.controller.ts[0m:[93m17[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.227 
+23:25:51.227 [7m17[0m import { Role } from '../../generated/prisma';
+23:25:51.227 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.227 [96msrc/income/income.service.ts[0m:[93m11[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.228 
+23:25:51.228 [7m11[0m     return this.prisma.income.create({
+23:25:51.228 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.228 [96msrc/income/income.service.ts[0m:[93m21[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.228 
+23:25:51.228 [7m21[0m     return this.prisma.income.findMany({
+23:25:51.228 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.228 [96msrc/income/income.service.ts[0m:[93m28[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.228 
+23:25:51.228 [7m28[0m     const income = await this.prisma.income.findFirst({
+23:25:51.228 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.228 [96msrc/income/income.service.ts[0m:[93m36[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.228 
+23:25:51.228 [7m36[0m     const income = await this.prisma.income.findFirst({
+23:25:51.228 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.228 [96msrc/income/income.service.ts[0m:[93m41[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.228 
+23:25:51.228 [7m41[0m     return this.prisma.income.update({
+23:25:51.228 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.228 [96msrc/income/income.service.ts[0m:[93m48[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.229 
+23:25:51.229 [7m48[0m     const income = await this.prisma.income.findFirst({
+23:25:51.229 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.229 [96msrc/income/income.service.ts[0m:[93m53[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'income' does not exist on type 'PrismaService'.
+23:25:51.229 
+23:25:51.229 [7m53[0m     await this.prisma.income.update({
+23:25:51.229 [7m  [0m [91m                      ~~~~~~[0m
+23:25:51.229 [96msrc/jobs/jobs.service.ts[0m:[93m9[0m:[93m44[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.230 
+23:25:51.230 [7m9[0m import { AlertStatus, VehicleStatus } from '../../generated/prisma';
+23:25:51.230 [7m [0m [91m                                           ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.230 [96msrc/jobs/jobs.service.ts[0m:[93m113[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.231 
+23:25:51.231 [7m113[0m     const tenants = await this.prisma.tenant.findMany({
+23:25:51.232 [7m   [0m [91m                                      ~~~~~~[0m
+23:25:51.232 [96msrc/jobs/jobs.service.ts[0m:[93m150[0m:[93m46[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.232 
+23:25:51.232 [7m150[0m     const onTripVehicles = await this.prisma.vehicle.findMany({
+23:25:51.232 [7m   [0m [91m                                             ~~~~~~~[0m
+23:25:51.232 [96msrc/jobs/jobs.service.ts[0m:[93m165[0m:[93m41[0m - [91merror[0m[90m TS2339: [0mProperty 'gpsLocation' does not exist on type 'PrismaService'.
+23:25:51.232 
+23:25:51.232 [7m165[0m       const lastGps = await this.prisma.gpsLocation.findFirst({
+23:25:51.233 [7m   [0m [91m                                        ~~~~~~~~~~~[0m
+23:25:51.233 [96msrc/jobs/jobs.service.ts[0m:[93m175[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'alert' does not exist on type 'PrismaService'.
+23:25:51.233 
+23:25:51.233 [7m175[0m       const duplicate = await this.prisma.alert.findFirst({
+23:25:51.233 [7m   [0m [91m                                          ~~~~~[0m
+23:25:51.233 [96msrc/jobs/jobs.service.ts[0m:[93m196[0m:[93m25[0m - [91merror[0m[90m TS2339: [0mProperty 'alert' does not exist on type 'PrismaService'.
+23:25:51.233 
+23:25:51.233 [7m196[0m       await this.prisma.alert.createMany({ data: alertsToCreate });
+23:25:51.233 [7m   [0m [91m                        ~~~~~[0m
+23:25:51.233 [96msrc/maintenance/maintenance.controller.ts[0m:[93m16[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.233 
+23:25:51.233 [7m16[0m import { Role } from '../../generated/prisma';
+23:25:51.233 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.233 [96msrc/maintenance/maintenance.service.ts[0m:[93m21[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.233 
+23:25:51.233 [7m21[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.233 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.233 [96msrc/maintenance/maintenance.service.ts[0m:[93m42[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'maintenanceLog' does not exist on type 'PrismaService'.
+23:25:51.233 
+23:25:51.233 [7m42[0m     return this.prisma.maintenanceLog.create({
+23:25:51.234 [7m  [0m [91m                       ~~~~~~~~~~~~~~[0m
+23:25:51.234 [96msrc/maintenance/maintenance.service.ts[0m:[93m59[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'maintenanceLog' does not exist on type 'PrismaService'.
+23:25:51.234 
+23:25:51.234 [7m59[0m     return this.prisma.maintenanceLog.findMany({
+23:25:51.234 [7m  [0m [91m                       ~~~~~~~~~~~~~~[0m
+23:25:51.234 [96msrc/maintenance/maintenance.service.ts[0m:[93m68[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'maintenanceLog' does not exist on type 'PrismaService'.
+23:25:51.234 
+23:25:51.234 [7m68[0m     const log = await this.prisma.maintenanceLog.findFirst({
+23:25:51.234 [7m  [0m [91m                                  ~~~~~~~~~~~~~~[0m
+23:25:51.234 [96msrc/reports/reports.controller.ts[0m:[93m6[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.234 
+23:25:51.234 [7m6[0m import { Role } from '../../generated/prisma';
+23:25:51.234 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m33[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.234 
+23:25:51.234 [7m33[0m     const tripGroups = await this.prisma.trip.groupBy({
+23:25:51.234 [7m  [0m [91m                                         ~~~~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m48[0m:[93m40[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.234 
+23:25:51.234 [7m48[0m     const vehicleIds = tripGroups.map((g) => g.vehicleId);
+23:25:51.234 [7m  [0m [91m                                       ~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m49[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.234 
+23:25:51.234 [7m49[0m     const vehicles = await this.prisma.vehicle.findMany({
+23:25:51.234 [7m  [0m [91m                                       ~~~~~~~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m53[0m:[93m46[0m - [91merror[0m[90m TS7006: [0mParameter 'v' implicitly has an 'any' type.
+23:25:51.234 
+23:25:51.234 [7m53[0m     const vehicleMap = new Map(vehicles.map((v) => [v.id, v]));
+23:25:51.234 [7m  [0m [91m                                             ~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m55[0m:[93m28[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.234 
+23:25:51.234 [7m55[0m     return tripGroups.map((g) => ({
+23:25:51.234 [7m  [0m [91m                           ~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m57[0m:[93m52[0m - [91merror[0m[90m TS2339: [0mProperty 'registrationNo' does not exist on type '{}'.
+23:25:51.234 
+23:25:51.234 [7m57[0m       registrationNo: vehicleMap.get(g.vehicleId)?.registrationNo ?? 'Unknown',
+23:25:51.234 [7m  [0m [91m                                                   ~~~~~~~~~~~~~~[0m
+23:25:51.234 [96msrc/reports/reports.service.ts[0m:[93m58[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'model' does not exist on type '{}'.
+23:25:51.234 
+23:25:51.234 [7m58[0m       model: vehicleMap.get(g.vehicleId)?.model ?? 'Unknown',
+23:25:51.234 [7m  [0m [91m                                          ~~~~~[0m
+23:25:51.235 [96msrc/reports/reports.service.ts[0m:[93m74[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'fuelLog' does not exist on type 'PrismaService'.
+23:25:51.235 
+23:25:51.235 [7m74[0m     const fuelGroups = await this.prisma.fuelLog.groupBy({
+23:25:51.235 [7m  [0m [91m                                         ~~~~~~~[0m
+23:25:51.235 [96msrc/reports/reports.service.ts[0m:[93m89[0m:[93m40[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.235 
+23:25:51.236 [7m89[0m     const vehicleIds = fuelGroups.map((g) => g.vehicleId);
+23:25:51.236 [7m  [0m [91m                                       ~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m90[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.236 
+23:25:51.236 [7m90[0m     const vehicles = await this.prisma.vehicle.findMany({
+23:25:51.236 [7m  [0m [91m                                       ~~~~~~~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m94[0m:[93m46[0m - [91merror[0m[90m TS7006: [0mParameter 'v' implicitly has an 'any' type.
+23:25:51.236 
+23:25:51.236 [7m94[0m     const vehicleMap = new Map(vehicles.map((v) => [v.id, v]));
+23:25:51.236 [7m  [0m [91m                                             ~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m96[0m:[93m28[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.236 
+23:25:51.236 [7m96[0m     return fuelGroups.map((g) => ({
+23:25:51.236 [7m  [0m [91m                           ~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m98[0m:[93m52[0m - [91merror[0m[90m TS2339: [0mProperty 'registrationNo' does not exist on type '{}'.
+23:25:51.236 
+23:25:51.236 [7m98[0m       registrationNo: vehicleMap.get(g.vehicleId)?.registrationNo ?? 'Unknown',
+23:25:51.236 [7m  [0m [91m                                                   ~~~~~~~~~~~~~~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m99[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'model' does not exist on type '{}'.
+23:25:51.236 
+23:25:51.236 [7m99[0m       model: vehicleMap.get(g.vehicleId)?.model ?? 'Unknown',
+23:25:51.236 [7m  [0m [91m                                          ~~~~~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m132[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.236 
+23:25:51.236 [7m132[0m       this.prisma.vehicle.findMany({
+23:25:51.236 [7m   [0m [91m                  ~~~~~~~[0m
+23:25:51.236 [96msrc/reports/reports.service.ts[0m:[93m148[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.236 
+23:25:51.236 [7m148[0m       this.prisma.trip.groupBy({
+23:25:51.237 [7m   [0m [91m                  ~~~~[0m
+23:25:51.237 [96msrc/reports/reports.service.ts[0m:[93m160[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'fuelLog' does not exist on type 'PrismaService'.
+23:25:51.237 
+23:25:51.237 [7m160[0m       this.prisma.fuelLog.groupBy({
+23:25:51.237 [7m   [0m [91m                  ~~~~~~~[0m
+23:25:51.237 [96msrc/reports/reports.service.ts[0m:[93m172[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'maintenanceLog' does not exist on type 'PrismaService'.
+23:25:51.237 
+23:25:51.237 [7m172[0m       this.prisma.maintenanceLog.groupBy({
+23:25:51.237 [7m   [0m [91m                  ~~~~~~~~~~~~~~[0m
+23:25:51.237 [96msrc/reports/reports.service.ts[0m:[93m185[0m:[93m26[0m - [91merror[0m[90m TS7006: [0mParameter 'vehicle' implicitly has an 'any' type.
+23:25:51.237 
+23:25:51.237 [7m185[0m     return vehicles.map((vehicle) => {
+23:25:51.237 [7m   [0m [91m                         ~~~~~~~[0m
+23:25:51.237 [96msrc/reports/reports.service.ts[0m:[93m186[0m:[93m38[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.237 
+23:25:51.237 [7m186[0m       const trips = tripGroups.find((g) => g.vehicleId === vehicle.id);
+23:25:51.237 [7m   [0m [91m                                     ~[0m
+23:25:51.237 [96msrc/reports/reports.service.ts[0m:[93m187[0m:[93m37[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.237 
+23:25:51.237 [7m187[0m       const fuel = fuelGroups.find((g) => g.vehicleId === vehicle.id);
+23:25:51.237 [7m   [0m [91m                                    ~[0m
+23:25:51.237 [96msrc/reports/reports.service.ts[0m:[93m188[0m:[93m39[0m - [91merror[0m[90m TS7006: [0mParameter 'g' implicitly has an 'any' type.
+23:25:51.237 
+23:25:51.237 [7m188[0m       const maint = maintGroups.find((g) => g.vehicleId === vehicle.id);
+23:25:51.237 [7m   [0m [91m                                      ~[0m
+23:25:51.237 [96msrc/scheduling/scheduling.controller.ts[0m:[93m7[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.237 
+23:25:51.237 [7m7[0m import { Role } from '../../generated/prisma';
+23:25:51.238 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.239 [96msrc/scheduling/scheduling.service.ts[0m:[93m3[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.239 
+23:25:51.239 [7m3[0m import { BookingStatus } from '../../generated/prisma';
+23:25:51.239 [7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.239 [96msrc/scheduling/scheduling.service.ts[0m:[93m31[0m:[93m47[0m - [91merror[0m[90m TS2339: [0mProperty 'booking' does not exist on type 'PrismaService'.
+23:25:51.240 
+23:25:51.240 [7m31[0m     const bookingConflict = await this.prisma.booking.findFirst({
+23:25:51.240 [7m  [0m [91m                                              ~~~~~~~[0m
+23:25:51.240 [96msrc/scheduling/scheduling.service.ts[0m:[93m49[0m:[93m44[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.240 
+23:25:51.240 [7m49[0m     const tripConflict = await this.prisma.trip.findFirst({
+23:25:51.241 [7m  [0m [91m                                           ~~~~[0m
+23:25:51.241 [96msrc/scheduling/scheduling.service.ts[0m:[93m71[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.246 
+23:25:51.246 [7m71[0m     const vehicle = await this.prisma.vehicle.findUnique({
+23:25:51.246 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.246 [96msrc/scheduling/scheduling.service.ts[0m:[93m79[0m:[93m53[0m - [91merror[0m[90m TS2339: [0mProperty 'maintenanceLog' does not exist on type 'PrismaService'.
+23:25:51.246 
+23:25:51.247 [7m79[0m       const maintenanceConflict = await this.prisma.maintenanceLog.findFirst({
+23:25:51.247 [7m  [0m [91m                                                    ~~~~~~~~~~~~~~[0m
+23:25:51.247 [96msrc/scheduling/scheduling.service.ts[0m:[93m114[0m:[93m50[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.247 
+23:25:51.247 [7m114[0m     const assignmentConflict = await this.prisma.assignment.findFirst({
+23:25:51.247 [7m   [0m [91m                                                 ~~~~~~~~~~[0m
+23:25:51.247 [96msrc/scheduling/scheduling.service.ts[0m:[93m135[0m:[93m44[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.248 
+23:25:51.248 [7m135[0m     const tripConflict = await this.prisma.trip.findFirst({
+23:25:51.248 [7m   [0m [91m                                           ~~~~[0m
+23:25:51.248 [96msrc/subscriptions/subscriptions.controller.ts[0m:[93m6[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.248 
+23:25:51.248 [7m6[0m import { Role } from '../../generated/prisma';
+23:25:51.248 [7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.249 [96msrc/subscriptions/subscriptions.service.ts[0m:[93m11[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'subscription' does not exist on type 'PrismaService'.
+23:25:51.249 
+23:25:51.249 [7m11[0m     return this.prisma.subscription.create({
+23:25:51.249 [7m  [0m [91m                       ~~~~~~~~~~~~[0m
+23:25:51.249 [96msrc/subscriptions/subscriptions.service.ts[0m:[93m21[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'subscription' does not exist on type 'PrismaService'.
+23:25:51.249 
+23:25:51.249 [7m21[0m     return this.prisma.subscription.findMany({
+23:25:51.249 [7m  [0m [91m                       ~~~~~~~~~~~~[0m
+23:25:51.250 [96msrc/subscriptions/subscriptions.service.ts[0m:[93m31[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'subscription' does not exist on type 'PrismaService'.
+23:25:51.250 
+23:25:51.250 [7m31[0m     return this.prisma.subscription.findMany({
+23:25:51.250 [7m  [0m [91m                       ~~~~~~~~~~~~[0m
+23:25:51.250 [96msrc/subscriptions/subscriptions.service.ts[0m:[93m38[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'subscription' does not exist on type 'PrismaService'.
+23:25:51.250 
+23:25:51.251 [7m38[0m     const sub = await this.prisma.subscription.findFirst({
+23:25:51.251 [7m  [0m [91m                                  ~~~~~~~~~~~~[0m
+23:25:51.251 [96msrc/subscriptions/subscriptions.service.ts[0m:[93m49[0m:[93m35[0m - [91merror[0m[90m TS2339: [0mProperty 'subscription' does not exist on type 'PrismaService'.
+23:25:51.251 
+23:25:51.251 [7m49[0m     const sub = await this.prisma.subscription.findFirst({
+23:25:51.251 [7m  [0m [91m                                  ~~~~~~~~~~~~[0m
+23:25:51.251 [96msrc/subscriptions/subscriptions.service.ts[0m:[93m54[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'subscription' does not exist on type 'PrismaService'.
+23:25:51.251 
+23:25:51.252 [7m54[0m     return this.prisma.subscription.update({
+23:25:51.252 [7m  [0m [91m                       ~~~~~~~~~~~~[0m
+23:25:51.252 [96msrc/tenants/tenants.controller.ts[0m:[93m15[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.252 
+23:25:51.252 [7m15[0m import { Role } from '../../generated/prisma';
+23:25:51.252 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.252 [96msrc/tenants/tenants.service.ts[0m:[93m10[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.252 
+23:25:51.253 [7m10[0m     return this.prisma.tenant.findMany({
+23:25:51.253 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.253 [96msrc/tenants/tenants.service.ts[0m:[93m25[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.253 
+23:25:51.253 [7m25[0m     const tenant = await this.prisma.tenant.findFirst({
+23:25:51.253 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.253 [96msrc/tenants/tenants.service.ts[0m:[93m44[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.253 
+23:25:51.254 [7m44[0m     const tenant = await this.prisma.tenant.findFirst({
+23:25:51.254 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.254 [96msrc/tenants/tenants.service.ts[0m:[93m49[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.254 
+23:25:51.254 [7m49[0m     return this.prisma.tenant.update({
+23:25:51.254 [7m  [0m [91m                       ~~~~~~[0m
+23:25:51.255 [96msrc/tenants/tenants.service.ts[0m:[93m56[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.255 
+23:25:51.256 [7m56[0m     const tenant = await this.prisma.tenant.findFirst({
+23:25:51.256 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.256 [96msrc/tenants/tenants.service.ts[0m:[93m61[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'tenant' does not exist on type 'PrismaService'.
+23:25:51.256 
+23:25:51.257 [7m61[0m     await this.prisma.tenant.update({
+23:25:51.257 [7m  [0m [91m                      ~~~~~~[0m
+23:25:51.257 [96msrc/tracking/tracking.controller.ts[0m:[93m16[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.257 
+23:25:51.257 [7m16[0m import { Role } from '../../generated/prisma';
+23:25:51.257 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.258 [96msrc/tracking/tracking.service.ts[0m:[93m51[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.258 
+23:25:51.258 [7m51[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.258 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.258 [96msrc/tracking/tracking.service.ts[0m:[93m60[0m:[93m23[0m - [91merror[0m[90m TS2339: [0mProperty 'gpsLocation' does not exist on type 'PrismaService'.
+23:25:51.258 
+23:25:51.259 [7m60[0m     await this.prisma.gpsLocation.create({
+23:25:51.259 [7m  [0m [91m                      ~~~~~~~~~~~[0m
+23:25:51.259 [96msrc/tracking/tracking.service.ts[0m:[93m95[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.259 
+23:25:51.259 [7m95[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.259 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.260 [96msrc/tracking/tracking.service.ts[0m:[93m108[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'gpsLocation' does not exist on type 'PrismaService'.
+23:25:51.260 
+23:25:51.260 [7m108[0m     return this.prisma.gpsLocation.findFirst({
+23:25:51.260 [7m   [0m [91m                       ~~~~~~~~~~~[0m
+23:25:51.260 [96msrc/tracking/tracking.service.ts[0m:[93m123[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.260 
+23:25:51.261 [7m123[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.261 [7m   [0m [91m                                      ~~~~~~~[0m
+23:25:51.261 [96msrc/tracking/tracking.service.ts[0m:[93m129[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'gpsLocation' does not exist on type 'PrismaService'.
+23:25:51.261 
+23:25:51.261 [7m129[0m     return this.prisma.gpsLocation.findMany({
+23:25:51.261 [7m   [0m [91m                       ~~~~~~~~~~~[0m
+23:25:51.262 [96msrc/trips/trips.controller.ts[0m:[93m15[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.262 
+23:25:51.262 [7m15[0m import { Role } from '../../generated/prisma';
+23:25:51.262 [7m  [0m [91m                     ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.262 [96msrc/trips/trips.service.ts[0m:[93m8[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../generated/prisma' or its corresponding type declarations.
+23:25:51.262 
+23:25:51.262 [7m8[0m import { VehicleStatus } from '../../generated/prisma';
+23:25:51.263 [7m [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~[0m
+23:25:51.263 [96msrc/trips/trips.service.ts[0m:[93m22[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.263 
+23:25:51.263 [7m22[0m     const driver = await this.prisma.driver.findFirst({
+23:25:51.263 [7m  [0m [91m                                     ~~~~~~[0m
+23:25:51.263 [96msrc/trips/trips.service.ts[0m:[93m33[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'assignment' does not exist on type 'PrismaService'.
+23:25:51.263 
+23:25:51.264 [7m33[0m     const assignment = await this.prisma.assignment.findFirst({
+23:25:51.264 [7m  [0m [91m                                         ~~~~~~~~~~[0m
+23:25:51.264 [96msrc/trips/trips.service.ts[0m:[93m50[0m:[93m39[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.264 
+23:25:51.264 [7m50[0m     const vehicle = await this.prisma.vehicle.findFirst({
+23:25:51.264 [7m  [0m [91m                                      ~~~~~~~[0m
+23:25:51.264 [96msrc/trips/trips.service.ts[0m:[93m62[0m:[93m42[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.265 
+23:25:51.265 [7m62[0m     const activeTrip = await this.prisma.trip.findFirst({
+23:25:51.265 [7m  [0m [91m                                         ~~~~[0m
+23:25:51.265 [96msrc/trips/trips.service.ts[0m:[93m73[0m:[93m38[0m - [91merror[0m[90m TS2339: [0mProperty '$transaction' does not exist on type 'PrismaService'.
+23:25:51.265 
+23:25:51.265 [7m73[0m     const [trip] = await this.prisma.$transaction([
+23:25:51.265 [7m  [0m [91m                                     ~~~~~~~~~~~~[0m
+23:25:51.266 [96msrc/trips/trips.service.ts[0m:[93m74[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.266 
+23:25:51.266 [7m74[0m       this.prisma.trip.create({
+23:25:51.266 [7m  [0m [91m                  ~~~~[0m
+23:25:51.266 [96msrc/trips/trips.service.ts[0m:[93m78[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.266 
+23:25:51.267 [7m78[0m       this.prisma.vehicle.update({
+23:25:51.267 [7m  [0m [91m                  ~~~~~~~[0m
+23:25:51.267 [96msrc/trips/trips.service.ts[0m:[93m82[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.267 
+23:25:51.267 [7m82[0m       this.prisma.driver.update({
+23:25:51.267 [7m  [0m [91m                  ~~~~~~[0m
+23:25:51.267 [96msrc/trips/trips.service.ts[0m:[93m103[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.267 
+23:25:51.269 [7m103[0m     const trip = await this.prisma.trip.findFirst({
+23:25:51.269 [7m   [0m [91m                                   ~~~~[0m
+23:25:51.269 [96msrc/trips/trips.service.ts[0m:[93m114[0m:[93m40[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.269 
+23:25:51.269 [7m114[0m       const driver = await this.prisma.driver.findFirst({
+23:25:51.269 [7m   [0m [91m                                       ~~~~~~[0m
+23:25:51.269 [96msrc/trips/trips.service.ts[0m:[93m125[0m:[93m45[0m - [91merror[0m[90m TS2339: [0mProperty '$transaction' does not exist on type 'PrismaService'.
+23:25:51.269 
+23:25:51.269 [7m125[0m     const [updatedTrip] = await this.prisma.$transaction([
+23:25:51.269 [7m   [0m [91m                                            ~~~~~~~~~~~~[0m
+23:25:51.269 [96msrc/trips/trips.service.ts[0m:[93m126[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.269 
+23:25:51.269 [7m126[0m       this.prisma.trip.update({
+23:25:51.270 [7m   [0m [91m                  ~~~~[0m
+23:25:51.270 [96msrc/trips/trips.service.ts[0m:[93m137[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'vehicle' does not exist on type 'PrismaService'.
+23:25:51.270 
+23:25:51.270 [7m137[0m       this.prisma.vehicle.update({
+23:25:51.270 [7m   [0m [91m                  ~~~~~~~[0m
+23:25:51.270 [96msrc/trips/trips.service.ts[0m:[93m141[0m:[93m19[0m - [91merror[0m[90m TS2339: [0mProperty 'driver' does not exist on type 'PrismaService'.
+23:25:51.271 
+23:25:51.271 [7m141[0m       this.prisma.driver.update({
+23:25:51.271 [7m   [0m [91m                  ~~~~~~[0m
+23:25:51.271 [96msrc/trips/trips.service.ts[0m:[93m152[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.271 
+23:25:51.271 [7m152[0m     const trip = await this.prisma.trip.findFirst({
+23:25:51.272 [7m   [0m [91m                                   ~~~~[0m
+23:25:51.272 [96msrc/trips/trips.service.ts[0m:[93m158[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.272 
+23:25:51.272 [7m158[0m     return this.prisma.trip.update({
+23:25:51.272 [7m   [0m [91m                       ~~~~[0m
+23:25:51.272 [96msrc/trips/trips.service.ts[0m:[93m172[0m:[93m24[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.272 
+23:25:51.273 [7m172[0m     return this.prisma.trip.findMany({
+23:25:51.273 [7m   [0m [91m                       ~~~~[0m
+23:25:51.273 [96msrc/trips/trips.service.ts[0m:[93m181[0m:[93m36[0m - [91merror[0m[90m TS2339: [0mProperty 'trip' does not exist on type 'PrismaService'.
+23:25:51.273 
+23:25:51.273 [7m181[0m     const trip = await this.prisma.trip.findFirst({
