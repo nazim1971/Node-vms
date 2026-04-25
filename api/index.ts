@@ -28,7 +28,7 @@ async function bootstrap(): Promise<NestExpressApplication> {
   app.enableCors({
     origin: process.env['CORS_ORIGIN']
       ? process.env['CORS_ORIGIN'].split(',')
-      : ['http://localhost:3000'],
+      : ['http://localhost:3000', 'https://vms.node-devs.com'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });

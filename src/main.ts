@@ -15,7 +15,7 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://yourdomain.com'],
+    origin: ['http://localhost:3000', 'https://vms.node-devs.com'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });
