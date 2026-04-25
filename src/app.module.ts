@@ -4,6 +4,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { AuditInterceptor } from './common/interceptors/audit.interceptor';
 import { SensitiveFieldsInterceptor } from './common/interceptors/sensitive-fields.interceptor';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -82,6 +83,9 @@ import { FeatureGuard } from './common/guards/feature.guard';
     { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_GUARD, useClass: TenantGuard },
     { provide: APP_GUARD, useClass: FeatureGuard },
+    // Interceptors execute in reverse order on the response (last = innermost = runs first).
+    // Order: SensitiveFields (strip passwords) → Audit (log entity IDs) → Logging → Response (wrap envelope)
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
     { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_INTERCEPTOR, useClass: SensitiveFieldsInterceptor },

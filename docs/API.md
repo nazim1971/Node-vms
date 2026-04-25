@@ -6,6 +6,56 @@
 
 ---
 
+## Response Envelope
+
+Every successful response is wrapped in a consistent envelope:
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/vehicles",
+    "count": 3
+  }
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `success` | `boolean` | Always `true` for 2xx responses |
+| `data` | `object \| array` | The actual payload |
+| `meta.timestamp` | `string` | ISO 8601 UTC time of the response |
+| `meta.path` | `string` | Request path including query string |
+| `meta.count` | `number` | Only present when `data` is an array |
+
+`204 No Content` responses (e.g. DELETE endpoints) return **no body**.
+
+### Error Envelope
+
+All error responses follow the same shape:
+
+```json
+{
+  "success": false,
+  "error": {
+    "statusCode": 404,
+    "message": "Vehicle not found"
+  },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/vehicles/missing-id"
+  }
+}
+```
+
+> Internal server errors (`500`) always return `"message": "Internal server error"` — stack traces are never exposed to clients.
+
+> **Note:** For brevity, endpoint examples below show only the `data` value unless demonstrating the full envelope. Every actual HTTP response is always wrapped in `{ success, data, meta }`.
+
+---
+
 ## Role Hierarchy
 
 | Role | Description |
@@ -101,8 +151,15 @@ Account stays **PENDING** until a SUPER_ADMIN approves it.
 **Response `200`:**
 ```json
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/auth/login"
+  }
 }
 ```
 
@@ -243,15 +300,22 @@ Create a user under the current tenant.
 **Response `201`:**
 ```json
 {
-  "id": "clx1usr001",
-  "name": "Jane Doe",
-  "email": "jane@alphafleet.com",
-  "role": "EMPLOYEE",
-  "isActive": true,
-  "approvalStatus": "APPROVED",
-  "branchId": "clx1bra001",
-  "tenantId": "clx1def456",
-  "createdAt": "2026-04-25T10:00:00.000Z"
+  "success": true,
+  "data": {
+    "id": "clx1usr001",
+    "name": "Jane Doe",
+    "email": "jane@alphafleet.com",
+    "role": "EMPLOYEE",
+    "isActive": true,
+    "approvalStatus": "APPROVED",
+    "branchId": "clx1bra001",
+    "tenantId": "clx1def456",
+    "createdAt": "2026-04-25T10:00:00.000Z"
+  },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/users"
+  }
 }
 ```
 
@@ -264,26 +328,34 @@ Create a user under the current tenant.
 
 **Response `200`:**
 ```json
-[
-  {
-    "id": "clx1usr001",
-    "name": "Jane Doe",
-    "email": "jane@alphafleet.com",
-    "role": "EMPLOYEE",
-    "isActive": true,
-    "approvalStatus": "APPROVED",
-    "branchId": "clx1bra001",
-    "branch": { "id": "clx1bra001", "name": "Downtown Branch" },
-    "createdAt": "2026-04-25T10:00:00.000Z"
+{
+  "success": true,
+  "data": [
+    {
+      "id": "clx1usr001",
+      "name": "Jane Doe",
+      "email": "jane@alphafleet.com",
+      "role": "EMPLOYEE",
+      "isActive": true,
+      "approvalStatus": "APPROVED",
+      "branchId": "clx1bra001",
+      "branch": { "id": "clx1bra001", "name": "Downtown Branch" },
+      "createdAt": "2026-04-25T10:00:00.000Z"
+    }
+  ],
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/users",
+    "count": 1
   }
-]
+}
 ```
 
 ---
 
 ### GET /users/:id
 
-**Response `200`:** Single user object (same shape as above)
+**Response `200`:** Single user object (same `data` shape as above, no `count` in meta)
 
 ---
 
@@ -1449,9 +1521,15 @@ All errors follow this shape:
 
 ```json
 {
-  "statusCode": 400,
-  "message": "Validation failed: email must be an email",
-  "error": "Bad Request"
+  "success": false,
+  "error": {
+    "statusCode": 400,
+    "message": "Validation failed: email must be an email"
+  },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/users"
+  }
 }
 ```
 

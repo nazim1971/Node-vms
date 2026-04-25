@@ -150,7 +150,9 @@ curl -X POST http://localhost:5000/auth/seed-super-admin \
 | `npm run prisma:migrate:prod` | Apply migrations (production) |
 | `npm run prisma:studio` | Open Prisma Studio at localhost:5555 |
 | `npm run prisma:reset` | Drop + re-migrate (dev only) |
-| `npm run prisma:push` | Push schema without migration |
+| `npm run test` | Run all unit tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:cov` | Run tests with coverage report |
 
 ---
 
@@ -183,6 +185,48 @@ Full documentation with sample data: [docs/API.md](docs/API.md)
 | Reports | `/reports` | `reports` |
 | Workshop | `/workshop` | `workshop` |
 | Audit | `/audit` | - |
+
+---
+
+## API Response Envelope
+
+All successful responses are wrapped in a consistent envelope:
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/vehicles",
+    "count": 3
+  }
+}
+```
+
+- `success` — always `true` for 2xx responses
+- `data` — the actual payload (object or array)
+- `meta.timestamp` — ISO 8601 UTC time of the response
+- `meta.path` — the request path (including query string)
+- `meta.count` — present only when `data` is an array (number of items)
+
+`204 No Content` responses (DELETE) return no body.
+
+Error responses follow a matching shape:
+
+```json
+{
+  "success": false,
+  "error": {
+    "statusCode": 404,
+    "message": "Vehicle not found"
+  },
+  "meta": {
+    "timestamp": "2026-04-25T10:00:00.000Z",
+    "path": "/vehicles/missing-id"
+  }
+}
+```
 
 ---
 
