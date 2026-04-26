@@ -157,6 +157,9 @@ export class BranchesService {
         where: { branchId: id },
         data: { branchId: null },
       }),
+      this.prisma.userBranch.deleteMany({
+        where: { branchId: id },
+      }),
       this.prisma.vehicle.updateMany({
         where: { branchId: id },
         data: { branchId: null },

@@ -85,6 +85,7 @@ model Tenant {
   subscriptions   Subscription[]
   featureAccesses FeatureAccess[]
   users           User[]
+  userBranches    UserBranch[]
   vehicles        Vehicle[]
   drivers         Driver[]
   bookings        Booking[]
@@ -116,6 +117,7 @@ model Branch {
 
   tenant       Tenant        @relation(fields: [tenantId], references: [id])
   users        User[]
+  userBranches UserBranch[]
   vehicles     Vehicle[]
   drivers      Driver[]
   bookings     Booking[]
@@ -171,9 +173,27 @@ model User {
 
   auditLogs AuditLog[]
   driver    Driver?
+  userBranches UserBranch[]
 
   @@index([tenantId])
   @@index([email])
+  @@index([branchId])
+}
+
+model UserBranch {
+  id        String   @id @default(cuid())
+  tenantId  String
+  userId    String
+  branchId  String
+  createdAt DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  branch Branch @relation(fields: [branchId], references: [id])
+
+  @@unique([userId, branchId])
+  @@index([tenantId])
+  @@index([userId])
   @@index([branchId])
 }
 

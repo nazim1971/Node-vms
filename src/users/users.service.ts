@@ -24,6 +24,11 @@ const userSelect = {
   createdAt: true,
   updatedAt: true,
   branch: { select: { id: true, name: true } },
+  userBranches: {
+    select: {
+      branch: { select: { id: true, name: true } },
+    },
+  },
 } as const;
 
 // Only DRIVER and EMPLOYEE can be created/managed by an ADMIN
@@ -58,6 +63,26 @@ export class UsersService {
     return user;
   }
 
+  private normalizeBranchIds(branchIds?: string[]): string[] {
+    if (!branchIds) return [];
+    return [...new Set(branchIds.filter((id) => id && id.trim().length > 0))];
+  }
+
+  private async assertBranchesExist(
+    tenantId: string,
+    branchIds: string[],
+  ): Promise<void> {
+    if (branchIds.length === 0) return;
+
+    const count = await this.prisma.branch.count({
+      where: { tenantId, deletedAt: null, id: { in: branchIds } },
+    });
+
+    if (count !== branchIds.length) {
+      throw new BadRequestException('One or more branches are invalid');
+    }
+  }
+
   // ─── CREATE ─────────────────────────────────────────────────────────────────
 
   async create(tenantId: string, dto: CreateUserDto) {
@@ -70,19 +95,46 @@ export class UsersService {
     // Branch must belong to this tenant
     await this.validator.assertBranchExists(tenantId, dto.branchId);
 
+    const branchIds = this.normalizeBranchIds([
+      ...(dto.branchIds ?? []),
+      ...(dto.branchId ? [dto.branchId] : []),
+    ]);
+    await this.assertBranchesExist(tenantId, branchIds);
+
+    const primaryBranchId = dto.branchId ?? branchIds[0] ?? null;
+
     const hashedPassword = await this.hashPassword(dto.password);
 
-    return this.prisma.user.create({
-      data: {
-        tenantId,
-        name: dto.name,
-        email: dto.email,
-        password: hashedPassword,
-        role: dto.role ?? Role.EMPLOYEE,
-        branchId: dto.branchId ?? null,
-        approvalStatus: 'APPROVED',
-        isActive: true,
-      },
+    const created = await this.prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          tenantId,
+          name: dto.name,
+          email: dto.email,
+          password: hashedPassword,
+          role: dto.role ?? Role.EMPLOYEE,
+          branchId: primaryBranchId,
+          approvalStatus: 'APPROVED',
+          isActive: true,
+        },
+        select: { id: true },
+      });
+
+      if (branchIds.length > 0) {
+        await tx.userBranch.createMany({
+          data: branchIds.map((branchId) => ({
+            tenantId,
+            userId: user.id,
+            branchId,
+          })),
+        });
+      }
+
+      return user;
+    });
+
+    return this.prisma.user.findUniqueOrThrow({
+      where: { id: created.id },
       select: userSelect,
     });
   }
@@ -96,7 +148,12 @@ export class UsersService {
         deletedAt: null,
         // ADMIN sees only DRIVER/EMPLOYEE — ADMINs managed via /admin-applications
         role: { in: MANAGEABLE_ROLES },
-        ...(branchId && { branchId }),
+        ...(branchId && {
+          OR: [
+            { branchId },
+            { userBranches: { some: { branchId, tenantId } } },
+          ],
+        }),
       },
       select: userSelect,
       orderBy: { name: 'asc' },
@@ -161,13 +218,52 @@ export class UsersService {
       data.password = await this.hashPassword(dto.password);
     }
 
-    if (Object.keys(data).length === 0) {
+    const incomingBranchIds =
+      dto.branchIds !== undefined
+        ? this.normalizeBranchIds([
+            ...dto.branchIds,
+            ...(dto.branchId ? [dto.branchId] : []),
+          ])
+        : undefined;
+
+    if (incomingBranchIds !== undefined) {
+      await this.assertBranchesExist(tenantId, incomingBranchIds);
+
+      if (dto.branchId === undefined) {
+        data.branch = incomingBranchIds[0]
+          ? { connect: { id: incomingBranchIds[0] } }
+          : { disconnect: true };
+      }
+    }
+
+    const hasUserUpdates = Object.keys(data).length > 0;
+
+    if (!hasUserUpdates && incomingBranchIds === undefined) {
       throw new BadRequestException('No updatable fields provided');
     }
 
-    return this.prisma.user.update({
+    await this.prisma.$transaction(async (tx) => {
+      if (hasUserUpdates) {
+        await tx.user.update({ where: { id }, data });
+      }
+
+      if (incomingBranchIds !== undefined) {
+        await tx.userBranch.deleteMany({ where: { tenantId, userId: id } });
+
+        if (incomingBranchIds.length > 0) {
+          await tx.userBranch.createMany({
+            data: incomingBranchIds.map((branchId) => ({
+              tenantId,
+              userId: id,
+              branchId,
+            })),
+          });
+        }
+      }
+    });
+
+    return this.prisma.user.findUniqueOrThrow({
       where: { id },
-      data,
       select: userSelect,
     });
   }

@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEmail,
   IsIn,
   IsOptional,
@@ -27,4 +28,10 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   branchId?: string;
+
+  /** Assign user to multiple branches */
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  branchIds?: string[];
 }

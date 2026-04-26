@@ -49,13 +49,37 @@ All endpoints (unless marked **Public**) require a valid `Authorization: Bearer 
 
 | Method | Endpoint | Access | Description |
 |--------|----------|--------|-------------|
-| POST | `/users` | ADMIN | Create a DRIVER or EMPLOYEE |
+| POST | `/users` | ADMIN | Create a DRIVER or EMPLOYEE (`branchId` optional, `branchIds` optional for multi-branch assignment) |
 | GET | `/users` | ADMIN | List all DRIVER / EMPLOYEE in the tenant |
 | GET | `/users?branchId=<id>` | ADMIN | List users filtered by branch |
 | GET | `/users/:id` | ADMIN | Get a single user |
-| PATCH | `/users/:id` | ADMIN | Update user (name, role, isActive, branchId) |
+| PATCH | `/users/:id` | ADMIN | Update user (name, role, isActive, branchId, branchIds) |
 | PATCH | `/users/:id/reset-password` | ADMIN | Reset a DRIVER or EMPLOYEE password (no current password needed) |
 | DELETE | `/users/:id` | ADMIN | Soft-delete a DRIVER or EMPLOYEE |
+
+`POST /users` request supports:
+- `branchId` as primary branch
+- `branchIds` as assigned branches array
+
+`PATCH /users/:id` request supports:
+- `branchIds` to replace all assigned branches
+- if `branchId` is omitted and `branchIds` is sent, backend sets primary branch to first `branchIds` value (or clears it when empty)
+
+`GET /users` and `GET /users/:id` responses include:
+- `branch` (primary)
+- `userBranches` array with assigned branch objects
+
+Example payload:
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@alphafleet.com",
+  "password": "SecurePass123",
+  "role": "EMPLOYEE",
+  "branchId": "clx1bra001",
+  "branchIds": ["clx1bra001", "clx1bra002"]
+}
+```
 
 ### PATCH `/users/:id/reset-password`
 ```json

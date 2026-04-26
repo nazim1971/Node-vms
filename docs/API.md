@@ -404,9 +404,16 @@ Create a user under the current tenant.
   "email": "jane@alphafleet.com",
   "password": "SecurePass123",
   "role": "EMPLOYEE",
-  "branchId": "clx1bra001"
+  "branchId": "clx1bra001",
+  "branchIds": ["clx1bra001", "clx1bra002"]
 }
 ```
+
+`branchId` is optional and represents the primary branch.
+
+`branchIds` is optional and assigns the user to multiple branches.
+
+If `branchId` is omitted but `branchIds` is provided, backend auto-sets primary branch to the first `branchIds` value.
 
 **Response `201`:**
 ```json
@@ -420,6 +427,11 @@ Create a user under the current tenant.
     "isActive": true,
     "approvalStatus": "APPROVED",
     "branchId": "clx1bra001",
+      "branch": { "id": "clx1bra001", "name": "Downtown Branch" },
+      "userBranches": [
+        { "branch": { "id": "clx1bra001", "name": "Downtown Branch" } },
+        { "branch": { "id": "clx1bra002", "name": "Airport Branch" } }
+      ],
     "tenantId": "clx1def456",
     "createdAt": "2026-04-25T10:00:00.000Z"
   },
@@ -437,6 +449,10 @@ Create a user under the current tenant.
 **Query Params:**
 - `branchId` — optional: filter users by branch
 
+Filter behavior:
+- Matches users whose primary `branchId` equals query branch
+- Also matches users assigned via `branchIds` (userBranches mapping)
+
 **Response `200`:**
 ```json
 {
@@ -451,6 +467,10 @@ Create a user under the current tenant.
       "approvalStatus": "APPROVED",
       "branchId": "clx1bra001",
       "branch": { "id": "clx1bra001", "name": "Downtown Branch" },
+      "userBranches": [
+        { "branch": { "id": "clx1bra001", "name": "Downtown Branch" } },
+        { "branch": { "id": "clx1bra002", "name": "Airport Branch" } }
+      ],
       "createdAt": "2026-04-25T10:00:00.000Z"
     }
   ],
@@ -477,9 +497,16 @@ Create a user under the current tenant.
 {
   "name": "Jane Smith",
   "isActive": false,
-  "branchId": null
+  "branchId": null,
+  "branchIds": ["clx1bra002", "clx1bra003"]
 }
 ```
+
+`branchIds` replaces all assigned branches for the user.
+
+If only `branchIds` is provided:
+- primary branch becomes the first value of `branchIds`
+- primary branch is cleared when `branchIds` is empty
 
 **Response `200`:** Updated user object
 

@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsIn,
   IsOptional,
@@ -30,4 +31,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   branchId?: string | null;
+
+  /** Replace multi-branch assignments for this user */
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  branchIds?: string[];
 }
