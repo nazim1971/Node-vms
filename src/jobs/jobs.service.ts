@@ -40,9 +40,18 @@ export class JobsService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
+    const host = this.config.get<string>('REDIS_HOST', 'localhost');
+    const port = this.config.get<number>('REDIS_PORT', 6379);
+    const password = this.config.get<string>('REDIS_PASSWORD');
+    const useTls = host !== 'localhost' && host !== '127.0.0.1';
+
     const connection = {
-      host: this.config.get<string>('REDIS_HOST', 'localhost'),
-      port: this.config.get<number>('REDIS_PORT', 6379),
+      host,
+      port,
+      ...(password ? { password } : {}),
+      ...(useTls ? { tls: {} } : {}),
+      // BullMQ/ioredis recommendation for workers to avoid request retry stalls
+      maxRetriesPerRequest: null,
     };
 
     try {
@@ -62,6 +71,14 @@ export class JobsService implements OnModuleInit, OnModuleDestroy {
 
       this.worker.on('failed', (job, err) => {
         this.logger.error(`Failed: ${job?.name ?? 'unknown'} — ${err.message}`);
+      });
+
+      this.worker.on('error', (err) => {
+        this.logger.error(`Worker connection error: ${err.message}`);
+      });
+
+      this.queue.on('error', (err) => {
+        this.logger.error(`Queue connection error: ${err.message}`);
       });
 
       await this.scheduleJobs();
