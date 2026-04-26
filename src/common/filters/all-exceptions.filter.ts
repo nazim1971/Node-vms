@@ -27,11 +27,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()
         : 'Internal server error';
 
-    // Never expose internals on 500
-    const message =
-      status === HttpStatus.INTERNAL_SERVER_ERROR
-        ? 'Internal server error'
-        : rawMessage;
+    // Never expose internals on 500. For other errors, normalize to string|string[].
+    const message = this.normalizeMessage(status, rawMessage);
 
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error(
@@ -53,5 +50,32 @@ export class AllExceptionsFilter implements ExceptionFilter {
         path: request.url,
       },
     });
+  }
+
+  private normalizeMessage(
+    status: HttpStatus,
+    rawMessage: unknown,
+  ): string | string[] {
+    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+      return 'Internal server error';
+    }
+
+    if (typeof rawMessage === 'string') {
+      return rawMessage;
+    }
+
+    if (
+      rawMessage &&
+      typeof rawMessage === 'object' &&
+      'message' in (rawMessage as Record<string, unknown>)
+    ) {
+      const message = (rawMessage as Record<string, unknown>)['message'];
+      if (Array.isArray(message)) {
+        return message.map(String);
+      }
+      return String(message);
+    }
+
+    return 'Request failed';
   }
 }
