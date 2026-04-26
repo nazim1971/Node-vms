@@ -194,7 +194,98 @@ Blacklists current access token in Redis.
 
 ---
 
-## 2. Admin Applications
+## 2. Profile — Self-Service (All Authenticated Roles)
+
+> These endpoints always operate on the **currently logged-in user**. No specific role restriction — any authenticated user can access them.
+
+### GET /profile
+Fetch own profile.
+
+**Roles:** Any authenticated user
+
+**Response `200`:**
+```json
+{
+  "id": "clx1usr001",
+  "name": "Jane Doe",
+  "email": "jane@alphafleet.com",
+  "role": "ADMIN",
+  "tenantId": "clx1def456",
+  "branchId": "clx1bra001",
+  "isActive": true,
+  "updatedAt": "2026-04-25T10:00:00.000Z"
+}
+```
+
+---
+
+### PATCH /profile/name
+Change own display name. Any authenticated role.
+
+**Roles:** Any authenticated user
+
+**Request:**
+```json
+{
+  "name": "Jane Smith"
+}
+```
+
+**Response `200`:**
+```json
+{
+  "id": "clx1usr001",
+  "name": "Jane Smith",
+  "email": "jane@alphafleet.com",
+  "role": "ADMIN",
+  "tenantId": "clx1def456",
+  "branchId": "clx1bra001",
+  "isActive": true,
+  "updatedAt": "2026-04-26T08:00:00.000Z"
+}
+```
+
+---
+
+### PATCH /profile/password
+Change own password. **Current password is always required** — applies to all roles (SUPER_ADMIN, ADMIN, EMPLOYEE, DRIVER).
+
+**Roles:** Any authenticated user
+
+**Request:**
+```json
+{
+  "currentPassword": "OldPass123!",
+  "newPassword":     "NewPass456!"
+}
+```
+
+**Validation rules:**
+- `currentPassword` must match the stored hash — returns `401` if wrong
+- `newPassword` must be ≥ 8 characters
+- `newPassword` must differ from `currentPassword` — returns `400` if same
+
+**Response `200`:**
+```json
+{
+  "message": "Password changed successfully"
+}
+```
+
+**Error `401`:**
+```json
+{
+  "success": false,
+  "error": {
+    "statusCode": 401,
+    "message": "Current password is incorrect"
+  }
+}
+```
+
+---
+
+## 3. Admin Applications
 
 **Roles:** SUPER_ADMIN only
 
@@ -279,7 +370,27 @@ Blacklists current access token in Redis.
 
 ---
 
-## 3. Users
+### PATCH /admin-applications/:userId/reset-password
+SUPER_ADMIN resets an ADMIN's password. **No current password required.**
+
+**Roles:** SUPER_ADMIN only
+
+**Request:**
+```json
+{
+  "newPassword": "NewAdminPass456!"
+}
+```
+
+**Validation:** `newPassword` must be ≥ 8 characters
+
+**Response `200`:** Updated admin user object
+
+**Error `404`:** Admin not found
+
+---
+
+## 4. Users
 
 **Roles:** ADMIN (manage own tenant), SUPER_ADMIN (bypass)
 
@@ -374,12 +485,34 @@ Create a user under the current tenant.
 
 ---
 
+### PATCH /users/:id/reset-password
+ADMIN resets a DRIVER or EMPLOYEE password. **No current password required.**
+
+**Roles:** ADMIN (targets DRIVER / EMPLOYEE only), SUPER_ADMIN (bypass)
+
+**Request:**
+```json
+{
+  "newPassword": "NewUserPass456!"
+}
+```
+
+**Validation:** `newPassword` must be ≥ 8 characters
+
+**Response `200`:** Updated user object
+
+**Error `403`:** Returned if the target user is an ADMIN or SUPER_ADMIN (ADMIN cannot reset peer/superior passwords)
+
+**Error `404`:** User not found
+
+---
+
 ### DELETE /users/:id
 Soft delete. **Response `204`:** No content
 
 ---
 
-## 4. Tenants
+## 5. Tenants
 
 **Roles:** SUPER_ADMIN only (full), ADMIN (read own)
 
@@ -422,7 +555,7 @@ SUPER_ADMIN sees all tenants. ADMIN sees own tenant.
 
 ---
 
-## 5. Feature Access
+## 6. Feature Access
 
 **Only SUPER_ADMIN can enable or disable features.** The SUPER_ADMIN decides which modules each tenant (Admin's company) has access to. Features are enabled by default — the SUPER_ADMIN only needs to act when they want to restrict or restore a module.
 
@@ -516,7 +649,7 @@ PATCH /feature-access/clx1def456/workshop/disable
 
 ---
 
-## 6. Branches
+## 7. Branches
 
 Multi-branch management for a company.
 
@@ -639,7 +772,7 @@ Soft-delete. Unlinks all users/vehicles/drivers from this branch first.
 
 ---
 
-## 7. Vehicles
+## 8. Vehicles
 
 **Feature Flag:** `vehicles`
 
@@ -727,7 +860,7 @@ Soft delete. **Response `204`:** No content
 
 ---
 
-## 8. Drivers
+## 9. Drivers
 
 **Feature Flag:** `vehicles`
 
@@ -777,7 +910,7 @@ Same CRUD pattern as Vehicles. DELETE returns `204`.
 
 ---
 
-## 9. Assignments
+## 10. Assignments
 
 Link a driver to a vehicle for a time period.
 
@@ -816,7 +949,7 @@ Standard CRUD. DELETE returns `204`.
 
 ---
 
-## 10. Scheduling (Availability Check)
+## 11. Scheduling (Availability Check)
 
 Check conflicts before creating bookings.
 
@@ -855,7 +988,7 @@ Same response shape as vehicle availability.
 
 ---
 
-## 11. Bookings
+## 12. Bookings
 
 **Feature Flag:** `bookings`
 
@@ -903,7 +1036,7 @@ Standard CRUD. DELETE returns `204`.
 
 ---
 
-## 12. Contracts
+## 13. Contracts
 
 **Roles:** ADMIN, EMPLOYEE
 
@@ -946,7 +1079,7 @@ DELETE returns `204`.
 
 ---
 
-## 13. Trips
+## 14. Trips
 
 ### POST /trips/start/:vehicleId
 
@@ -1012,7 +1145,7 @@ Update costs/distance on a trip post-hoc.
 
 ---
 
-## 14. Fuel
+## 15. Fuel
 
 **Feature Flag:** `fuel`
 
@@ -1044,7 +1177,7 @@ Update costs/distance on a trip post-hoc.
 
 ---
 
-## 15. Maintenance
+## 16. Maintenance
 
 **Feature Flag:** `maintenance`
 
@@ -1087,7 +1220,7 @@ Two modes: simple (provide `totalCost`) or breakdown (provide `items[]`).
 
 ---
 
-## 16. Documents
+## 17. Documents
 
 **Feature Flag:** `maintenance`
 
@@ -1118,7 +1251,7 @@ Returns documents expiring within the next N days.
 
 ---
 
-## 17. Alerts
+## 18. Alerts
 
 **Roles:** ADMIN, EMPLOYEE
 
@@ -1169,7 +1302,7 @@ Scan and generate alerts for expiring documents, contracts, and maintenance-due 
 
 ---
 
-## 18. Expenses
+## 19. Expenses
 
 **Feature Flag:** `accounting`
 
@@ -1199,7 +1332,7 @@ Scan and generate alerts for expiring documents, contracts, and maintenance-due 
 
 ---
 
-## 19. Accounting
+## 20. Accounting
 
 **Feature Flag:** `accounting`
 
@@ -1238,7 +1371,7 @@ Scan and generate alerts for expiring documents, contracts, and maintenance-due 
 
 ---
 
-## 20. GPS Tracking
+## 21. GPS Tracking
 
 **Feature Flag:** `tracking`
 
@@ -1308,7 +1441,7 @@ socket.on('locationUpdate', (data) => {
 
 ---
 
-## 21. Reports
+## 22. Reports
 
 **Feature Flag:** `reports`
 
@@ -1386,7 +1519,7 @@ Delegates to AccountingService. Same response as `GET /accounting/profit-loss`.
 
 ---
 
-## 22. Workshop
+## 23. Workshop
 
 **Feature Flag:** `workshop`
 
@@ -1477,7 +1610,7 @@ Cannot add items to a `COMPLETED` job.
 
 ---
 
-## 23. Audit
+## 24. Audit
 
 **Roles:** ADMIN, SUPER_ADMIN
 
@@ -1512,6 +1645,21 @@ Immutable audit trail — automatically captured for all POST/PATCH/PUT/DELETE r
 ```
 
 Returns last 500 entries, newest first.
+
+---
+
+## Password Reset & Name Change — Role Matrix
+
+| Who | Endpoint | Requires Current Password |
+|-----|----------|:---:|
+| SUPER_ADMIN resets **own** password | `PATCH /profile/password` | ✅ Yes |
+| SUPER_ADMIN resets **ADMIN** password | `PATCH /admin-applications/:userId/reset-password` | ❌ No |
+| ADMIN resets **own** password | `PATCH /profile/password` | ✅ Yes |
+| ADMIN resets **DRIVER / EMPLOYEE** password | `PATCH /users/:id/reset-password` | ❌ No |
+| DRIVER resets **own** password | `PATCH /profile/password` | ✅ Yes |
+| EMPLOYEE resets **own** password | `PATCH /profile/password` | ✅ Yes |
+
+> **Name change:** All roles use `PATCH /profile/name` to update their own display name. No other role can change another user's name.
 
 ---
 
