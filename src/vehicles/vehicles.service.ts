@@ -8,6 +8,7 @@ import { EntityValidator } from '../common/helpers/entity-validator.helper';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import {
+  ContractType,
   Prisma,
   VehicleSourceType,
   VehicleStatus,
@@ -27,14 +28,72 @@ export class VehiclesService {
     // Branch must belong to this tenant
     await this.validator.assertBranchExists(tenantId, dto.branchId);
 
+    const sourceType = dto.sourceType ?? VehicleSourceType.OWNED;
+
+    if (sourceType === VehicleSourceType.CONTRACT) {
+      if (!dto.contract) {
+        throw new BadRequestException(
+          'contract is required when sourceType is CONTRACT',
+        );
+      }
+
+      const start = new Date(dto.contract.startDate);
+      const end = new Date(dto.contract.endDate);
+      if (end <= start) {
+        throw new BadRequestException('endDate must be after startDate');
+      }
+
+      // Atomic create: vehicle + source contract in a single transaction
+      const created = await this.prisma.$transaction(async (tx) => {
+        const vehicle = await tx.vehicle.create({
+          data: {
+            tenantId,
+            registrationNo: dto.registrationNo,
+            make: dto.make,
+            model: dto.model,
+            year: dto.year,
+            color: dto.color,
+            fuelType: dto.fuelType,
+            seatCount: dto.seatCount ?? 4,
+            status: VehicleStatus.AVAILABLE,
+            sourceType,
+            branchId: dto.branchId ?? null,
+          },
+        });
+
+        await tx.contract.create({
+          data: {
+            tenantId,
+            type: ContractType.VEHICLE_SOURCE,
+            startDate: start,
+            endDate: end,
+            amount: dto.contract.amount,
+            commission: dto.contract.commission ?? 0,
+            vehicleId: vehicle.id,
+          },
+        });
+
+        return vehicle;
+      });
+
+      return this.prisma.vehicle.findUniqueOrThrow({
+        where: { id: created.id },
+        include: { branch: { select: { id: true, name: true } } },
+      });
+    }
+
     return this.prisma.vehicle.create({
       data: {
         tenantId,
         registrationNo: dto.registrationNo,
+        make: dto.make,
         model: dto.model,
-        seatCount: dto.seatCount,
+        year: dto.year,
+        color: dto.color,
+        fuelType: dto.fuelType,
+        seatCount: dto.seatCount ?? 4,
         status: VehicleStatus.AVAILABLE,
-        sourceType: dto.sourceType ?? VehicleSourceType.OWNED,
+        sourceType,
         branchId: dto.branchId ?? null,
       },
       include: { branch: { select: { id: true, name: true } } },
@@ -83,7 +142,11 @@ export class VehiclesService {
     const data: Prisma.VehicleUpdateInput = {};
     if (dto.registrationNo !== undefined)
       data.registrationNo = dto.registrationNo;
+    if (dto.make !== undefined) data.make = dto.make;
     if (dto.model !== undefined) data.model = dto.model;
+    if (dto.year !== undefined) data.year = dto.year;
+    if (dto.color !== undefined) data.color = dto.color;
+    if (dto.fuelType !== undefined) data.fuelType = dto.fuelType;
     if (dto.seatCount !== undefined) data.seatCount = dto.seatCount;
     if (dto.status !== undefined) data.status = dto.status;
     if (dto.sourceType !== undefined) data.sourceType = dto.sourceType;

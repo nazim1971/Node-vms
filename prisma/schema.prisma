@@ -38,6 +38,14 @@ enum VehicleSourceType {
   CONTRACT
 }
 
+enum FuelType {
+  PETROL
+  DIESEL
+  CNG
+  ELECTRIC
+  HYBRID
+}
+
 enum BookingStatus {
   PENDING
   CONFIRMED
@@ -176,8 +184,12 @@ model Vehicle {
   tenantId       String
   branchId       String?
   registrationNo String            @unique
+  make           String?
   model          String
-  seatCount      Int
+  year           Int?
+  color          String?
+  fuelType       FuelType?
+  seatCount      Int               @default(4)
   status         VehicleStatus     @default(AVAILABLE)
   sourceType     VehicleSourceType @default(OWNED)
   createdAt      DateTime          @default(now())

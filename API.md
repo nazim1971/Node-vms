@@ -118,11 +118,15 @@ All endpoints (unless marked **Public**) require a valid `Authorization: Bearer 
 
 | Method | Endpoint | Access | Description |
 |--------|----------|--------|-------------|
-| POST | `/vehicles` | ADMIN | Register a vehicle |
+| POST | `/vehicles` | ADMIN | Register a vehicle (`branchId` optional; supports atomic `sourceType=CONTRACT` + `contract` payload) |
 | GET | `/vehicles` | ADMIN | List all vehicles |
 | GET | `/vehicles/:id` | ADMIN | Get vehicle details |
 | PATCH | `/vehicles/:id` | ADMIN | Update vehicle |
 | DELETE | `/vehicles/:id` | ADMIN | Soft-delete vehicle |
+
+`POST /vehicles` supports two create modes:
+- Standard vehicle create (`sourceType: OWNED` or omitted)
+- Atomic vehicle + source contract create (`sourceType: CONTRACT` with `contract` object)
 
 ---
 
@@ -179,11 +183,16 @@ All endpoints (unless marked **Public**) require a valid `Authorization: Bearer 
 
 | Method | Endpoint | Access | Description |
 |--------|----------|--------|-------------|
-| POST | `/contracts` | ADMIN | Create contract |
+| POST | `/contracts` | ADMIN | Create contract (VEHICLE_SOURCE can use `vehicleId` or atomic `vehicle` create) |
 | GET | `/contracts` | ADMIN | List contracts |
 | GET | `/contracts/:id` | ADMIN | Get contract |
 | PATCH | `/contracts/:id` | ADMIN | Update contract |
 | DELETE | `/contracts/:id` | ADMIN | Soft-delete contract |
+
+`POST /contracts` VEHICLE_SOURCE rules:
+- Provide exactly one of `vehicleId` (existing vehicle) or `vehicle` (create new vehicle)
+- If `vehicle` is provided, contract + vehicle are created in one DB transaction
+- On error, both inserts rollback
 
 ---
 

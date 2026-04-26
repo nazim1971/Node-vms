@@ -3,14 +3,18 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ContractType } from '../../generated/prisma';
+import { ContractType, VehicleSourceType, VehicleStatus } from '../../generated/prisma';
 import { PrismaService } from '../database/prisma.service';
+import { EntityValidator } from '../common/helpers/entity-validator.helper';
 import type { CreateContractDto } from './dto/create-contract.dto';
 import type { UpdateContractDto } from './dto/update-contract.dto';
 
 @Injectable()
 export class ContractsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly validator: EntityValidator,
+  ) {}
 
   // ─── Create ───────────────────────────────────────────────────────────────
   async create(tenantId: string, dto: CreateContractDto) {
@@ -21,11 +25,59 @@ export class ContractsService {
       throw new BadRequestException('endDate must be after startDate');
     }
 
-    // VEHICLE_SOURCE contracts should reference a vehicle
-    if (dto.type === ContractType.VEHICLE_SOURCE && !dto.vehicleId) {
+    // VEHICLE_SOURCE contracts should reference an existing vehicle or include a new vehicle payload
+    if (
+      dto.type === ContractType.VEHICLE_SOURCE &&
+      !dto.vehicleId &&
+      !dto.vehicle
+    ) {
       throw new BadRequestException(
-        'vehicleId is required for VEHICLE_SOURCE contracts',
+        'Provide vehicleId or vehicle for VEHICLE_SOURCE contracts',
       );
+    }
+
+    if (dto.vehicleId && dto.vehicle) {
+      throw new BadRequestException(
+        'Provide only one of vehicleId or vehicle, not both',
+      );
+    }
+
+    // VEHICLE_SOURCE + vehicle payload => create vehicle and contract atomically
+    if (dto.type === ContractType.VEHICLE_SOURCE && dto.vehicle) {
+      await this.validator.assertRegistrationUnique(dto.vehicle.registrationNo);
+      await this.validator.assertBranchExists(tenantId, dto.vehicle.branchId);
+
+      return this.prisma.$transaction(async (tx) => {
+        const vehicle = await tx.vehicle.create({
+          data: {
+            tenantId,
+            registrationNo: dto.vehicle.registrationNo,
+            make: dto.vehicle.make,
+            model: dto.vehicle.model,
+            year: dto.vehicle.year,
+            color: dto.vehicle.color,
+            fuelType: dto.vehicle.fuelType,
+            seatCount: dto.vehicle.seatCount ?? 4,
+            status: VehicleStatus.AVAILABLE,
+            sourceType: VehicleSourceType.CONTRACT,
+            branchId: dto.vehicle.branchId ?? null,
+          },
+          select: { id: true },
+        });
+
+        return tx.contract.create({
+          data: {
+            tenantId,
+            type: ContractType.VEHICLE_SOURCE,
+            startDate: start,
+            endDate: end,
+            amount: dto.amount,
+            commission: dto.commission ?? 0,
+            vehicleId: vehicle.id,
+          },
+          select: contractSelect,
+        });
+      });
     }
 
     // Validate vehicle belongs to tenant if vehicleId provided

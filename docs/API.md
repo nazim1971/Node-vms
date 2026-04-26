@@ -794,6 +794,30 @@ Soft-delete. Unlinks all users/vehicles/drivers from this branch first.
 }
 ```
 
+`branchId` is optional. If omitted, vehicle is created without a branch (`branchId: null`).
+
+For `sourceType: CONTRACT`, you can create the vehicle and source contract together atomically:
+```json
+{
+  "registrationNo": "ABC-1234",
+  "make": "Toyota",
+  "model": "Hilux",
+  "year": 2022,
+  "color": "White",
+  "fuelType": "DIESEL",
+  "sourceType": "CONTRACT",
+  "branchId": "clx1bra001",
+  "contract": {
+    "startDate": "2026-05-01",
+    "endDate": "2027-04-30",
+    "amount": 120000,
+    "commission": 5000
+  }
+}
+```
+
+If either contract or vehicle validation fails, both inserts are rolled back.
+
 **Response `201`:**
 ```json
 {
@@ -1046,26 +1070,50 @@ Standard CRUD. DELETE returns `204`.
 ```json
 {
   "type": "CLIENT",
-  "clientName": "Acme Corp",
   "startDate": "2026-05-01",
   "endDate": "2026-12-31",
-  "value": 50000,
-  "commission": 5000,
-  "notes": "Annual fleet rental agreement"
+  "amount": 50000,
+  "commission": 5000
 }
 ```
 
-For `VEHICLE_SOURCE` type, include `vehicleId`:
+For `VEHICLE_SOURCE` type, you can link an existing vehicle using `vehicleId`:
 ```json
 {
   "type": "VEHICLE_SOURCE",
   "vehicleId": "clx1veh001",
-  "clientName": "Fleet Supplier Inc",
   "startDate": "2026-05-01",
   "endDate": "2027-04-30",
-  "value": 120000
+  "amount": 120000,
+  "commission": 0
 }
 ```
+
+Or create a new vehicle and the contract together in one atomic transaction:
+```json
+{
+  "type": "VEHICLE_SOURCE",
+  "startDate": "2026-05-01",
+  "endDate": "2027-04-30",
+  "amount": 120000,
+  "commission": 5000,
+  "vehicle": {
+    "registrationNo": "ABC-1234",
+    "make": "Toyota",
+    "model": "Hilux",
+    "year": 2022,
+    "color": "White",
+    "fuelType": "DIESEL",
+    "seatCount": 4,
+    "branchId": "clx1bra001"
+  }
+}
+```
+
+Rules:
+- For `VEHICLE_SOURCE`, provide exactly one of `vehicleId` or `vehicle`.
+- If both or neither are provided, request fails.
+- If either insert fails, whole transaction rolls back.
 
 **Response `201`:** Contract object
 

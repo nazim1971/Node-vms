@@ -1,18 +1,14 @@
 import {
   IsEnum,
   IsInt,
-  IsObject,
   IsOptional,
   IsString,
   Min,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { FuelType, VehicleSourceType } from '../../../generated/prisma';
-import { CreateVehicleSourceContractDto } from './create-vehicle-source-contract.dto';
 
-export class CreateVehicleDto {
+export class CreateContractVehicleDto {
   @IsString()
   @MinLength(2)
   registrationNo!: string;
@@ -46,21 +42,10 @@ export class CreateVehicleDto {
   seatCount?: number;
 
   @IsOptional()
-  @IsEnum(VehicleSourceType)
-  sourceType?: VehicleSourceType;
-
-  /** Assign vehicle to a specific branch */
-  @IsOptional()
   @IsString()
   branchId?: string;
 
-  /**
-   * Optional: if sourceType is CONTRACT, frontend can submit contract data here
-   * and backend will create contract + vehicle atomically.
-   */
   @IsOptional()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => CreateVehicleSourceContractDto)
-  contract?: CreateVehicleSourceContractDto;
+  @IsEnum(VehicleSourceType)
+  sourceType?: VehicleSourceType;
 }

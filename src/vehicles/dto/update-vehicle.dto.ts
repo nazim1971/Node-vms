@@ -6,7 +6,11 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { VehicleSourceType, VehicleStatus } from '../../../generated/prisma';
+import {
+  FuelType,
+  VehicleSourceType,
+  VehicleStatus,
+} from '../../../generated/prisma';
 
 export class UpdateVehicleDto {
   @IsOptional()
@@ -17,7 +21,26 @@ export class UpdateVehicleDto {
   @IsOptional()
   @IsString()
   @MinLength(2)
+  make?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
   model?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1900)
+  year?: number;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
+  color?: string;
+
+  @IsOptional()
+  @IsEnum(FuelType)
+  fuelType?: FuelType;
 
   @IsOptional()
   @IsInt()
