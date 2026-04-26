@@ -3,7 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ContractType, VehicleSourceType, VehicleStatus } from '../../generated/prisma';
+import {
+  ContractType,
+  VehicleSourceType,
+  VehicleStatus,
+} from '../../generated/prisma';
 import { PrismaService } from '../database/prisma.service';
 import { EntityValidator } from '../common/helpers/entity-validator.helper';
 import type { CreateContractDto } from './dto/create-contract.dto';
@@ -44,23 +48,27 @@ export class ContractsService {
 
     // VEHICLE_SOURCE + vehicle payload => create vehicle and contract atomically
     if (dto.type === ContractType.VEHICLE_SOURCE && dto.vehicle) {
-      await this.validator.assertRegistrationUnique(dto.vehicle.registrationNo);
-      await this.validator.assertBranchExists(tenantId, dto.vehicle.branchId);
+      const vehicleInput = dto.vehicle;
+
+      await this.validator.assertRegistrationUnique(
+        vehicleInput.registrationNo,
+      );
+      await this.validator.assertBranchExists(tenantId, vehicleInput.branchId);
 
       return this.prisma.$transaction(async (tx) => {
         const vehicle = await tx.vehicle.create({
           data: {
             tenantId,
-            registrationNo: dto.vehicle.registrationNo,
-            make: dto.vehicle.make,
-            model: dto.vehicle.model,
-            year: dto.vehicle.year,
-            color: dto.vehicle.color,
-            fuelType: dto.vehicle.fuelType,
-            seatCount: dto.vehicle.seatCount ?? 4,
+            registrationNo: vehicleInput.registrationNo,
+            make: vehicleInput.make,
+            model: vehicleInput.model,
+            year: vehicleInput.year,
+            color: vehicleInput.color,
+            fuelType: vehicleInput.fuelType,
+            seatCount: vehicleInput.seatCount ?? 4,
             status: VehicleStatus.AVAILABLE,
             sourceType: VehicleSourceType.CONTRACT,
-            branchId: dto.vehicle.branchId ?? null,
+            branchId: vehicleInput.branchId ?? null,
           },
           select: { id: true },
         });

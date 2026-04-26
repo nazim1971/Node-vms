@@ -1,18 +1,18 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpException,
   Injectable,
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { AuditService } from '../../audit/audit.service';
 import type { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
 
 const MUTATION_METHODS = new Set(['POST', 'PATCH', 'PUT', 'DELETE']);
 
-/** Path segments that are verbs/actions, not entity IDs */
 const PATH_KEYWORDS = new Set([
   'start',
   'end',
@@ -60,7 +60,54 @@ export class AuditInterceptor implements NestInterceptor {
             this.logger.error(`Audit log failed: ${(err as Error).message}`);
           });
       }),
+      catchError((error: unknown) => {
+        const { entity, entityId } = this.extractMeta(url, undefined);
+        const statusCode =
+          error instanceof HttpException ? error.getStatus() : 500;
+        const errorMessage = this.extractErrorMessage(error);
+
+        this.auditService
+          .log(user.tenantId, user.sub, method, entity, entityId, {
+            success: false,
+            statusCode,
+            errorMessage,
+          })
+          .catch((auditError: unknown) => {
+            this.logger.error(
+              `Audit log failed: ${(auditError as Error).message}`,
+            );
+          });
+
+        throw error;
+      }),
     );
+  }
+
+  private extractErrorMessage(error: unknown): string {
+    if (error instanceof HttpException) {
+      const response = error.getResponse();
+      if (typeof response === 'string') {
+        return response;
+      }
+
+      if (
+        response &&
+        typeof response === 'object' &&
+        'message' in (response as Record<string, unknown>)
+      ) {
+        const message = (response as Record<string, unknown>)['message'];
+        if (Array.isArray(message)) {
+          return message.map(String).join('; ');
+        }
+        return String(message);
+      }
+    }
+
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return 'Internal server error';
   }
 
   private extractMeta(
@@ -72,7 +119,6 @@ export class AuditInterceptor implements NestInterceptor {
 
     const entity = parts[0] ?? 'unknown';
 
-    // Prefer id from response body
     const fromBody =
       body !== null &&
       body !== undefined &&
@@ -82,7 +128,6 @@ export class AuditInterceptor implements NestInterceptor {
         ? String((body as Record<string, unknown>).id)
         : null;
 
-    // Fall back to path segment if it looks like an id (not a keyword)
     const fromUrl = parts[1] && !PATH_KEYWORDS.has(parts[1]) ? parts[1] : null;
 
     return { entity, entityId: fromBody ?? fromUrl ?? 'unknown' };

@@ -16,9 +16,23 @@ export class AuditService {
     action: string,
     entity: string,
     entityId: string,
+    options?: {
+      success?: boolean;
+      statusCode?: number;
+      errorMessage?: string;
+    },
   ): Promise<void> {
     await this.prisma.auditLog.create({
-      data: { tenantId, userId, action, entity, entityId },
+      data: {
+        tenantId,
+        userId,
+        action,
+        entity,
+        entityId,
+        success: options?.success ?? true,
+        statusCode: options?.statusCode,
+        errorMessage: options?.errorMessage,
+      },
     });
   }
 

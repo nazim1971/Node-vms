@@ -349,6 +349,9 @@ model FuelLog {
   liters    Float
   cost      Float
   odometer  Float
+  success   Boolean  @default(true)
+  statusCode Int?
+  errorMessage String?
   date      DateTime
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -540,6 +543,9 @@ model AuditLog {
   action    String
   entity    String
   entityId  String
+  success   Boolean  @default(true)
+  statusCode Int?
+  errorMessage String?
   createdAt DateTime @default(now())
 
   tenant Tenant @relation(fields: [tenantId], references: [id])

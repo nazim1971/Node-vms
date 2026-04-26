@@ -37,8 +37,10 @@ export class VehiclesService {
         );
       }
 
-      const start = new Date(dto.contract.startDate);
-      const end = new Date(dto.contract.endDate);
+      const contract = dto.contract;
+
+      const start = new Date(contract.startDate);
+      const end = new Date(contract.endDate);
       if (end <= start) {
         throw new BadRequestException('endDate must be after startDate');
       }
@@ -67,8 +69,8 @@ export class VehiclesService {
             type: ContractType.VEHICLE_SOURCE,
             startDate: start,
             endDate: end,
-            amount: dto.contract.amount,
-            commission: dto.contract.commission ?? 0,
+            amount: contract.amount,
+            commission: contract.commission ?? 0,
             vehicleId: vehicle.id,
           },
         });
