@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import {
   BadRequestException,
   Injectable,
@@ -163,5 +164,24 @@ export class AdminApplicationsService {
     ]);
 
     return updatedUser;
+  }
+
+  /**
+   * SUPER_ADMIN resets an ADMIN's password without requiring the current password.
+   */
+  async resetAdminPassword(userId: string, newPassword: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { id: userId, role: Role.ADMIN, deletedAt: null },
+      select: { id: true },
+    });
+    if (!user) throw new NotFoundException('Admin not found');
+
+    const hashed = await bcrypt.hash(newPassword, 12);
+
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { password: hashed },
+      select: adminSelect,
+    });
   }
 }

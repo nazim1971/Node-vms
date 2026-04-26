@@ -14,6 +14,7 @@ import { JobsModule } from './jobs/jobs.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminApplicationsModule } from './admin-applications/admin-applications.module';
 import { UsersModule } from './users/users.module';
+import { ProfileModule } from './profile/profile.module';
 import { TenantsModule } from './tenants/tenants.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { FeatureAccessModule } from './feature-access/feature-access.module';
@@ -53,6 +54,7 @@ import { FeatureGuard } from './common/guards/feature.guard';
     AuthModule,
     AdminApplicationsModule,
     UsersModule,
+    ProfileModule,
     TenantsModule,
     SubscriptionsModule,
     FeatureAccessModule,

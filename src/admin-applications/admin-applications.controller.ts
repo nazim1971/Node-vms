@@ -14,6 +14,7 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from '../../generated/prisma';
 import { RejectApplicationDto } from './dto/reject-application.dto';
+import { ResetUserPasswordDto } from '../users/dto/reset-user-password.dto';
 
 @Controller('admin-applications')
 @UseGuards(RolesGuard)
@@ -70,5 +71,21 @@ export class AdminApplicationsController {
   @HttpCode(HttpStatus.OK)
   reactivate(@Param('userId') userId: string) {
     return this.adminApplicationsService.reactivate(userId);
+  }
+
+  /**
+   * PATCH /admin-applications/:userId/reset-password
+   * SUPER_ADMIN resets an ADMIN's password without requiring the current password.
+   */
+  @Patch(':userId/reset-password')
+  @HttpCode(HttpStatus.OK)
+  resetAdminPassword(
+    @Param('userId') userId: string,
+    @Body() dto: ResetUserPasswordDto,
+  ) {
+    return this.adminApplicationsService.resetAdminPassword(
+      userId,
+      dto.newPassword,
+    );
   }
 }

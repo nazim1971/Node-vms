@@ -18,6 +18,7 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../../generated/prisma';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ResetUserPasswordDto } from './dto/reset-user-password.dto';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('users')
@@ -58,6 +59,26 @@ export class UsersController {
       id: user.sub,
       role: user.role as Role,
     });
+  }
+
+  /**
+   * PATCH /users/:id/reset-password
+   * ADMIN resets a DRIVER or EMPLOYEE password without the current password.
+   * SUPER_ADMIN bypasses the role guard and can also use this endpoint.
+   */
+  @Patch(':id/reset-password')
+  @HttpCode(HttpStatus.OK)
+  resetPassword(
+    @Param('id') id: string,
+    @Body() dto: ResetUserPasswordDto,
+    @CurrentUser() user: JwtPayload,
+  ) {
+    return this.usersService.resetSubordinatePassword(
+      user.tenantId,
+      id,
+      dto.newPassword,
+      user.role as Role,
+    );
   }
 
   /** DELETE /users/:id — soft-delete a DRIVER or EMPLOYEE (ADMIN cannot delete other ADMINs) */

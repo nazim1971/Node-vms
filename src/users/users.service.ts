@@ -172,6 +172,40 @@ export class UsersService {
     });
   }
 
+  // ─── RESET SUBORDINATE PASSWORD ─────────────────────────────────────────────
+
+  /**
+   * ADMIN: resets a DRIVER or EMPLOYEE password without requiring current password.
+   * SUPER_ADMIN: can reset ADMIN password (enforced at the controller via role guard;
+   *              the same service method is reused via AdminApplicationsService).
+   */
+  async resetSubordinatePassword(
+    tenantId: string,
+    targetId: string,
+    newPassword: string,
+    requesterRole: Role,
+  ) {
+    const target = await this.findActiveUser(tenantId, targetId);
+
+    // ADMIN may only reset DRIVER / EMPLOYEE passwords
+    if (
+      requesterRole === Role.ADMIN &&
+      !MANAGEABLE_ROLES.includes(target.role)
+    ) {
+      throw new ForbiddenException(
+        'You can only reset passwords for DRIVER or EMPLOYEE accounts',
+      );
+    }
+
+    const hashed = await this.hashPassword(newPassword);
+
+    return this.prisma.user.update({
+      where: { id: targetId },
+      data: { password: hashed },
+      select: userSelect,
+    });
+  }
+
   // ─── DELETE (SOFT) ──────────────────────────────────────────────────────────
 
   async remove(
