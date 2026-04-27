@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
+  ConnectedSocket,
+  MessageBody,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 @Injectable()
 @WebSocketGateway({
@@ -17,6 +20,20 @@ export class AppGateway implements OnGatewayInit {
 
   afterInit() {
     // Gateway initialized — server is ready
+  }
+
+  /**
+   * Clients emit `joinRoom` with their tenantId to subscribe to live location
+   * updates for their tenant. The server adds them to `tenant:{tenantId}` room.
+   */
+  @SubscribeMessage('joinRoom')
+  handleJoinRoom(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() tenantId: string,
+  ): void {
+    if (typeof tenantId === 'string' && tenantId.trim()) {
+      void client.join(`tenant:${tenantId.trim()}`);
+    }
   }
 
   /**
