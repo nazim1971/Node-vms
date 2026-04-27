@@ -78,6 +78,10 @@ export class VehiclesService {
             amount: contract.amount,
             commission: contract.commission ?? 0,
             vehicleId: vehicle.id,
+            contactName: contract.contactName ?? null,
+            contactEmail: contract.contactEmail ?? null,
+            contactPhone: contract.contactPhone ?? null,
+            contactAddress: contract.contactAddress ?? null,
           },
         });
 
