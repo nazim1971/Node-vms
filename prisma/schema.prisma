@@ -210,9 +210,11 @@ model Vehicle {
   color          String?
   fuelType       FuelType?
   seatCount      Int               @default(4)
-  status         VehicleStatus     @default(AVAILABLE)
-  sourceType     VehicleSourceType @default(OWNED)
-  createdAt      DateTime          @default(now())
+  status              VehicleStatus     @default(AVAILABLE)
+  sourceType          VehicleSourceType @default(OWNED)
+  fitnessExpiryDate   DateTime?
+  taxTokenExpiryDate  DateTime?
+  createdAt           DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
   deletedAt      DateTime?
 

@@ -60,6 +60,12 @@ export class VehiclesService {
             status: VehicleStatus.AVAILABLE,
             sourceType,
             branchId: dto.branchId ?? null,
+            fitnessExpiryDate: dto.fitnessExpiryDate
+              ? new Date(dto.fitnessExpiryDate)
+              : null,
+            taxTokenExpiryDate: dto.taxTokenExpiryDate
+              ? new Date(dto.taxTokenExpiryDate)
+              : null,
           },
         });
 
@@ -97,6 +103,12 @@ export class VehiclesService {
         status: VehicleStatus.AVAILABLE,
         sourceType,
         branchId: dto.branchId ?? null,
+        fitnessExpiryDate: dto.fitnessExpiryDate
+          ? new Date(dto.fitnessExpiryDate)
+          : null,
+        taxTokenExpiryDate: dto.taxTokenExpiryDate
+          ? new Date(dto.taxTokenExpiryDate)
+          : null,
       },
       include: { branch: { select: { id: true, name: true } } },
     });
@@ -157,6 +169,14 @@ export class VehiclesService {
         ? { connect: { id: dto.branchId } }
         : { disconnect: true };
     }
+    if (dto.fitnessExpiryDate !== undefined)
+      data.fitnessExpiryDate = dto.fitnessExpiryDate
+        ? new Date(dto.fitnessExpiryDate)
+        : null;
+    if (dto.taxTokenExpiryDate !== undefined)
+      data.taxTokenExpiryDate = dto.taxTokenExpiryDate
+        ? new Date(dto.taxTokenExpiryDate)
+        : null;
 
     if (Object.keys(data).length === 0) {
       throw new BadRequestException('No updatable fields provided');

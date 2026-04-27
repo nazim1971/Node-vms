@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsEnum,
   IsInt,
   IsOptional,
@@ -59,4 +60,12 @@ export class UpdateVehicleDto {
   @IsOptional()
   @IsString()
   branchId?: string | null;
+
+  @IsOptional()
+  @IsDateString()
+  fitnessExpiryDate?: string | null;
+
+  @IsOptional()
+  @IsDateString()
+  taxTokenExpiryDate?: string | null;
 }

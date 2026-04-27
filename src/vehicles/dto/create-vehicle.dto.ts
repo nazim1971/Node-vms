@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsEnum,
   IsInt,
   IsObject,
@@ -53,6 +54,14 @@ export class CreateVehicleDto {
   @IsOptional()
   @IsString()
   branchId?: string;
+
+  @IsOptional()
+  @IsDateString()
+  fitnessExpiryDate?: string;
+
+  @IsOptional()
+  @IsDateString()
+  taxTokenExpiryDate?: string;
 
   /**
    * Optional: if sourceType is CONTRACT, frontend can submit contract data here
