@@ -315,17 +315,21 @@ model Booking {
 // ─── Contract ─────────────────────────────────────────────────────────────────
 
 model Contract {
-  id         String       @id @default(cuid())
-  tenantId   String
-  type       ContractType
-  startDate  DateTime
-  endDate    DateTime
-  amount     Float
-  commission Float        @default(0)
-  vehicleId  String?
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  deletedAt  DateTime?
+  id             String       @id @default(cuid())
+  tenantId       String
+  type           ContractType
+  startDate      DateTime
+  endDate        DateTime
+  amount         Float
+  commission     Float        @default(0)
+  vehicleId      String?
+  contactName    String?
+  contactEmail   String?
+  contactPhone   String?
+  contactAddress String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
 
   tenant  Tenant   @relation(fields: [tenantId], references: [id])
   vehicle Vehicle? @relation(fields: [vehicleId], references: [id])

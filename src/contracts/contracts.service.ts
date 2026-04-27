@@ -82,6 +82,10 @@ export class ContractsService {
             amount: dto.amount,
             commission: dto.commission ?? 0,
             vehicleId: vehicle.id,
+            contactName: dto.contactName ?? null,
+            contactEmail: dto.contactEmail ?? null,
+            contactPhone: dto.contactPhone ?? null,
+            contactAddress: dto.contactAddress ?? null,
           },
           select: contractSelect,
         });
@@ -106,6 +110,10 @@ export class ContractsService {
         amount: dto.amount,
         commission: dto.commission ?? 0,
         vehicleId: dto.vehicleId ?? null,
+        contactName: dto.contactName ?? null,
+        contactEmail: dto.contactEmail ?? null,
+        contactPhone: dto.contactPhone ?? null,
+        contactAddress: dto.contactAddress ?? null,
       },
       select: contractSelect,
     });
@@ -174,6 +182,16 @@ export class ContractsService {
         ...(dto.amount !== undefined && { amount: dto.amount }),
         ...(dto.commission !== undefined && { commission: dto.commission }),
         ...(dto.vehicleId !== undefined && { vehicleId: dto.vehicleId }),
+        ...(dto.contactName !== undefined && { contactName: dto.contactName }),
+        ...(dto.contactEmail !== undefined && {
+          contactEmail: dto.contactEmail,
+        }),
+        ...(dto.contactPhone !== undefined && {
+          contactPhone: dto.contactPhone,
+        }),
+        ...(dto.contactAddress !== undefined && {
+          contactAddress: dto.contactAddress,
+        }),
       },
       select: contractSelect,
     });
@@ -225,6 +243,10 @@ const contractSelect = {
   amount: true,
   commission: true,
   vehicleId: true,
+  contactName: true,
+  contactEmail: true,
+  contactPhone: true,
+  contactAddress: true,
   createdAt: true,
   updatedAt: true,
 } as const;

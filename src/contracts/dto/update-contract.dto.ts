@@ -35,4 +35,20 @@ export class UpdateContractDto {
   @IsOptional()
   @IsString()
   vehicleId?: string;
+
+  @IsOptional()
+  @IsString()
+  contactName?: string;
+
+  @IsOptional()
+  @IsString()
+  contactEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  contactPhone?: string;
+
+  @IsOptional()
+  @IsString()
+  contactAddress?: string;
 }

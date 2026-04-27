@@ -49,4 +49,21 @@ export class CreateContractDto {
   @ValidateNested()
   @Type(() => CreateContractVehicleDto)
   vehicle?: CreateContractVehicleDto;
+
+  /** Contact person details (optional for both contract types) */
+  @IsOptional()
+  @IsString()
+  contactName?: string;
+
+  @IsOptional()
+  @IsString()
+  contactEmail?: string;
+
+  @IsOptional()
+  @IsString()
+  contactPhone?: string;
+
+  @IsOptional()
+  @IsString()
+  contactAddress?: string;
 }
