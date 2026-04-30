@@ -29,14 +29,12 @@ export class AuthGuard implements CanActivate {
     ]);
     if (isPublic) return true;
 
-    const request = context
-      .switchToHttp()
-      .getRequest<
-        Record<string, unknown> & {
-          headers: Record<string, string>;
-          cookies?: Record<string, string>;
-        }
-      >();
+    const request = context.switchToHttp().getRequest<
+      Record<string, unknown> & {
+        headers: Record<string, string>;
+        cookies?: Record<string, string>;
+      }
+    >();
     const token = this.extractToken(request);
     if (!token) throw new UnauthorizedException('Missing authentication token');
 

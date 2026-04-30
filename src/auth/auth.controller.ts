@@ -21,17 +21,23 @@ const IS_PROD = process.env.NODE_ENV === 'production';
 const ACCESS_COOKIE = 'access_token';
 const REFRESH_COOKIE = 'refresh_token';
 
+/**
+ * Cross-origin deployments (frontend on vms.example.com, API on api.example.com)
+ * require sameSite:'none' + secure:true so the browser accepts Set-Cookie.
+ * In development (same-origin localhost) sameSite:'lax' is fine without HTTPS.
+ */
+function cookieBase() {
+  return IS_PROD
+    ? { httpOnly: true, secure: true, sameSite: 'none' as const, path: '/' }
+    : { httpOnly: true, secure: false, sameSite: 'lax' as const, path: '/' };
+}
+
 function setTokenCookies(
   res: Response,
   accessToken: string,
   refreshToken?: string,
 ): void {
-  const base = {
-    httpOnly: true,
-    secure: IS_PROD,
-    sameSite: 'lax' as const,
-    path: '/',
-  };
+  const base = cookieBase();
   res.cookie(ACCESS_COOKIE, accessToken, { ...base, maxAge: 15 * 60 * 1000 });
   if (refreshToken) {
     res.cookie(REFRESH_COOKIE, refreshToken, {
@@ -42,12 +48,7 @@ function setTokenCookies(
 }
 
 function clearTokenCookies(res: Response): void {
-  const opts = {
-    httpOnly: true,
-    secure: IS_PROD,
-    sameSite: 'lax' as const,
-    path: '/',
-  };
+  const opts = cookieBase();
   res.clearCookie(ACCESS_COOKIE, opts);
   res.clearCookie(REFRESH_COOKIE, opts);
 }
