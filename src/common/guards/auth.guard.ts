@@ -32,7 +32,10 @@ export class AuthGuard implements CanActivate {
     const request = context
       .switchToHttp()
       .getRequest<
-        Record<string, unknown> & { headers: Record<string, string> }
+        Record<string, unknown> & {
+          headers: Record<string, string>;
+          cookies?: Record<string, string>;
+        }
       >();
     const token = this.extractToken(request);
     if (!token) throw new UnauthorizedException('Missing authentication token');
@@ -59,9 +62,18 @@ export class AuthGuard implements CanActivate {
 
   private extractToken(request: {
     headers: Record<string, string>;
+    cookies?: Record<string, string>;
   }): string | undefined {
+    // 1. httpOnly cookie (primary — XSS-safe)
+    const cookieToken = (
+      request.cookies as Record<string, string> | undefined
+    )?.['access_token'];
+    if (cookieToken) return cookieToken;
+
+    // 2. Authorization Bearer header (fallback for API clients / Swagger)
     const auth = request.headers['authorization'];
-    if (!auth?.startsWith('Bearer ')) return undefined;
-    return auth.slice(7);
+    if (auth?.startsWith('Bearer ')) return auth.slice(7);
+
+    return undefined;
   }
 }

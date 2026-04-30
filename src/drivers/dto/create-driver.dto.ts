@@ -1,4 +1,4 @@
-import { IsOptional, IsString, MinLength } from 'class-validator';
+import { IsOptional, IsString, Matches, MinLength } from 'class-validator';
 
 export class CreateDriverDto {
   @IsString()
@@ -6,6 +6,10 @@ export class CreateDriverDto {
   name!: string;
 
   @IsString()
+  @Matches(/^\+?[\d\s\-()]{7,20}$/, {
+    message:
+      'Phone must be a valid phone number (7–20 digits, optional +, spaces, dashes, parentheses)',
+  })
   phone!: string;
 
   @IsString()

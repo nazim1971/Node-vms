@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsString, Matches, MinLength } from 'class-validator';
 
 export class SeedSuperAdminDto {
   @IsString()
@@ -9,6 +9,10 @@ export class SeedSuperAdminDto {
 
   @IsString()
   @MinLength(8)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/, {
+    message:
+      'Password must contain uppercase, lowercase, number, and special character (@$!%*?&)',
+  })
   password!: string;
 
   /** Must match SEED_SECRET environment variable */

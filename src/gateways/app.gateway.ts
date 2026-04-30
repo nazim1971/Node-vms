@@ -11,7 +11,13 @@ import { Server, Socket } from 'socket.io';
 
 @Injectable()
 @WebSocketGateway({
-  cors: { origin: '*', credentials: false },
+  cors: {
+    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? [
+      'http://localhost:3000',
+      'https://vms.node-devs.com',
+    ],
+    credentials: true,
+  },
   namespace: '/',
 })
 export class AppGateway implements OnGatewayInit {

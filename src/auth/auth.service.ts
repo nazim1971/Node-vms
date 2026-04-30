@@ -187,6 +187,11 @@ export class AuthService {
     }
   }
 
+  /** Decode a signed JWT payload without re-verifying (for controller use after sign). */
+  decodePayload(token: string): JwtPayload {
+    return this.jwtService.decode<JwtPayload>(token) as JwtPayload;
+  }
+
   private signAccessToken(user: {
     id: string;
     email: string;

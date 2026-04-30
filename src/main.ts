@@ -4,6 +4,7 @@ import { WinstonModule } from 'nest-winston';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { winstonConfig } from './common/logger/winston.config';
@@ -14,11 +15,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger });
 
   // CORS configuration
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') ?? [
+    'http://localhost:3000',
+    'https://vms.node-devs.com',
+  ];
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://vms.node-devs.com'],
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });
+
+  // Cookie parser — required for httpOnly cookie-based auth
+  app.use(cookieParser());
 
   // Security: Helmet sets secure HTTP headers
   app.use(helmet());
